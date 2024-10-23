@@ -1,16 +1,15 @@
-name: frontend
+name: Basic React App
 language: nodejs
 variables:
   - name: input
     inputType: InputTopic
-    description: The topic to pub/sub
-    defaultValue: ''
+    description: The topic to read from
+    defaultValue: hello-world-source
     required: true
   - name: bearer_token
     inputType: FreeText
-    description: Your bearer_token
+    description: ''
     defaultValue: ''
-    required: true
+    required: false
 dockerfile: dockerfile
 defaultFile: src/services/quix.ts
-libraryItemId: dc712441-abf5-43b7-a7a2-ced9a3f9508b

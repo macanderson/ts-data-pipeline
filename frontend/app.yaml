@@ -1,0 +1,16 @@
+name: frontend
+language: nodejs
+variables:
+  - name: input
+    inputType: InputTopic
+    description: The topic to pub/sub
+    defaultValue: ''
+    required: true
+  - name: bearer_token
+    inputType: FreeText
+    description: Your bearer_token
+    defaultValue: ''
+    required: true
+dockerfile: dockerfile
+defaultFile: src/services/quix.ts
+libraryItemId: dc712441-abf5-43b7-a7a2-ced9a3f9508b

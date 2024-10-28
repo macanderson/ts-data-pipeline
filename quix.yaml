@@ -40,15 +40,15 @@ deployments:
         inputType: Secret
         required: false
         secretKey: AWS_SECRET_ACCESS_KEY_key
-      - name: AWS_ACCESS_KEY_ID
+      - name: AWS_ACCESS_KEY
         inputType: Secret
         required: false
-        secretKey: AWS_ACCESS_KEY_ID_key
-      - name: AWS_S3_URI
+        secretKey: AWS_ACCESS_KEY_key
+      - name: AWS_S3_ICEBERG_URI
         inputType: FreeText
         required: false
         value: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
-      - name: TABLE_NAME
+      - name: OPTION_TRADES_TABLE_NAME
         inputType: FreeText
         required: false
         value: option_trades

@@ -14,9 +14,9 @@ input_topic = app.topic(os.environ["INPUT"])
 
 iceberg_sink = IcebergSink(
     data_catalog_spec="aws_glue",
-    TABLE_NAME=os.environ["TABLE_NAME"],
+    OPTION_TRADES_TABLE_NAME=os.environ["OPTION_TRADES_TABLE_NAME"],
     config=AWSIcebergConfig(
-        aws_s3_uri=os.environ["AWS_S3_URI"],
+        aws_s3_uri=os.environ["AWS_S3_ICEBERG_URI"],
         aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
         aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"]))
 

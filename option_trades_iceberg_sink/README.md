@@ -15,10 +15,10 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 The code sample uses the following environment variables:
 
 - **INPUT**: This is the INPUT topic (Default: `INPUT`, Required: `True`)
-- **AWS_S3_URI**: The URI or URL to your S3 bucket (Required: `True`)
+- **AWS_S3_ICEBERG_URI**: The URI or URL to your S3 bucket (Required: `True`)
 - **AWS_SECRET_ACCESS_KEY**: Your AWS secret (Required: `True`)
 - **AWS_ACCESS_KEY_ID**: Your AWS Access Key (Required: `True`)
-- **TABLE_NAME**: The table to publish data to (Required: `True`)
+- **OPTION_TRADES_TABLE_NAME**: The table to publish data to (Required: `True`)
 
 ## Requirements / Prerequisites
 

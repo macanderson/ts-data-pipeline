@@ -9,15 +9,15 @@ variables:
     inputType: Secret
     defaultValue: AWS_SECRET_ACCESS_KEY_key
     required: false
-  - name: AWS_ACCESS_KEY_ID
+  - name: AWS_ACCESS_KEY
     inputType: Secret
-    defaultValue: AWS_ACCESS_KEY_ID_key
+    defaultValue: AWS_ACCESS_KEY_key
     required: false
-  - name: AWS_S3_URI
+  - name: AWS_S3_ICEBERG_URI
     inputType: FreeText
     defaultValue: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
     required: false
-  - name: TABLE_NAME
+  - name: OPTION_TRADES_TABLE_NAME
     inputType: FreeText
     defaultValue: option_trades
     required: false

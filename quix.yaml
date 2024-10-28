@@ -20,15 +20,15 @@ deployments:
     variables:
       - name: INPUT
         inputType: InputTopic
-        required: false
+        required: true
         value: option-trades
       - name: OUTPUT
         inputType: OutputTopic
-        required: false
+        required: true
         value: option-trade-aggs
       - name: UNUSUALWHALES_TOKEN
         inputType: Secret
-        required: false
+        required: true
         secretKey: UNUSUALWHALES_TOKEN_key
   - name: option_trades_iceberg_sink
     application: option_trades_iceberg_sink

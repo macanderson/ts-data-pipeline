@@ -14,6 +14,9 @@ deployments:
       cpu: 200
       memory: 800
       replicas: 1
+    state:
+      enabled: true
+      size: 2
     variables:
       - name: output
         inputType: OutputTopic
@@ -22,27 +25,27 @@ deployments:
       - name: unusualwhales_token
         inputType: Secret
         required: false
-        secretKey: unusualwhales_token_key
+        secretKey: unusualwhales_token
       - name: broker_url
         inputType: Secret
         required: false
-        secretKey: broker_url_key
+        secretKey: broker_url
       - name: kafka_username
         inputType: Secret
         required: false
-        secretKey: kafka_username_key
+        secretKey: sasl_username
       - name: kafka_password
         inputType: Secret
         required: false
-        secretKey: kafka_password_key
+        secretKey: sasl_password
       - name: kafka_sasl_mechanism
         inputType: Secret
         required: false
-        secretKey: kafka_sasl_mechanism_key
+        secretKey: sasl_mechanism
       - name: kafka_security_protocol
         inputType: Secret
         required: false
-        secretKey: kafka_security_protocol_key
+        secretKey: sasl_security_protocol
 
 # This section describes the Topics of the data pipeline
 topics:

@@ -11,8 +11,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 2000
-      memory: 8000
+      cpu: 500
+      memory: 1000
       replicas: 1
     state:
       enabled: true
@@ -35,8 +35,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 2000
-      memory: 8000
+      cpu: 1000
+      memory: 2000
       replicas: 1
     variables:
       - name: INPUT
@@ -64,8 +64,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 2000
-      memory: 8000
+      cpu: 1000
+      memory: 2000
       replicas: 1
     variables:
       - name: INPUT
@@ -81,8 +81,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 800
+      cpu: 300
+      memory: 600
       replicas: 1
     variables:
       - name: INPUT
@@ -102,8 +102,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 800
+      cpu: 300
+      memory: 600
       replicas: 1
     variables:
       - name: INPUT

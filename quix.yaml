@@ -11,12 +11,9 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 1000
-      memory: 1500
+      cpu: 2000
+      memory: 1000
       replicas: 1
-    state:
-      enabled: true
-      size: 2
     variables:
       - name: OUTPUT
         inputType: OutputTopic

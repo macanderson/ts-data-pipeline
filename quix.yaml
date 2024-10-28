@@ -76,8 +76,52 @@ deployments:
         inputType: OutputTopic
         required: false
         value: option-trade-aggs
+  - name: mlearn_options_data
+    application: mlearn_options_data
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 800
+      replicas: 1
+    variables:
+      - name: INPUT
+        inputType: InputTopic
+        required: false
+        value: option-trade-aggs
+      - name: OUTPUT
+        inputType: OutputTopic
+        required: false
+        value: mlearn-options-data
+      - name: MODEL_NAME
+        inputType: FreeText
+        required: false
+        value: my_model
+  - name: option-trade-whales
+    application: option-trade-whales
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 800
+      replicas: 1
+    variables:
+      - name: INPUT
+        inputType: InputTopic
+        required: false
+        value: option-trades
+      - name: OUTPUT
+        inputType: OutputTopic
+        required: false
+        value: option-trade-whales
+      - name: PREMIUM_THRESHOLD
+        inputType: FreeText
+        required: false
+        value: 75000
 
 # This section describes the Topics of the data pipeline
 topics:
   - name: option-trades
   - name: option-trade-aggs
+  - name: mlearn-options-data
+  - name: option-trade-whales

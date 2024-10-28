@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from quixstreams import (
     Application,  # import the Quix Streams modules for interacting with Kafka
@@ -24,6 +25,16 @@ def main():
     sdf = app.dataframe(input)
 
     sdf = sdf.group_by("osym")
+    sdf = (
+        sdf.tumbling_window(
+            timedelta(minutes=1),
+        )
+        .reduce(
+            reducer=reducer,
+            initializer=initializer,
+        )
+        .final()
+    )
 
     # Print incoming data
     # sdf.print()

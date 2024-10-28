@@ -1,0 +1,10 @@
+name: market_dashboard
+language: Python
+variables:
+  - name: INPUT
+    inputType: InputTopic
+    defaultValue: option-trades
+    required: true
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: streamlit_file.py

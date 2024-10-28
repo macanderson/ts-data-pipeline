@@ -9,6 +9,10 @@ variables:
     inputType: Secret
     defaultValue: UNUSUALWHALES_TOKEN_key
     required: false
+  - name: WHALE_PREMIUM_THRESHOLD
+    inputType: FreeText
+    defaultValue: 75000
+    required: false
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py

@@ -17,41 +17,16 @@ deployments:
     variables:
       - name: OUTPUT
         inputType: OutputTopic
-        required: false
+        required: true
         value: option-trades
       - name: UNUSUALWHALES_TOKEN
         inputType: Secret
-        required: false
+        required: true
         secretKey: UNUSUALWHALES_TOKEN_key
-  - name: option_trades_iceberg_sink
-    application: option_trades_iceberg_sink
-    version: latest
-    deploymentType: Service
-    resources:
-      cpu: 1000
-      memory: 1500
-      replicas: 1
-    variables:
-      - name: INPUT
-        inputType: InputTopic
-        required: false
-        value: option-trades
-      - name: AWS_SECRET_ACCESS_KEY
-        inputType: Secret
-        required: false
-        secretKey: AWS_SECRET_ACCESS_KEY_key
-      - name: AWS_ACCESS_KEY
-        inputType: Secret
-        required: false
-        secretKey: AWS_ACCESS_KEY_key
-      - name: AWS_S3_ICEBERG_URI
+      - name: WHALE_PREMIUM_THRESHOLD
         inputType: FreeText
-        required: false
-        value: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
-      - name: OPTION_TRADES_TABLE_NAME
-        inputType: FreeText
-        required: false
-        value: option_trades
+        required: true
+        value: 75000
   - name: option_trade_aggs
     application: option_trade_aggs
     version: latest
@@ -69,105 +44,59 @@ deployments:
         inputType: OutputTopic
         required: false
         value: option-trade-aggs
-  - name: mlearn_options_data
-    application: mlearn_options_data
+  - name: market_dashboard
+    application: market_dashboard
     version: latest
     deploymentType: Service
     resources:
-      cpu: 300
-      memory: 600
+      cpu: 200
+      memory: 800
       replicas: 1
     variables:
       - name: INPUT
         inputType: InputTopic
-        required: false
-        value: option-trade-aggs
-      - name: OUTPUT
-        inputType: OutputTopic
-        required: false
-        value: mlearn-options-data
-      - name: MODEL_NAME
-        inputType: FreeText
-        required: false
-        value: my_model
-  - name: option-trade-whales
-    application: option-trade-whales
+        required: true
+        value: option-trades
+  - name: option_trades_sink
+    application: option_trades_sink
     version: latest
     deploymentType: Service
     resources:
-      cpu: 300
-      memory: 600
+      cpu: 200
+      memory: 800
       replicas: 1
     variables:
       - name: INPUT
         inputType: InputTopic
         required: false
         value: option-trades
-      - name: OUTPUT
-        inputType: OutputTopic
+      - name: AWS_SECRET_ACCESS_KEY
+        inputType: Secret
         required: false
-        value: option-trade-whales
-      - name: PREMIUM_THRESHOLD
+        secretKey: AWS_SECRET_ACCESS_KEY_key
+      - name: AWS_ACCESS_KEY_ID
+        inputType: Secret
+        required: false
+        secretKey: AWS_ACCESS_KEY_ID_key
+      - name: AWS_S3_URI
         inputType: FreeText
         required: false
-        value: 75000
+        value: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
+      - name: TABLE_NAME
+        inputType: FreeText
+        required: false
+        value: option_trades
 
 # This section describes the Topics of the data pipeline
 topics:
   - name: option-trades
+    configuration:
+      partitions: 4
+      replicationFactor: 3
+      retentionInMinutes: -1
+      retentionInBytes: 10737418240
+      cleanupPolicy: Delete
   - name: option-trade-aggs
-  - name: mlearn-options-data
-  - name: option-trade-whales
-  - name: darkpool-trades
-    configuration:
-      partitions: 4
-      replicationFactor: 3
-      retentionInMinutes: -1
-      retentionInBytes: 10737418240
-      cleanupPolicy: Delete
-  - name: news
-    configuration:
-      partitions: 4
-      replicationFactor: 3
-      retentionInMinutes: 131400
-      retentionInBytes: 10737418240
-      cleanupPolicy: Delete
-  - name: equity-trades
-    configuration:
-      partitions: 4
-      replicationFactor: 3
-      retentionInMinutes: -1
-      retentionInBytes: 10737418240
-      cleanupPolicy: Delete
-  - name: equity-trade-30s-aggs
-    configuration:
-      partitions: 4
-      replicationFactor: 3
-      retentionInMinutes: -1
-      retentionInBytes: 10737418240
-      cleanupPolicy: Delete
-  - name: option-trade-30s-aggs
-    configuration:
-      partitions: 4
-      replicationFactor: 3
-      retentionInMinutes: -1
-      retentionInBytes: 10737418240
-      cleanupPolicy: Delete
-  - name: darkpool-trade-30s-aggs
-    configuration:
-      partitions: 4
-      replicationFactor: 3
-      retentionInMinutes: -1
-      retentionInBytes: 10737418240
-      cleanupPolicy: Delete
-  - name: equity-trade-volume-aggs
-    configuration:
-      partitions: 4
-      replicationFactor: 3
-      retentionInMinutes: -1
-      retentionInBytes: 10737418240
-      cleanupPolicy: Delete
-  - name: option-trade-volume-aggs
     configuration:
       partitions: 4
       replicationFactor: 3

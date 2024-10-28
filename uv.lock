@@ -5,6 +5,13 @@ resolution-markers = [
     "python_full_version >= '3.13'",
 ]
 
+[manifest]
+members = [
+    "option-trades",
+    "option-trades-iceberg-sink",
+    "tradesignals",
+]
+
 [[package]]
 name = "annotated-types"
 version = "0.7.0"
@@ -155,6 +162,16 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/2a/b6/a790742aa88067adb4bd6c89a946778c1417d4deaeafce3ca928f26d4c52/numpy-2.1.2-cp313-cp313t-musllinux_1_1_x86_64.whl", hash = "sha256:2abbf905a0b568706391ec6fa15161fad0fb5d8b68d73c461b3c1bab6064dd62", size = 16400117 },
     { url = "https://files.pythonhosted.org/packages/48/6f/129e3c17e3befe7fefdeaa6890f4c4df3f3cf0831aa053802c3862da67aa/numpy-2.1.2-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:ef444c57d664d35cac4e18c298c47d7b504c66b17c2ea91312e979fcfbdfb08a", size = 14066202 },
 ]
+
+[[package]]
+name = "option-trades"
+version = "0.1.0"
+source = { virtual = "option_trades" }
+
+[[package]]
+name = "option-trades-iceberg-sink"
+version = "0.1.0"
+source = { virtual = "option_trades_iceberg_sink" }
 
 [[package]]
 name = "orjson"
@@ -415,6 +432,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "pandas" },
+    { name = "python-dotenv" },
     { name = "quixstreams" },
     { name = "websockets" },
 ]
@@ -422,6 +440,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "pandas", specifier = ">=2.2.3" },
+    { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "quixstreams", specifier = ">=3.1.0" },
     { name = "websockets", specifier = ">=13.1" },
 ]

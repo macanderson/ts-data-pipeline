@@ -11,8 +11,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 500
-      memory: 1000
+      cpu: 1000
+      memory: 1500
       replicas: 1
     state:
       enabled: true
@@ -36,7 +36,7 @@ deployments:
     deploymentType: Service
     resources:
       cpu: 1000
-      memory: 2000
+      memory: 1500
       replicas: 1
     variables:
       - name: INPUT

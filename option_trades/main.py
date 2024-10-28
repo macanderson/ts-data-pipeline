@@ -35,7 +35,7 @@ app = Application(
 
 # Define the Kafka topics
 output_topic = app.topic(
-    name=os.environ["output"],
+    name=os.environ["OUTPUT"],
     key_serializer='str',
     value_serializer='json',
     key_deserializer='str',

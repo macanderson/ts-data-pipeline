@@ -1,0 +1,26 @@
+name: option_trades_sink
+language: Python
+variables:
+  - name: INPUT
+    inputType: InputTopic
+    defaultValue: option-trades
+    required: false
+  - name: AWS_SECRET_ACCESS_KEY
+    inputType: Secret
+    defaultValue: AWS_SECRET_ACCESS_KEY_key
+    required: false
+  - name: AWS_ACCESS_KEY_ID
+    inputType: Secret
+    defaultValue: AWS_ACCESS_KEY_ID_key
+    required: false
+  - name: AWS_S3_URI
+    inputType: FreeText
+    defaultValue: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
+    required: false
+  - name: TABLE_NAME
+    inputType: FreeText
+    defaultValue: option_trades
+    required: false
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py

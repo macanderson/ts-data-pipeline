@@ -1,0 +1,10 @@
+[project]
+name = "option_trades_sink"
+version = "0.1.0"
+description = "Tradesignals data processing app for saving option-trades stream data to an iceberg table on s3"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2.3",
+    "pyathena>=3.9.0",
+]

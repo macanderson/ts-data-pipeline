@@ -29,17 +29,24 @@ logger.setLevel(logging.DEBUG)
 WHALE_PREMIUM_THRESHOLD = os.environ.get("WHALE_PREMIUM_THRESHOLD", 100000)
 
 def on_message_processed(message):
+    """Callback function for when a message is processed"""
     logger.info(f"Message processed: {message}")
 
+
 def on_message_dropped(message):
+    """Callback function for when a message is dropped"""
     logger.error(f"Message dropped: {message}")
 
+
 def on_processing_error(error):
+    """Callback function for when a processing error occurs"""
     logger.error(f"Processing error: {error}")
 
-def on_producer_error(error):    
+
+def on_producer_error(error):
+    """Callback function for when a producer error occurs"""
     logger.error(f"Producer error: {error}")
-    
+
 
 # Initialize the application
 app = Application(
@@ -65,8 +72,21 @@ output_topic = app.topic(
 
 source = UnusualWhalesSource(name=os.environ["OUTPUT"])
 sdf = app.dataframe(source=source, topic=output_topic)
-sdf["premium"] = sdf["price"] * sdf["qty"]
-sdf["whale_trade"] = sdf["premium"] > WHALE_PREMIUM_THRESHOLD
+
+sdf["premium"] = sdf.apply(
+    lambda value: (value["price"] * value["qty"]), axis=1
+)
+
+sdf["size_class"] = sdf.apply(
+    lambda value: (
+        "whale" if value["premium"] > WHALE_PREMIUM_THRESHOLD
+        else "large" if value["premium"] > 40000
+        else "medium" if value["premium"] > 10000
+        else "small"
+    ),
+    axis=1,
+)
+
 sdf.print()
 sdf.to_topic(output_topic)
 

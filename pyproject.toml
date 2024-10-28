@@ -18,4 +18,5 @@ members = [
     "option_trades",
     "option_trades_sink",
     "option_trade_aggs",
+    "market_dashboard",
 ]

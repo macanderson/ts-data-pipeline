@@ -1,13 +1,9 @@
 name: option_trades
 language: Python
 variables:
-  - name: INPUT
-    inputType: InputTopic
-    defaultValue: option-trades
-    required: false
   - name: OUTPUT
     inputType: OutputTopic
-    defaultValue: option-trade-aggs
+    defaultValue: option-trades
     required: false
   - name: UNUSUALWHALES_TOKEN
     inputType: Secret

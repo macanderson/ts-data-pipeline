@@ -20,11 +20,11 @@ deployments:
     variables:
       - name: OUTPUT
         inputType: OutputTopic
-        required: true
+        required: false
         value: option-trades
       - name: UNUSUALWHALES_TOKEN
         inputType: Secret
-        required: true
+        required: false
         secretKey: UNUSUALWHALES_TOKEN_key
   - name: option_trades_iceberg_sink
     application: option_trades_iceberg_sink
@@ -37,28 +37,24 @@ deployments:
     variables:
       - name: INPUT
         inputType: InputTopic
-        required: true
+        required: false
         value: option-trades
       - name: AWS_SECRET_ACCESS_KEY
         inputType: Secret
-        required: true
-        description: The AWS secret access key for the S3 bucket.
+        required: false
         secretKey: AWS_SECRET_ACCESS_KEY_key
       - name: AWS_ACCESS_KEY_ID
         inputType: Secret
-        required: true
+        required: false
         secretKey: AWS_ACCESS_KEY_ID_key
-        description: The AWS access key ID for the S3 bucket.
       - name: AWS_S3_URI
         inputType: FreeText
-        required: true
+        required: false
         value: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
-        description: The URI of the S3 bucket where the iceberg table is stored.
       - name: TABLE_NAME
         inputType: FreeText
-        required: true
+        required: false
         value: option_trades
-        description: The name of the iceberg table to store the data in.
   - name: option_trade_aggs
     application: option_trade_aggs
     version: latest

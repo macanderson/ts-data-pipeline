@@ -1,8 +1,7 @@
 ```mermaid
 %%{ init: { 'flowchart': { 'curve': 'monotoneX' } } }%%
 graph LR;
-option-trades{{ fa:fa-arrow-right-arrow-left option-trades &#8205}}:::topic --> option_trades[fa:fa-rocket option_trades &#8205];
-option_trades[fa:fa-rocket option_trades &#8205] --> option-trade-aggs{{ fa:fa-arrow-right-arrow-left option-trade-aggs &#8205}}:::topic;
+option_trades[fa:fa-rocket option_trades &#8205] --> option-trades{{ fa:fa-arrow-right-arrow-left option-trades &#8205}}:::topic;
 option-trades{{ fa:fa-arrow-right-arrow-left option-trades &#8205}}:::topic --> option_trades_iceberg_sink[fa:fa-rocket option_trades_iceberg_sink &#8205];
 option-trades{{ fa:fa-arrow-right-arrow-left option-trades &#8205}}:::topic --> option_trade_aggs[fa:fa-rocket option_trade_aggs &#8205];
 option_trade_aggs[fa:fa-rocket option_trade_aggs &#8205] --> option-trade-aggs{{ fa:fa-arrow-right-arrow-left option-trade-aggs &#8205}}:::topic;

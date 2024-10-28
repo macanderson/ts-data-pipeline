@@ -1,21 +1,28 @@
 """Utility functions."""
+from datetime import datetime
 import json
 import logging
 import os
 import time
-from datetime import datetime
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional, Tuple
 
-import websockets
+from quixstreams.models import TimestampType
 from quixstreams.sources import Source
 from websockets.sync.client import connect
 
+
+# import websockets
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 
 
-def extract_timestamp(value: Dict[Any, Any]) -> int:
+def extract_timestamp(
+    value: Any,
+    headers: Optional[List[Tuple[str, bytes]]],
+    timestamp: float,
+    timestamp_type: TimestampType,
+) -> int:
     """Extract the timestamp from the message."""
     return value.get("ts") or 0
 
@@ -37,9 +44,9 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         elif "bearish" in tags:
             sentiment = "bearish"
 
-        ts = datetime.fromtimestamp(data.get('executed_at', 0) / 1000).date()
+        todays_date = datetime.fromtimestamp(data.get('executed_at', 0) / 1000).date()
         expiry = datetime.fromisoformat(data.get('expiry', '1800-01-01')).date()
-        days_to_expiry = (expiry - ts).days
+        days_to_expiry = (expiry - todays_date).days
 
         result = {
             'id': data.get('id'),

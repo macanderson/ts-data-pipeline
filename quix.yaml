@@ -118,3 +118,10 @@ topics:
   - name: option-trade-aggs
   - name: mlearn-options-data
   - name: option-trade-whales
+  - name: darkpool-trades
+    configuration:
+      partitions: 4
+      replicationFactor: 3
+      retentionInMinutes: -1
+      retentionInBytes: 10737418240
+      cleanupPolicy: Delete

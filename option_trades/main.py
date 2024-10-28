@@ -43,7 +43,7 @@ output_topic = app.topic(
     timestamp_extractor=extract_timestamp
 )
 
-source = UnusualWhalesSource(name="option-trades")
+source = UnusualWhalesSource(name=os.environ["OUTPUT"])
 sdf = app.dataframe(source=source, topic=output_topic)
 
 # put transformation logic here

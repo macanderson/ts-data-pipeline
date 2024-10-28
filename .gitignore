@@ -7,3 +7,8 @@ state/
 
 # macOS
 .DS_Store
+
+dist/*
+*.egg-info/*
+
+uv.lock

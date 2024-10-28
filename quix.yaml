@@ -160,3 +160,10 @@ topics:
       retentionInMinutes: -1
       retentionInBytes: 10737418240
       cleanupPolicy: Delete
+  - name: equity-trade-volume-aggs
+    configuration:
+      partitions: 4
+      replicationFactor: 3
+      retentionInMinutes: -1
+      retentionInBytes: 10737418240
+      cleanupPolicy: Delete

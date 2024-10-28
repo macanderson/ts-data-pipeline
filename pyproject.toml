@@ -14,4 +14,7 @@ dependencies = [
 # tradesignals = { workspace = true }
 
 [tool.uv.workspace]
-members = ["tradesignals/*", "ts_lib/*"]
+members = [
+    "option_trades",
+    "option_trades_iceberg_sink",
+]

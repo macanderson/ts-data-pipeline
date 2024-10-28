@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
+import websockets
 from quixstreams.models import TimestampType
 from quixstreams.sources import Source
 from websockets.sync.client import connect

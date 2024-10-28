@@ -14,6 +14,12 @@ This repository contains the code for the Tradesignals.io data pipeline.
 quix run
 ```
 
+Optionally, you can specify the name of the deployment to run:
+
+```bash
+quix run <_name_of_deployment_>
+```
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)

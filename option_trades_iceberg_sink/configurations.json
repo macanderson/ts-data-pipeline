@@ -1,0 +1,4 @@
+[{
+    "Classification":"iceberg-defaults",
+    "Properties":{"iceberg.enabled":"true"}
+}]

@@ -1,0 +1,9 @@
+[project]
+name = "tradesignals"
+version = "0.1.0"
+description = "Tradesignals data processing"
+readme = "README.md"
+requires-python = ">=3.12"
+
+[tool.uv]
+

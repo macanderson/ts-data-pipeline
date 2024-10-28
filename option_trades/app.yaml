@@ -1,33 +1,57 @@
 name: option_trades
 language: Python
 variables:
-  - name: output
-    inputType: OutputTopic
-    defaultValue: option-trades
+  - name: tradier_token
+    inputType: FreeText
+    defaultValue: n6ZY4hDacJKC1nlGSTXog9vt0ks9
     required: false
-  - name: unusualwhales_token
-    inputType: Secret
-    defaultValue: unusualwhales_token_key
+  - name: tradier_account_id
+    inputType: FreeText
+    defaultValue: 6YB30648
     required: false
-  - name: broker_url
-    inputType: Secret
-    defaultValue: broker_url_key
+  - name: tradier_sandbox_token
+    inputType: FreeText
+    defaultValue: PZTPMmpN8YD3tKr8n5NBYHXffnMy
     required: false
-  - name: kafka_username
-    inputType: Secret
-    defaultValue: kafka_username_key
+  - name: tradier_sandbox_account_id
+    inputType: FreeText
+    defaultValue: VA70351006
     required: false
-  - name: kafka_password
-    inputType: Secret
-    defaultValue: kafka_password_key
+  - name: tradier_sandbox_endpoint
+    inputType: FreeText
+    defaultValue: https://sandbox.tradier.com/v1/
+    required: false
+  - name: tradier_sandbox_streaming_endpoint
+    inputType: FreeText
+    defaultValue: https://stream.sandbox.tradier.com/v1/
+    required: false
+  - name: tradier_production_endpoint
+    inputType: FreeText
+    defaultValue: https://api.tradier.com/v1/
+    required: false
+  - name: tradier_streaming_endpoint
+    inputType: FreeText
+    defaultValue: https://stream.tradier.com/v1/
+    required: false
+  - name: kafka_key
+    inputType: FreeText
+    defaultValue: admin
+    required: false
+  - name: kafka_secret
+    inputType: FreeText
+    defaultValue: Figure!t0ut
+    required: false
+  - name: kafka_broker_address
+    inputType: FreeText
+    defaultValue: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
     required: false
   - name: kafka_sasl_mechanism
-    inputType: Secret
-    defaultValue: kafka_sasl_mechanism_key
+    inputType: FreeText
+    defaultValue: SCRAM-SHA-256
     required: false
   - name: kafka_security_protocol
-    inputType: Secret
-    defaultValue: kafka_security_protocol_key
+    inputType: FreeText
+    defaultValue: SASL_SSL
     required: false
 dockerfile: dockerfile
 runEntryPoint: main.py

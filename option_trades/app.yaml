@@ -1,0 +1,34 @@
+name: option_trades
+language: Python
+variables:
+  - name: output
+    inputType: OutputTopic
+    defaultValue: option-trades
+    required: false
+  - name: unusualwhales_token
+    inputType: Secret
+    defaultValue: unusualwhales_token_key
+    required: false
+  - name: broker_url
+    inputType: Secret
+    defaultValue: broker_url_key
+    required: false
+  - name: kafka_username
+    inputType: Secret
+    defaultValue: kafka_username_key
+    required: false
+  - name: kafka_password
+    inputType: Secret
+    defaultValue: kafka_password_key
+    required: false
+  - name: kafka_sasl_mechanism
+    inputType: Secret
+    defaultValue: kafka_sasl_mechanism_key
+    required: false
+  - name: kafka_security_protocol
+    inputType: Secret
+    defaultValue: kafka_security_protocol_key
+    required: false
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py

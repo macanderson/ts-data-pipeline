@@ -1,0 +1,9 @@
+.env
+compose.local.yaml
+.secrets
+.venv/
+certificates/
+state/
+
+# macOS
+.DS_Store

@@ -1,0 +1,17 @@
+[project]
+name = "tradesignals"
+version = "0.1.0"
+description = "Tradesignals data processing"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2.3",
+    "quixstreams>=3.1.0",
+    "websockets>=13.1",
+]
+
+[tool.uv.sources]
+# tradesignals = { workspace = true }
+
+[tool.uv.workspace]
+members = ["pipelines/*"]

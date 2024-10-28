@@ -11,6 +11,9 @@ This repository contains the code for the Tradesignals.io data pipeline.
 ## Run the pipeline
 
 ```bash
+quix pipeline update
+quix pipeline sync
+quix pipeline up
 quix run
 ```
 

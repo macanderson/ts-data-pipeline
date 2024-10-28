@@ -1,5 +1,6 @@
-# Quix Project Descriptor
-# This file describes the data pipeline and configuration of resources of a Quix Project.
+# Quix Project Configuration File
+# Do not edit manually. This file is managed by Quix.
+# For more information, visit https://quix.io
 
 metadata:
   version: 1.0
@@ -17,15 +18,15 @@ deployments:
     variables:
       - name: OUTPUT
         inputType: OutputTopic
-        required: true
+        required: false
         value: option-trades
       - name: UNUSUALWHALES_TOKEN
         inputType: Secret
-        required: true
+        required: false
         secretKey: UNUSUALWHALES_TOKEN_key
       - name: WHALE_PREMIUM_THRESHOLD
         inputType: FreeText
-        required: true
+        required: false
         value: 75000
   - name: option_trade_aggs
     application: option_trade_aggs
@@ -55,7 +56,7 @@ deployments:
     variables:
       - name: INPUT
         inputType: InputTopic
-        required: true
+        required: false
         value: option-trades
   - name: option_trades_sink
     application: option_trades_sink

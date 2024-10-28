@@ -1,7 +1,7 @@
 [project]
-name = "tradesignals"
+name = "option_trades"
 version = "0.1.0"
-description = "Tradesignals data processing"
+description = "Option trades producer."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -12,6 +12,7 @@ dependencies = [
 
 [tool.uv.sources]
 # tradesignals = { workspace = true }
+ts_lib = { workspace = true }
 
 [tool.uv.workspace]
-members = ["tradesignals/*", "ts_lib/*"]
+members = ["option_trades/*", "ts_lib/*"]

@@ -3,7 +3,7 @@ language: Python
 variables:
   - name: INPUT
     inputType: InputTopic
-    defaultValue: option_trades
+    defaultValue: option-trades
     required: false
   - name: AWS_SECRET_ACCESS_KEY
     inputType: Secret

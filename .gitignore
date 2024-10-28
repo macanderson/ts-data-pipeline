@@ -9,6 +9,8 @@ state/
 .DS_Store
 
 dist/*
-*.egg-info/*
+*.egg-info/
 
 uv.lock
+
+state/

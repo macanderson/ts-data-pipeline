@@ -18,71 +18,31 @@ deployments:
       enabled: true
       size: 2
     variables:
-      - name: tradier_token
-        inputType: FreeText
+      - name: INPUT
+        inputType: InputTopic
         required: false
-        value: n6ZY4hDacJKC1nlGSTXog9vt0ks9
-      - name: tradier_account_id
-        inputType: FreeText
+        value: option-trades
+      - name: OUTPUT
+        inputType: OutputTopic
         required: false
-        value: 6YB30648
-      - name: tradier_sandbox_token
-        inputType: FreeText
+        value: option-trade-aggs
+      - name: UNUSUALWHALES_TOKEN
+        inputType: Secret
         required: false
-        value: PZTPMmpN8YD3tKr8n5NBYHXffnMy
-      - name: tradier_sandbox_account_id
-        inputType: FreeText
-        required: false
-        value: VA70351006
-      - name: tradier_sandbox_endpoint
-        inputType: FreeText
-        required: false
-        value: https://sandbox.tradier.com/v1/
-      - name: tradier_sandbox_streaming_endpoint
-        inputType: FreeText
-        required: false
-        value: https://stream.sandbox.tradier.com/v1/
-      - name: tradier_production_endpoint
-        inputType: FreeText
-        required: false
-        value: https://api.tradier.com/v1/
-      - name: tradier_streaming_endpoint
-        inputType: FreeText
-        required: false
-        value: https://stream.tradier.com/v1/
-      - name: kafka_key
-        inputType: FreeText
-        required: false
-        value: admin
-      - name: kafka_secret
-        inputType: FreeText
-        required: false
-        value: Figure!t0ut
-      - name: kafka_broker_address
-        inputType: FreeText
-        required: false
-        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
-      - name: kafka_sasl_mechanism
-        inputType: FreeText
-        required: false
-        value: SCRAM-SHA-256
-      - name: kafka_security_protocol
-        inputType: FreeText
-        required: false
-        value: SASL_SSL
+        secretKey: UNUSUALWHALES_TOKEN_key
   - name: option_trades_iceberg_sink
     application: option_trades_iceberg_sink
     version: latest
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 800
+      cpu: 2000
+      memory: 8000
       replicas: 1
     variables:
       - name: INPUT
         inputType: InputTopic
         required: false
-        value: option_trades
+        value: option-trades
       - name: AWS_SECRET_ACCESS_KEY
         inputType: Secret
         required: false
@@ -99,8 +59,25 @@ deployments:
         inputType: FreeText
         required: false
         value: option_trades
+  - name: option_trade_aggs
+    application: option_trade_aggs
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 2000
+      memory: 8000
+      replicas: 1
+    variables:
+      - name: INPUT
+        inputType: InputTopic
+        required: false
+        value: option-trades
+      - name: OUTPUT
+        inputType: OutputTopic
+        required: false
+        value: option-trade-aggs
 
 # This section describes the Topics of the data pipeline
 topics:
   - name: option-trades
-  - name: option_trades
+  - name: option-trade-aggs

@@ -1,5 +1,5 @@
-name: option_trades
-language: Python
+name: option_trade_aggs
+language: python
 variables:
   - name: INPUT
     inputType: InputTopic
@@ -8,10 +8,6 @@ variables:
   - name: OUTPUT
     inputType: OutputTopic
     defaultValue: option-trade-aggs
-    required: false
-  - name: UNUSUALWHALES_TOKEN
-    inputType: Secret
-    defaultValue: UNUSUALWHALES_TOKEN_key
     required: false
 dockerfile: dockerfile
 runEntryPoint: main.py

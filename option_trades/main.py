@@ -33,11 +33,6 @@ def on_message_processed(message):
     logger.info(f"Message processed: {message}")
 
 
-def on_message_dropped(message):
-    """Callback function for when a message is dropped"""
-    logger.error(f"Message dropped: {message}")
-
-
 def on_processing_error(error):
     """Callback function for when a processing error occurs"""
     logger.error(f"Processing error: {error}")
@@ -56,7 +51,6 @@ app = Application(
     auto_offset_reset="latest",
     consumer_group="option-trades",
     on_message_processed=on_message_processed,
-    on_message_dropped=on_message_dropped,
     on_processing_error=on_processing_error,
     on_producer_error=on_producer_error,
     loglevel=logging.DEBUG,

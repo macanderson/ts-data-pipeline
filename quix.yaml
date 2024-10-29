@@ -110,3 +110,10 @@ topics:
       retentionInMinutes: -1
       retentionInBytes: 10737418240
       cleanupPolicy: Delete
+  - name: news
+    configuration:
+      partitions: 4
+      replicationFactor: 3
+      retentionInMinutes: 131400
+      retentionInBytes: 10737418240
+      cleanupPolicy: Delete

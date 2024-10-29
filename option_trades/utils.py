@@ -6,8 +6,11 @@ import os
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
+from data_source import CustomSource
 from quixstreams.models import TimestampType
+from quixstreams.models import Topic
 from quixstreams.sources import Source
+from quixstreams.sources.base import BaseSource
 import websockets
 from websockets.sync.client import connect
 
@@ -90,7 +93,8 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         return None
 
 
-class UnusualWhalesSource(Source):
+
+class UnusualWhalesSource(CustomSource):
     """External Source for the UnusualWhales Options Websocket API"""
     def __init__(self, name: str):  # noqa E501
         super().__init__(name=name)
@@ -135,7 +139,7 @@ class UnusualWhalesSource(Source):
                                         )
                                         self.produce(
                                             key=record.get('osym'),
-                                            value=msg.value,
+                                            value=json.dumps(record),
                                             poll_timeout=2.0,
                                             buffer_error_max_tries=3,
                                             timestamp=msg.timestamp,

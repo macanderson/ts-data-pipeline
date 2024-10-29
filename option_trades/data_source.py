@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from option_trade_aggs.main import extract_timestamp
 from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 from quixstreams.models import KafkaMessage, Headers, Topic
 from quixstreams.models import TimestampType

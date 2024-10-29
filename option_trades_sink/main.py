@@ -29,6 +29,7 @@ iceberg_sink = IcebergSink(
     table_name=os.environ["TABLE_NAME"],
     config=AWSIcebergConfig(
         aws_s3_uri=os.environ["AWS_S3_URI"],
+        aws_region=os.environ["AWS_REGION"],
         aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
         aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"]))
 

@@ -1,13 +1,10 @@
 from datetime import timedelta
 import logging
 import os
-from typing import Any, List, Optional, Tuple
 
-import numpy as np
-import pandas as pd
 from quixstreams import Application  # import the Quix Streams modules for interacting with Kafka
 
-from utils import extract_timestamp
+from .utils import extract_timestamp
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -133,30 +130,19 @@ def main():
     """
     logger.info("Starting the application to aggregate option trade data.")
     try:
-        # Process incoming data using Streaming DataFrame
         sdf = app.dataframe(input_topic)
-
         sdf = sdf.group_by("osym")
-
-
-        # tumbling window, but emitting results for each incoming message
         sdf = (
-            sdf.tumbling_window(duration_ms=timedelta(hours=1))
-            .sum()
+            sdf.tumbling_window(timedelta(minutes=1))
+            .reduce(reducer=reducer, initializer=initializer)
             .current()
         )
-        # Print incoming data
-        sdf.print()
-
-        # Produce data to the output_topic topic
         sdf = sdf.to_topic(output_topic)
-
-        # Run the app
         app.run(sdf)
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
-        app.close()
+        app.clear_state()
 
 if __name__ == "__main__":
     try:

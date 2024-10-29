@@ -7,8 +7,15 @@ from quixstreams.models import KafkaMessage, Headers, Topic
 from quixstreams.models import TimestampType
 from quixstreams.sources.base.source import BaseSource
 
-
 def extract_timestamp(
+    value: Any,
+    headers: Optional[List[Tuple[str, bytes]]],
+    timestamp: float,
+    timestamp_type: TimestampType,
+) -> int:
+    """Extract the timestamp from the message."""
+    return value.get("ts") or 0
+
 
 class CustomSource(BaseSource):
     """

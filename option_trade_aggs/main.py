@@ -44,12 +44,6 @@ output_topic = app.topic(
     value_serializer="json",
 )
 
-def reducer(df: pd.DataFrame) -> pd.DataFrame:
-    return df.sum()
-
-def initializer(df: pd.DataFrame) -> pd.DataFrame:
-    return df.sum()
-
 def main():
     """
     Main function to aggregate option trades by option symbol.
@@ -59,17 +53,14 @@ def main():
         sdf = app.dataframe(input_topic)
 
         sdf = sdf.group_by("osym")
-        sdf = (
-            sdf.tumbling_window(
-                timedelta(seconds=10),
-            )
-            .reduce(
-                reducer=reducer,
-                initializer=initializer,
-            )
-            .final()
-        )
 
+
+        # tumbling window, but emitting results for each incoming message
+        sdf = (
+            sdf.tumbling_window(duration_ms=timedelta(hours=1))
+            .sum()
+            .current()
+        )
         # Print incoming data
         sdf.print()
 

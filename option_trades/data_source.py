@@ -1,6 +1,12 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+import json
+import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Dict
+from typing import Optional, Union, List, Tuple
+from typing import Union, List, Tuple, Optional, Dict
+from typing_extensions import Protocol
 
 from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 from quixstreams.models import TimestampType
@@ -11,62 +17,57 @@ from quixstreams.rowproducer import RowProducer
 from quixstreams.sources.base.source import BaseSource
 
 
+logger = logging.getLogger(__name__)
+
+MessageKey = Union[str, bytes, dict] | None
+MessageValue = Union[str, bytes, dict]
+HeaderValue = Optional[Union[str, bytes]]
+MessageHeadersTuples = List[Tuple[str, HeaderValue]]
+MessageHeadersMapping = Dict[str, HeaderValue]
+Headers = Dict | None
+
+class KafkaMessage:
+
+    def __init__(
+        self,
+        key: Optional[MessageKey],
+        value: Optional[MessageValue],
+        headers: dict,
+        timestamp: Optional[int]=None
+        ):
+        self.key = self.__process_value(key)
+        self.value = self._process_value(value)
+        self.headers = headers
+        self.timestamp = timestamp if timestamp is not None else int(datetime.now().timestamp() * 1000)
+
+    def _process_value(
+        self,
+        value: Any) -> Any:
+        if isinstance(value, bytes):
+            return value
+        elif isinstance(value, dict):
+            return json.dumps(value).encode("utf-8")
+        elif isinstance(value, str):
+            try:
+                return json.loads(value)
+            except json.JSONDecodeError:
+                return value.encode("utf-8")
+        return value
+
+
 def extract_timestamp(
     value: Any,
     headers: Optional[List[Tuple[str, bytes]]],
     timestamp: float,
-    timestamp_type: TimestampType,
-) -> int:
+    timestamp_type: TimestampType,  # noqa: E302
+) -> int:  #  noqa: E302
     """Extract the timestamp from the message."""
     return value.get("ts") or 0
 
 
 class CustomSource(BaseSource):
     """
-    A base class for custom Sources that provides a basic implementation of `BaseSource`
-    interface.
-    It is recommended to interface to create custom sources.
-
-    Subclass it and implement the `run` method to fetch data and produce it to Kafka.
-
-    Example:
-
-    ```python
-    from quixstreams import Application
-    import random
-
-    from quixstreams.sources import Source
-
-
-    class RandomNumbersSource(Source):
-        def run(self):
-            while self.running:
-                number = random.randint(0, 100)
-                serialized = self._producer_topic.serialize(value=number)
-                self.produce(key=str(number), value=serialized.value)
-
-
-    def main():
-        app = Application(broker_address="localhost:9092")
-        source = RandomNumbersSource(name="random-source")
-
-        sdf = app.dataframe(source=source)
-        sdf.print(metadata=True)
-
-        app.run()
-
-
-    if __name__ == "__main__":
-        main()
-    ```
-
-
-    Helper methods and properties:
-
-    * `serialize()`
-    * `produce()`
-    * `flush()`
-    * `running`
+    A custom source that fetches data from a websocket and produces it to Kafka.
     """
 
     def __init__(self, name: str, shutdown_timeout: float=10) -> None:
@@ -147,9 +148,15 @@ class CustomSource(BaseSource):
 
         :return: `quixstreams.models.messages.KafkaMessage`
         """
-        return self._producer_topic.serialize(
-            key=key, value=value, headers=headers, timestamp_ms=timestamp_ms
+        return KafkaMessage(
+            key=key,
+            value=value,
+            headers=headers,
+            timestamp=timestamp_ms
         )
+        # return self._producer_topic.serialize(
+        #     key=key, value=value, headers=headers, timestamp_ms=timestamp_ms
+        # )
 
     def produce(
         self,
@@ -201,6 +208,7 @@ class CustomSource(BaseSource):
 
         :return: `quixstreams.models.topics.Topic`
         """
+        print(f"Inside of the default_topic method -> Source name: {self.name}")
         return Topic(
             name=self.name,
             value_deserializer="json",

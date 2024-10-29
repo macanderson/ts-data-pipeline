@@ -9,8 +9,6 @@ from typing import Any, Dict, List, Optional, Tuple
 from data_source import CustomSource
 from quixstreams.models import TimestampType
 from quixstreams.models import Topic
-from quixstreams.sources import Source
-from quixstreams.sources.base import BaseSource
 import websockets
 from websockets.sync.client import connect
 
@@ -131,13 +129,14 @@ class UnusualWhalesSource(CustomSource):
                                             "data_provider": "UnusualWhales",
                                             "integration_id": record.get('id')
                                         }
+                                        msg = self.serialize(key=record.get('osym'), value=record, headers=msg_headers, timestamp=record.get('ts'))
                                         self.produce(
-                                            key=record.get('osym'),
-                                            value=json.dumps(record),
+                                            key=msg.key,
+                                            value=msg.value,
                                             poll_timeout=2.0,
                                             buffer_error_max_tries=3,
-                                            timestamp=record.get('ts'),
-                                            headers=msg_headers
+                                            timestamp=msg.timestamp,
+                                            headers=msg.headers
                                         )
                         except json.JSONDecodeError as e:
                             print(f"Error decoding JSON message: {e}")

@@ -48,6 +48,25 @@ output_topic = app.topic(
     timestamp_extractor=extract_timestamp
 )
 
+app.add_source(source=UnusualWhalesSource(name="option-trades"), topic=output_topic)
+
+
+class KafkaMessage:
+    __slots__ = ("key", "value", "headers", "timestamp")
+
+    def __init__(
+        self,
+        key: Optional[MessageKey],
+        value: Optional[MessageValue],
+        headers: Optional[Headers],
+        timestamp: Optional[int]=None,
+    ):
+        self.key = key
+        self.value = value
+        self.headers = headers
+        self.timestamp = timestamp
+
+
 source = UnusualWhalesSource(name=output_topic.name)
 sdf = app.dataframe(source=source, topic=output_topic)
 sdf.print(pretty=False)

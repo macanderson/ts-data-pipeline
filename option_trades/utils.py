@@ -133,7 +133,7 @@ class UnusualWhalesSource(CustomSource):
                                         }
                                         self.produce(
                                             key=record.get('osym'),
-                                            value=record,
+                                            value=json.dumps(record),
                                             poll_timeout=2.0,
                                             buffer_error_max_tries=3,
                                             timestamp=record.get('ts'),

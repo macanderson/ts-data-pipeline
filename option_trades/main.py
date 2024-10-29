@@ -50,9 +50,6 @@ app = Application(
     auto_create_topics=True,
     auto_offset_reset="latest",
     consumer_group="option-trades",
-    on_message_processed=on_message_processed,
-    on_processing_error=on_processing_error,
-    on_producer_error=on_producer_error,
     loglevel=logging.DEBUG,
 )
 

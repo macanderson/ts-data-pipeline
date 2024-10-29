@@ -67,21 +67,22 @@ output_topic = app.topic(
 source = UnusualWhalesSource(name=os.environ["OUTPUT"])
 sdf = app.dataframe(source=source, topic=output_topic)
 
-sdf["premium"] = sdf.apply(
-    lambda value: (value["price"] * value["qty"])
-)
+# sdf["premium"] = sdf.apply(
+#     lambda value: (value["price"] * value["qty"])
+# )
 
-sdf["size_class"] = sdf.apply(
-    lambda value: (
-        "whale" if value["premium"] >= 250000
-        else "large" if value["premium"] >= 75000
-        else "medium" if value["premium"] >= 25000
-        else "small" if value["premium"] >= 5000
-        else "retail"
-    )
-)
+# sdf["size_class"] = sdf.apply(
+#     lambda value: (
+#         "whale" if value["premium"] >= 250000
+#         else "large" if value["premium"] >= 75000
+#         else "medium" if value["premium"] >= 25000
+#         else "small" if value["premium"] >= 5000
+#         else "retail"
+#     )
+# )
 
-sdf.print()
+# sdf.print()
+print(f"Writing to output topic: {output_topic}")
 sdf.to_topic(output_topic)
 
 def main():

@@ -123,13 +123,13 @@ class UnusualWhalesSource(Source):
                                 if item.get('price'):  # noqa E501
                                     record = map_fields(item)
                                     if record:
-                                        msg_headers = {
-                                            "osym": record.get('osym'),
-                                            "usym": record.get('usym'),
-                                            "date": datetime.fromtimestamp(record.get('ts') / 1000)  # noqa E501
-                                            .date()
-                                            .strftime("%Y-%m-%d"),
-                                        }
+                                        # msg_headers = {
+                                        #     "osym": record.get('osym'),
+                                        #     "usym": record.get('usym'),
+                                        #     "date": datetime.fromtimestamp(record.get('ts') / 1000)  # noqa E501
+                                        #     .date()
+                                        #     .strftime("%Y-%m-%d"),
+                                        # }
                                         msg = self.serialize(
                                             key=record.get('osym'),
                                             value=record,

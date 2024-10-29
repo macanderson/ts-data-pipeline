@@ -28,21 +28,6 @@ logger.setLevel(logging.DEBUG)
 
 WHALE_PREMIUM_THRESHOLD = os.environ.get("WHALE_PREMIUM_THRESHOLD", 100000)
 
-def on_message_processed(message):
-    """Callback function for when a message is processed"""
-    logger.info(f"Message processed: {message}")
-
-
-def on_processing_error(error):
-    """Callback function for when a processing error occurs"""
-    logger.error(f"Processing error: {error}")
-
-
-def on_producer_error(error):
-    """Callback function for when a producer error occurs"""
-    logger.error(f"Producer error: {error}")
-
-
 # Initialize the application
 app = Application(
     broker_address=None,
@@ -61,7 +46,7 @@ output_topic = app.topic(
     timestamp_extractor=extract_timestamp
 )
 
-source = UnusualWhalesSource(name=os.environ["OUTPUT"])
+source = UnusualWhalesSource(name=os.environ["OUTPUT"], topic=output_topic)
 sdf = app.dataframe(source=source, topic=output_topic)
 
 # sdf["premium"] = sdf.apply(

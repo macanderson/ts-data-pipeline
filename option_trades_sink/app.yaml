@@ -15,7 +15,7 @@ variables:
     required: false
   - name: AWS_S3_URI
     inputType: FreeText
-    defaultValue: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
+    defaultValue: s3://tradesignals-db/option_trades
     required: false
   - name: TABLE_NAME
     inputType: FreeText

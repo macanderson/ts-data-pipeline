@@ -81,11 +81,11 @@ deployments:
       - name: AWS_S3_URI
         inputType: FreeText
         required: false
-        value: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
+        value: s3://tradesignals-db/option_trades
       - name: TABLE_NAME
         inputType: FreeText
         required: false
-        value: default.option_trades
+        value: option_trades
       - name: AWS_REGION
         inputType: FreeText
         required: false

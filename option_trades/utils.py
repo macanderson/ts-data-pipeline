@@ -1,18 +1,15 @@
 """Utility functions."""
-from datetime import datetime
 import json
 import logging
 import os
 import time
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
-from typing import Optional, Tuple, List, Union
 
+import websockets
 from data_source import CustomSource
 from quixstreams.models import TimestampType
-from quixstreams.models import Topic
-import websockets
 from websockets.sync.client import connect
-
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -98,7 +95,7 @@ class UnusualWhalesSource(CustomSource):
     def __init__(self, name: str):  # noqa E501
         super().__init__(name=name)
         print(f"UnusualWhalesToken: {os.environ['UNUSUALWHALES_TOKEN']}")
-        
+
         self.uri = f"wss://api.unusualwhales.com/socket?token={os.environ['UNUSUALWHALES_TOKEN']}"  # noqa E501
         self.name = name
 

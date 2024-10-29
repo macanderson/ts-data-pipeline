@@ -73,11 +73,11 @@ deployments:
       - name: AWS_SECRET_ACCESS_KEY
         inputType: Secret
         required: false
-        secretKey: AWS_SECRET_ACCESS_KEY
+        secretKey: AWS_SECRET_ACCESS_KEY_key
       - name: AWS_ACCESS_KEY_ID
         inputType: Secret
         required: false
-        secretKey: AWS_ACCESS_KEY
+        secretKey: AWS_ACCESS_KEY_ID_key
       - name: AWS_S3_URI
         inputType: FreeText
         required: false

@@ -62,8 +62,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 800
+      cpu: 500
+      memory: 500
       replicas: 1
     variables:
       - name: INPUT
@@ -73,11 +73,11 @@ deployments:
       - name: AWS_SECRET_ACCESS_KEY
         inputType: Secret
         required: false
-        secretKey: AWS_SECRET_ACCESS_KEY_key
+        secretKey: AWS_SECRET_ACCESS_KEY
       - name: AWS_ACCESS_KEY_ID
         inputType: Secret
         required: false
-        secretKey: AWS_ACCESS_KEY_ID_key
+        secretKey: AWS_ACCESS_KEY
       - name: AWS_S3_URI
         inputType: FreeText
         required: false

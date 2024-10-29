@@ -15,7 +15,7 @@ Variables:
 
 import logging
 import os
-
+from typing import Optional, Tuple, List, Union
 
 from dotenv import load_dotenv
 from quixstreams import Application

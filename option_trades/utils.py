@@ -5,6 +5,7 @@ import logging
 import os
 import time
 from typing import Any, Dict, List, Optional, Tuple
+from typing import Optional, Tuple, List, Union
 
 from data_source import CustomSource
 from quixstreams.models import TimestampType

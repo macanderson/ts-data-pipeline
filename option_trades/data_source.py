@@ -2,21 +2,15 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 import json
 import logging
-from typing import Any, Dict, List, Optional, Tuple, Union
-from typing import Dict
-from typing import Optional, Union, List, Tuple
-from typing import Union, List, Tuple, Optional, Dict
+from typing import Optional, Tuple, List, Union, Dict
 from typing_extensions import Protocol
 
-from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 from quixstreams.models import TimestampType
-from quixstreams.models.messages import KafkaMessage
 from quixstreams.models.topics import Topic
-from quixstreams.models.types import Headers
-from quixstreams.rowproducer import RowProducer
 from quixstreams.sources.base.source import BaseSource
 
 
+# from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 logger = logging.getLogger(__name__)
 
 MessageKey = Union[str, bytes, dict] | None

@@ -1,10 +1,13 @@
+from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
-from quixstreams.models import Headers, Topic
 from quixstreams.models import TimestampType
 from quixstreams.models.messages import KafkaMessage
+from quixstreams.models.topics import Topic
+from quixstreams.models.types import Headers
+from quixstreams.rowproducer import RowProducer
 from quixstreams.sources.base.source import BaseSource
 
 

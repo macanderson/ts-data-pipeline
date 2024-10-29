@@ -16,11 +16,14 @@ Variables:
 import logging
 import os
 
-# for local dev, load env vars from a .env file
+from pip._vendor.distro.distro import id
+
 from dotenv import load_dotenv
 from quixstreams import Application
 from utils import UnusualWhalesSource, extract_timestamp
 
+
+# for local dev, load env vars from a .env file
 load_dotenv()
 
 logger = logging.getLogger(__name__)
@@ -46,25 +49,9 @@ output_topic = app.topic(
     timestamp_extractor=extract_timestamp
 )
 
-source = UnusualWhalesSource(name=os.environ["OUTPUT"], topic=output_topic)
+source = UnusualWhalesSource(name=output_topic.name)
 sdf = app.dataframe(source=source, topic=output_topic)
-
-# sdf["premium"] = sdf.apply(
-#     lambda value: (value["price"] * value["qty"])
-# )
-
-# sdf["size_class"] = sdf.apply(
-#     lambda value: (
-#         "whale" if value["premium"] >= 250000
-#         else "large" if value["premium"] >= 75000
-#         else "medium" if value["premium"] >= 25000
-#         else "small" if value["premium"] >= 5000
-#         else "retail"
-#     )
-# )
-
-# sdf.print()
-print(f"Writing to output topic: {output_topic}")
+sdf.print(pretty=False)
 sdf.to_topic(output_topic)
 
 def main():

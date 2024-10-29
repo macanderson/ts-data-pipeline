@@ -85,7 +85,7 @@ deployments:
       - name: TABLE_NAME
         inputType: FreeText
         required: false
-        value: option_trades
+        value: tradesignals_db.option_trades
       - name: AWS_REGION
         inputType: FreeText
         required: false

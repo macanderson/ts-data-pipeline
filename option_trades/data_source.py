@@ -2,9 +2,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
-from quixstreams.models import KafkaMessage, Headers, Topic
+from quixstreams.models import Headers, Topic
 from quixstreams.models import TimestampType
+from quixstreams.models.messages import KafkaMessage
 from quixstreams.sources.base.source import BaseSource
+
 
 def extract_timestamp(
     value: Any,

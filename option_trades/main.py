@@ -16,7 +16,6 @@ Variables:
 import logging
 import os
 
-from pip._vendor.distro.distro import id
 
 from dotenv import load_dotenv
 from quixstreams import Application

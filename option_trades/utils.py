@@ -123,13 +123,10 @@ class UnusualWhalesSource(Source):
                                 if item.get('price'):  # noqa E501
                                     record = map_fields(item)
                                     if record:
-                                        # msg_headers = {
-                                        #     "osym": record.get('osym'),
-                                        #     "usym": record.get('usym'),
-                                        #     "date": datetime.fromtimestamp(record.get('ts') / 1000)  # noqa E501
-                                        #     .date()
-                                        #     .strftime("%Y-%m-%d"),
-                                        # }
+                                        msg_headers = {
+                                            "data_provider": "UnusualWhales",
+                                            "integration_id": record.get('id')
+                                        }
                                         msg = self.serialize(
                                             key=record.get('osym'),
                                             value=record,
@@ -137,7 +134,7 @@ class UnusualWhalesSource(Source):
                                             headers=msg_headers
                                         )
                                         self.produce(
-                                            key=msg.key,
+                                            key=record.get('osym'),
                                             value=msg.value,
                                             poll_timeout=2.0,
                                             buffer_error_max_tries=3,

@@ -4,7 +4,7 @@ import os
 
 from quixstreams import Application  # import the Quix Streams modules for interacting with Kafka
 
-from .utils import extract_timestamp
+from utils import extract_timestamp
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

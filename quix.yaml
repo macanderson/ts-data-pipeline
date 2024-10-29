@@ -22,7 +22,7 @@ deployments:
       - name: UNUSUALWHALES_TOKEN
         inputType: Secret
         required: false
-        secretKey: UNUSUALWHALES_TOKEN_key
+        secretKey: UNUSUALWHALES_TOKEN
       - name: WHALE_PREMIUM_THRESHOLD
         inputType: FreeText
         required: false

@@ -13,10 +13,6 @@ variables:
     inputType: Secret
     defaultValue: AWS_ACCESS_KEY_ID_key
     required: false
-  - name: AWS_REGION
-    inputType: Secret
-    defaultValue: AWS_REGION_key
-    required: false
   - name: AWS_S3_URI
     inputType: FreeText
     defaultValue: https://tradesignals-db.s3.us-east-1.amazonaws.com/iceberg/
@@ -24,6 +20,10 @@ variables:
   - name: TABLE_NAME
     inputType: FreeText
     defaultValue: option_trades
+    required: false
+  - name: AWS_REGION
+    inputType: FreeText
+    defaultValue: us-east-1
     required: false
 dockerfile: dockerfile
 runEntryPoint: main.py

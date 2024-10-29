@@ -19,7 +19,7 @@ variables:
     required: false
   - name: TABLE_NAME
     inputType: FreeText
-    defaultValue: option_trades
+    defaultValue: tradesignals_db.option_trades
     required: false
   - name: AWS_REGION
     inputType: FreeText

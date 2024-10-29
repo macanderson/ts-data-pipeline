@@ -22,7 +22,7 @@ deployments:
       - name: UNUSUALWHALES_TOKEN
         inputType: Secret
         required: false
-        secretKey: UNUSUALWHALES_TOKEN
+        secretKey: UNUSUALWHALES_TOKEN_key
       - name: WHALE_PREMIUM_THRESHOLD
         inputType: FreeText
         required: false
@@ -85,7 +85,7 @@ deployments:
       - name: TABLE_NAME
         inputType: FreeText
         required: false
-        value: tradesignals_db.option_trades
+        value: option_trades
       - name: AWS_REGION
         inputType: FreeText
         required: false

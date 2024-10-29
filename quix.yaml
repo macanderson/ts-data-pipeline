@@ -78,6 +78,10 @@ deployments:
         inputType: Secret
         required: false
         secretKey: AWS_ACCESS_KEY_ID_key
+      - name: AWS_REGION
+        inputType: Secret
+        required: false
+        secretKey: AWS_REGION_key
       - name: AWS_S3_URI
         inputType: FreeText
         required: false

@@ -1,13 +1,15 @@
+from datetime import timedelta
 import logging
 import os
-from datetime import timedelta
 
 from dotenv import load_dotenv
 from quixstreams import (
-    Application,  # import the Quix Streams modules for interacting with Kafka
+    Application
 )
 from quixstreams.kafka.configuration import ConnectionConfig
+
 from utils import extract_timestamp
+
 
 load_dotenv()
 
@@ -110,7 +112,7 @@ def reducer(aggregated: dict, value: dict) -> dict:
         else:
             aggregated['nsd_call_vol'] += value['qty']
             aggregated['nsd_call_prem'] += value['premium']
-    print(aggregated)
+
     return aggregated
 
 
@@ -124,6 +126,12 @@ def initializer(value: dict) -> dict:
     if value is None:
         value = {}
     initialized_obj = {
+        'osym': value.get('osym', ''),
+        'usym': value.get('usym', ''),
+        'strike': value.get('strike', 0),
+        'expiry': value.get('expiry', ''),
+        'otype': value.get('otype', ''),
+        'dtx': value.get('dtx', 0),
         'count': 0,
         'whale_buy_put_vol': 0,
         'whale_buy_put_prem': 0,
@@ -165,7 +173,7 @@ def main():
         sdf["premium"] = sdf["price"] + sdf["qty"]
         print("Grouped by osym.")
         sdf = (
-            sdf.tumbling_window(timedelta(minutes=1))
+            sdf.tumbling_window(timedelta(minutes=1), grace_ms=1000)
             .reduce(reducer=reducer, initializer=initializer)
             .current()
         )

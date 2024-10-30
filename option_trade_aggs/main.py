@@ -2,10 +2,14 @@ import logging
 import os
 from datetime import timedelta
 
+from dotenv import load_dotenv
 from quixstreams import (
     Application,  # import the Quix Streams modules for interacting with Kafka
 )
+from quixstreams.kafka.configuration import ConnectionConfig
 from utils import extract_timestamp
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -13,12 +17,19 @@ logger.setLevel(logging.INFO)
 print("File name:")
 print(__file__)
 
+connection = ConnectionConfig(
+    broker_address=os.environ["KAFKA_BROKER_ADDRESS"],
+    sasl_mechanism="PLAIN",
+    sasl_username=os.environ["KAFKA_KEY"],
+    sasl_password=os.environ["KAFKA_SECRET"],
+)
+
 app = Application(
-    broker_address=None,
+    broker_address=connection,
     processing_guarantee="exactly-once",
     auto_create_topics=True,
     auto_offset_reset="earliest",
-    consumer_group=__package__.__name__,
+    consumer_group="option_trade_aggs",
     use_changelog_topics=True,
 
 )

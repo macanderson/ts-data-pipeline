@@ -3,9 +3,16 @@ language: Python
 variables:
   - name: OUTPUT
     inputType: OutputTopic
-    description: Name of the output topic to write into
     defaultValue: equity-quotes
-    required: true
+    required: false
+  - name: POLYGON_TOKEN
+    inputType: Secret
+    defaultValue: POLYGON_TOKEN_key
+    required: false
+  - name: WEBSOCKET_ENDPOINT
+    inputType: FreeText
+    defaultValue: wss://delayed.polygon.io/stocks
+    required: false
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py

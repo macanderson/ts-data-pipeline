@@ -104,6 +104,27 @@ deployments:
         inputType: FreeText
         required: false
         value: SASL_SSL
+  - name: equity_quotes
+    application: equity_quotes
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 800
+      replicas: 1
+    variables:
+      - name: OUTPUT
+        inputType: OutputTopic
+        required: false
+        value: equity-quotes
+      - name: POLYGON_TOKEN
+        inputType: Secret
+        required: false
+        secretKey: POLYGON_TOKEN_key
+      - name: WEBSOCKET_ENDPOINT
+        inputType: FreeText
+        required: false
+        value: wss://delayed.polygon.io/stocks
 
 # This section describes the Topics of the data pipeline
 topics:
@@ -142,3 +163,4 @@ topics:
       retentionInMinutes: -1
       retentionInBytes: 10737418240
       cleanupPolicy: Delete
+  - name: equity-quotes

@@ -4,12 +4,12 @@ import json
 import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 from quixstreams.models import TimestampType
 from quixstreams.models.topics import Topic
 from quixstreams.sources.base.source import BaseSource
 
 
-# from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 logger = logging.getLogger(__name__)
 
 MessageKey = Union[str, bytes, dict] | None
@@ -140,30 +140,9 @@ class CustomSource(BaseSource):
 
         :return: `quixstreams.models.messages.KafkaMessage`
         """
-        # return KafkaMessage(
-        #     key=key,
-        #     value=value,
-        #     headers=headers,
-        #     timestamp_ms=timestamp_ms
-        # )
-        # if key isinstance str:
-        #     key = key.encode("utf-8")
-        # elif key isinstance bytes:
-        #     key = key
-        # if value isinstance dict:
-        #     value = json.dumps(value).encode("utf-8")
-        # elif value isinstance str:
-        #     value = value.encode("utf-8")
-        # elif value isinstance bytes:
-        #     value = value
-        # if timestamp_ms is None:
-        #     timestamp_ms = int(datetime.now().timestamp() * 1000)
-        # if headers is None:
-        #     headers = {}
+
         return KafkaMessage(key=key, value=value, headers=headers, timestamp_ms=timestamp_ms)
-        # return self._producer_topic.serialize(
-        #     key=key, value=value, headers=headers, timestamp_ms=timestamp_ms
-        # )
+
 
     def produce(
         self,

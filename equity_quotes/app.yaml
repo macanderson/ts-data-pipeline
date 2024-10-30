@@ -1,0 +1,12 @@
+name: equity_quotes
+language: Python
+variables:
+  - name: OUTPUT
+    inputType: OutputTopic
+    description: Name of the output topic to write into
+    defaultValue: equity-quotes
+    required: true
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py
+libraryItemId: starter-source

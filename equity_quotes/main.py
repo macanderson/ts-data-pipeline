@@ -59,8 +59,19 @@ class PolygonSource(Source):
                         data = json.loads(message)
                         if data.get("ev") is not None:
                             data = self.map_fields(data)
-                            msg = self.serialize(key=data.get('sym'), value=data, timestamp_ms=data.get('t'), headers={"data_provider": "Polygon"})
-                            self.produce(key=msg.key, value=msg.value, poll_timeout=2.0, buffer_error_max_tries=3, timestamp=msg.timestamp_ms, headers=msg.headers)
+                            msg = self.serialize(
+                                key=data.get('sym'),
+                                value=data,
+                                timestamp_ms=data.get('t'),
+                                headers={"data_provider": "Polygon"}
+                            )
+                            self.produce(
+                                key=msg.key,
+                                value=msg.value,
+                                poll_timeout=1.0,
+                                timestamp=msg.timestamp_ms,
+                                headers=msg.headers
+                            )
                     except json.JSONDecodeError as e:
                         logger.error(f"Error decoding JSON message: {e}")
                     except Exception as e:

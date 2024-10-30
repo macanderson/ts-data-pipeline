@@ -1,18 +1,17 @@
-from datetime import datetime
 import json
 import os
+from datetime import datetime
 
+from data_queue import DataQueue
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
 
-from data_queue import DataQueue
-
-
 load_dotenv()
 
+
 class DataConsumer():
-    """DataConsumer consumes data from a Kafka topic and publishes it to a DataQueue."""
+    """DataConsumer consumes data from a Kafka topic and publishes it to a DataQueue."""  # noqa: E501
     def __init__(self, queue: DataQueue) -> None:
         self.queue = queue
         self.data = []
@@ -25,10 +24,10 @@ class DataConsumer():
         )
 
         self.app = Application(
+            "market_dashboard",
             broker_address=self.connection,
             auto_offset_reset="earliest",
             consumer_group="market_dashboard",
-            group_id="market_dashboard",
             use_changelog_topics=True,
         )
         self.consumer = self.app.get_consumer()
@@ -42,9 +41,9 @@ class DataConsumer():
             return list(self.data[-1].keys())
         return []
 
-    # subscription is moved to start() to give the client of this code more control
-    # over when to start receiving data. You can move this logic to constructor if
-    # necessary.
+    # subscription is moved to start() to give the client of
+    # this code more control over when to start receiving data.
+    # You can move this logic to constructor if necessary.
     def start(self):
         self.run = True
         with self.consumer:

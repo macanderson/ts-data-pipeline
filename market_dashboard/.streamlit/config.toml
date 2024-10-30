@@ -1,7 +1,11 @@
 [theme]
-primaryColor="#00a3e0"
-backgroundColor="#FFFFFF"
-textColor="#041e42"
+primaryColor="#0fb3ef"
+backgroundColor="#ffffff"
+textColor="#05152b"
+secondaryBackgroundColor="#f0f2f6"
+secondaryTextColor="#6B7280"
+accentColor="#499c9d"
+accentTextColor="#ffffff"
 
 [browser]
-gatherUsageStats = false
+gatherUsageStats = true

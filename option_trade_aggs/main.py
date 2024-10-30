@@ -1,21 +1,26 @@
-from datetime import timedelta
 import logging
 import os
+from datetime import timedelta
 
-from quixstreams import Application  # import the Quix Streams modules for interacting with Kafka
-
+from quixstreams import (
+    Application,  # import the Quix Streams modules for interacting with Kafka
+)
 from utils import extract_timestamp
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+print("File name:")
+print(__file__)
 
 app = Application(
     broker_address=None,
     processing_guarantee="exactly-once",
     auto_create_topics=True,
     auto_offset_reset="earliest",
-    consumer_group="option-trade-aggs",
+    consumer_group=__package__.__name__,
+    use_changelog_topics=True,
+
 )
 
 
@@ -91,7 +96,7 @@ def initializer(value: dict) -> dict:
     """
     Initialize the state for aggregation when a new window starts.
 
-    It will prime the aggregation when the first record arrives 
+    It will prime the aggregation when the first record arrives
     in the window.
     """
     initialized_obj = {
@@ -130,15 +135,21 @@ def main():
     """
     logger.info("Starting the application to aggregate option trade data.")
     try:
+        print("Starting the application to aggregate option trade data.")
         sdf = app.dataframe(input_topic)
+        print("Dataframe created.")
         sdf = sdf.group_by("osym")
+        print("Grouped by osym.")
         sdf = (
             sdf.tumbling_window(timedelta(minutes=1))
             .reduce(reducer=reducer, initializer=initializer)
             .current()
         )
+        print("Reduced.")
         sdf = sdf.to_topic(output_topic)
-        app.run(sdf)
+        print("Dataframe written to output topic.")
+        app.run()
+        print("Application running.")
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:

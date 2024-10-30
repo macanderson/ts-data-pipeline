@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from quixstreams import Application
+from quixstreams.kafka.configuration import ConnectionConfig
 from quixstreams.sinks.community.iceberg import IcebergSink, AWSIcebergConfig
 
 
@@ -13,9 +14,21 @@ load_dotenv()
 
 def on_consumer_error(error):
     logger.info(f"Consumer error: {error}")
-    
+
+
+
+connection = ConnectionConfig(
+    bootstrap_servers=os.environ["KAFKA_BROKER_ADDRESS"],
+    sasl_mechanism=os.environ["KAFKA_SASL_MECHANISM"],
+    security_protocol=os.environ["KAFKA_SECURITY_PROTOCOL"],
+    sasl_username=os.environ["KAFKA_KEY"],
+    sasl_password=os.environ["KAFKA_SECRET"],
+)
+
+
 app = Application(
-    consumer_group="iceberg-sink", 
+    broker_address=connection,
+    consumer_group="iceberg-sink",
     auto_offset_reset = "earliest",
     commit_interval=5,
     on_consumer_error=on_consumer_error,
@@ -38,4 +51,4 @@ sdf = app.dataframe(input_topic)
 sdf.sink(iceberg_sink)
 
 if __name__ == "__main__":
-    app.run(sdf)
+    app.run()

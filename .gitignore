@@ -14,3 +14,4 @@ dist/*
 uv.lock
 
 state/
+.quix.yaml.variables

@@ -5,6 +5,26 @@ variables:
     inputType: InputTopic
     defaultValue: option-trades
     required: false
+  - name: KAFKA_SECRET
+    inputType: Secret
+    defaultValue: KAFKA_SECRET_key
+    required: false
+  - name: KAFKA_KEY
+    inputType: FreeText
+    defaultValue: admin
+    required: false
+  - name: KAFKA_BROKER_ADDRESS
+    inputType: FreeText
+    defaultValue: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
+    required: false
+  - name: KAFKA_SASL_MECHANISM
+    inputType: FreeText
+    defaultValue: SCRAM-SHA-256
+    required: false
+  - name: KAFKA_SECURITY_PROTOCOL
+    inputType: FreeText
+    defaultValue: SASL_SSL
+    required: false
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: streamlit_file.py

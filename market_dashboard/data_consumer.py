@@ -1,14 +1,17 @@
-from datetime import datetime
 import json
 import os
+from datetime import datetime
 
 from data_queue import DataQueue
 from dotenv import load_dotenv
 from quixstreams import Application
+from quixstreams.kafka.configuration import ConnectionConfig
 
 
-# Consume data from Quix streams and prepare dataframes for streamlit components.
-# Use this class as a template for different data consumers (e.g., per topic/stream)
+# Consume data from Quix streams and prepare dataframes
+# for streamlit components.
+# Use this class as a template for different data
+# consumers (e.g., per topic/stream)
 class DataConsumer():
     def __init__(self, queue: DataQueue) -> None:
         # Load environment variables (useful when working locally)
@@ -16,18 +19,32 @@ class DataConsumer():
 
         self.queue = queue
         self.data = []
-        self.app = Application.Quix(auto_offset_reset="latest")
+        # configuring to always use redpanda or whatever broker is being used
+        # in the production environment as this app does not mutate the data
+        self.connection = ConnectionConfig(
+            broker_address=os.environ["KAFKA_BROKER_ADDRESS"],
+            sasl_mechanism=os.environ["KAFKA_SASL_MECHANISM"],
+            security_protocol=os.environ["KAFKA_SECURITY_PROTOCOL"],
+            sasl_username=os.environ["KAFKA_KEY"],
+            sasl_password=os.environ["KAFKA_SECRET"],
+        )
+        self.app = Application.Quix(
+            broker_address=self.connection,
+            auto_offset_reset="earliest",
+            consumer_group="market_dashboard",
+            # group_id="market_dashboard",
+        )
         self.consumer = self.app.get_consumer()
         self.topic_name = os.environ["INPUT"]
         self.topic = self.app.topic(self.topic_name)
         self.run = False
         self.cols = []
-    
+
     def get_available_params(self):
         if self.data:
             return list(self.data[-1].keys())
         return []
-    
+
     # subscription is moved to start() to give the client of this code more control
     # over when to start receiving data. You can move this logic to constructor if
     # necessary.
@@ -59,7 +76,7 @@ class DataConsumer():
 
                     # Append data to the existing list
                     self.data.append(data_dict)
-                    
+
                     # Publish a reference to the data list
                     self.queue.put(self.data)
 

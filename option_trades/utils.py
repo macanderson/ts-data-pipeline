@@ -1,18 +1,15 @@
 """Utility functions."""
-from datetime import datetime
 import json
 import logging
 import os
 import time
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from pandas.tests.groupby import aggregate
-from quixstreams.models import TimestampType
 import websockets
-from websockets.sync.client import connect
-
 from data_source import CustomSource
-
+from quixstreams.models import TimestampType
+from websockets.sync.client import connect
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -26,7 +23,7 @@ def add_field(key:str, value: Any, record: dict | None = None) -> dict:
     record[key] = value
     return record
 
-    
+
 def extract_timestamp(
     value: Any,
     headers: Optional[List[Tuple[str, bytes]]],
@@ -48,29 +45,13 @@ def map_fields(data: Dict[Any, Any]) -> dict:
 
         pos_type = "none"
         if "ask_side" in tags:
-            if data.get('option_type') == "call":
-                pos_type = "call_buy"
-            elif data.get('option_type') == "put":
-                pos_type = "put_buy"
+            pos_type = "bought_"
         elif "bid_side" in tags:
-            if data.get('option_type') == "call":
-                pos_type = "call_sell"
-            elif data.get('option_type') == "put":
-                pos_type = "put_sell"
+            pos_type = "sold_"
         elif "no_side" in tags:
-            if data.get('option_type') == "call":
-                pos_type = "call_nsd"
-            elif data.get('option_type') == "put":
-                pos_type = "put_nsd"
-
-        record = {}
-
-        for str s in ["buy", "sell", "nsd"]:
-            record = add_field(f"{pos_type} + _vol", data.get(f"{s}_vol", 0))
-            print(f"{pos_type} + _vol: {record}")
-            value = data.get(f"{pos_type} + _vol", 0)
-
-        aggregate = data.get(f"{pos_type} + _vol", value["price"] * value["qty"])
+            pos_type = "other_"
+        pos_type += data.get('option_type')
+        # aggregate = data.get(f"{pos_type} + _vol", value["price"] * value["qty"])
 
         if (float(record.get("premium")) > 75000) and float(record.get("premium")) :  # noqa E501
             tags.append("smart_money")
@@ -78,19 +59,12 @@ def map_fields(data: Dict[Any, Any]) -> dict:
             tags.append("large_trade")
         elif float(record.get("premium")) > 1000000:
             tags.append("whale_trade")
-        
+
 
         tags.append(pos_type)
 
 
-        if "bid_side" in tags:
-            side = "sell"
-        elif "ask_side" in tags:
-            side = "buy"
-        if "bullish" in tags:
-            sentiment = "bullish"
-        elif "bearish" in tags:
-            sentiment = "bearish"
+
 
         todays_date = datetime.fromtimestamp(data.get('executed_at', 0) / 1000).date()
         expiry = datetime.fromisoformat(data.get('expiry', '1800-01-01')).date()
@@ -109,8 +83,6 @@ def map_fields(data: Dict[Any, Any]) -> dict:
             'qty': data.get('size', 0),
             'price': float(data.get('price', '0') or '0'),
             'premium': float(data.get('premium', '0') or '0'),
-            'side': side,
-            'sentiment': sentiment,
             'xchg': data.get('exchange', ''),
             'cond': data.get('trade_code', ''),
             'iv': float(data.get('implied_volatility', '0') or '0'),

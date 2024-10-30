@@ -104,59 +104,6 @@ deployments:
         inputType: FreeText
         required: false
         value: SASL_SSL
-  - name: option_trades_sink
-    application: option_trades_sink
-    version: latest
-    deploymentType: Service
-    resources:
-      cpu: 500
-      memory: 500
-      replicas: 1
-    variables:
-      - name: INPUT
-        inputType: InputTopic
-        required: false
-        value: option-trades
-      - name: AWS_SECRET_ACCESS_KEY
-        inputType: Secret
-        required: false
-        secretKey: AWS_SECRET_ACCESS_KEY_key
-      - name: AWS_ACCESS_KEY_ID
-        inputType: Secret
-        required: false
-        secretKey: AWS_ACCESS_KEY_ID_key
-      - name: KAFKA_SECRET
-        inputType: Secret
-        required: false
-        secretKey: KAFKA_SECRET_key
-      - name: AWS_S3_URI
-        inputType: FreeText
-        required: false
-        value: s3://tradesignals-db/option_trade_data
-      - name: TABLE_NAME
-        inputType: FreeText
-        required: false
-        value: tradesignals_db.option_trade_data
-      - name: AWS_REGION
-        inputType: FreeText
-        required: false
-        value: us-east-1
-      - name: KAFKA_KEY
-        inputType: FreeText
-        required: false
-        value: admin
-      - name: KAFKA_BROKER_ADDRESS
-        inputType: FreeText
-        required: false
-        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
-      - name: KAFKA_SASL_MECHANISM
-        inputType: FreeText
-        required: false
-        value: SCRAM-SHA-256
-      - name: KAFKA_SECURITY_PROTOCOL
-        inputType: FreeText
-        required: false
-        value: SASL_SSL
 
 # This section describes the Topics of the data pipeline
 topics:

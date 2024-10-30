@@ -1,15 +1,11 @@
-from datetime import timedelta
 import logging
 import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
-from quixstreams import (
-    Application
-)
+from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
-
 from utils import extract_timestamp
-
 
 load_dotenv()
 
@@ -28,13 +24,6 @@ connection = ConnectionConfig(
 )
 
 
-def on_message_processed(topic:str, partition: int, offset: int):
-    """
-    Callback function that is called when a message is processed.
-    """
-    print(f"Message processed: {topic}, {partition}, {offset}")
-
-
 app = Application(
     broker_address=connection,
     processing_guarantee="exactly-once",
@@ -42,7 +31,6 @@ app = Application(
     auto_offset_reset="earliest",
     consumer_group="option_trade_aggs",
     use_changelog_topics=True,
-    on_message_processed=on_message_processed,
 )
 
 
@@ -76,42 +64,42 @@ def reducer(aggregated: dict, value: dict) -> dict:
     aggregated['count'] += 1
     if value['premium'] > 250000:
         if value['side'] == 'buy' and value['otype'] == 'put':
-            aggregated['whale_buy_put_vol'] += value['qty']
-            aggregated['whale_buy_put_prem'] += value['premium']
+            aggregated['whale_bought_put_vol'] += value['qty']
+            aggregated['whale_bought_put_prem'] += value['premium']
         elif value['side'] == 'sell' and value['otype'] == 'put':
-            aggregated['whale_sell_put_vol'] += value['qty']
-            aggregated['whale_sell_put_prem'] += value['premium']
+            aggregated['whale_sold_put_vol'] += value['qty']
+            aggregated['whale_sold_put_prem'] += value['premium']
         elif value['side'] == 'buy' and value['otype'] == 'put':
-            aggregated['whale_nsd_put_vol'] += value['qty']
-            aggregated['whale_nsd_put_prem'] += value['premium']
+            aggregated['whale_no_side_put_vol'] += value['qty']
+            aggregated['whale_no_side_put_prem'] += value['premium']
         elif value['side'] == 'buy' and value['otype'] == 'call':
-            aggregated['whale_buy_call_vol'] += value['qty']
-            aggregated['whale_buy_call_prem'] += value['premium']
+            aggregated['whale_bought_call_vol'] += value['qty']
+            aggregated['whale_bought_call_prem'] += value['premium']
         elif value['side'] == 'sell' and value['otype'] == 'call':
-            aggregated['whale_sell_call_vol'] += value['qty']
-            aggregated['whale_sell_call_prem'] += value['premium']
+            aggregated['whale_sold_call_vol'] += value['qty']
+            aggregated['whale_sold_call_prem'] += value['premium']
         else:
-            aggregated['whale_nsd_call_vol'] += value['qty']
-            aggregated['whale_nsd_call_prem'] += value['premium']
+            aggregated['whale_no_side_call_vol'] += value['qty']
+            aggregated['whale_no_side_call_prem'] += value['premium']
     else:
         if value['side'] == 'buy' and value['otype'] == 'put':
-            aggregated['buy_put_vol'] += value['qty']
-            aggregated['buy_put_prem'] += value['premium']
+            aggregated['bought_put_vol'] += value['qty']
+            aggregated['bought_put_prem'] += value['premium']
         elif value['side'] == 'sell' and value['otype'] == 'put':
-            aggregated['sell_put_vol'] += value['qty']
-            aggregated['sell_put_prem'] += value['premium']
+            aggregated['sold_put_vol'] += value['qty']
+            aggregated['sold_put_prem'] += value['premium']
         elif value['side'] == 'buy' and value['otype'] == 'put':
-            aggregated['nsd_put_vol'] += value['qty']
-            aggregated['nsd_put_prem'] += value['premium']
+            aggregated['no_side_put_vol'] += value['qty']
+            aggregated['no_side_put_prem'] += value['premium']
         elif value['side'] == 'buy' and value['otype'] == 'call':
-            aggregated['buy_call_vol'] += value['qty']
-            aggregated['buy_call_prem'] += value['premium']
+            aggregated['bought_call_vol'] += value['qty']
+            aggregated['bought_call_prem'] += value['premium']
         elif value['side'] == 'sell' and value['otype'] == 'call':
-            aggregated['sell_call_vol'] += value['qty']
-            aggregated['sell_call_prem'] += value['premium']
+            aggregated['sold_call_vol'] += value['qty']
+            aggregated['sold_call_prem'] += value['premium']
         else:
-            aggregated['nsd_call_vol'] += value['qty']
-            aggregated['nsd_call_prem'] += value['premium']
+            aggregated['no_side_call_vol'] += value['qty']
+            aggregated['no_side_call_prem'] += value['premium']
 
     return aggregated
 
@@ -133,30 +121,30 @@ def initializer(value: dict) -> dict:
         'otype': value.get('otype', ''),
         'dtx': value.get('dtx', 0),
         'count': 0,
-        'whale_buy_put_vol': 0,
-        'whale_buy_put_prem': 0,
-        'whale_sell_put_vol': 0,
-        'whale_sell_put_prem': 0,
-        'whale_nsd_put_vol': 0,
-        'whale_nsd_put_prem': 0,
-        'whale_buy_call_vol': 0,
-        'whale_buy_call_prem': 0,
-        'whale_sell_call_vol': 0,
-        'whale_sell_call_prem': 0,
-        'whale_nsd_call_vol': 0,
-        'whale_nsd_call_prem': 0,
-        'buy_put_vol': 0,
-        'buy_put_prem': 0,
-        'sell_put_vol': 0,
-        'sell_put_prem': 0,
-        'nsd_put_vol': 0,
-        'nsd_put_prem': 0,
-        'buy_call_vol': 0,
-        'buy_call_prem': 0,
-        'sell_call_vol': 0,
-        'sell_call_prem': 0,
-        'nsd_call_vol': 0,
-        'nsd_call_prem': 0,
+        'whale_bought_put_vol': 0,
+        'whale_bought_put_prem': 0,
+        'whale_sold_put_vol': 0,
+        'whale_sold_put_prem': 0,
+        'whale_no_side_put_vol': 0,
+        'whale_no_side_put_prem': 0,
+        'whale_bought_call_vol': 0,
+        'whale_bought_call_prem': 0,
+        'whale_sold_call_vol': 0,
+        'whale_sold_call_prem': 0,
+        'whale_no_side_call_vol': 0,
+        'whale_no_side_call_prem': 0,
+        'bought_put_vol': 0,
+        'bought_put_prem': 0,
+        'sold_put_vol': 0,
+        'sold_put_prem': 0,
+        'no_side_put_vol': 0,
+        'no_side_put_prem': 0,
+        'bought_call_vol': 0,
+        'bought_call_prem': 0,
+        'sold_call_vol': 0,
+        'sold_call_prem': 0,
+        'no_side_call_vol': 0,
+        'no_side_call_prem': 0,
     }
     return reducer(initialized_obj, value)
 

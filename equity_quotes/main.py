@@ -3,13 +3,11 @@ import logging
 import os
 from typing import Any, Dict
 
+import websockets.sync.client as ws
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.models.topics import Topic
-
-from quixstreams.sources import Source
-import websockets.sync.client as ws
-
+from quixstreams.sources.base.source import Source
 
 load_dotenv()
 
@@ -23,7 +21,11 @@ class PolygonSource(Source):
     def __init__(self, name: str):
         super().__init__(name=name)
         self.running = True
-        self._producer_topic = Topic(name=os.environ["OUTPUT"] or "equity-quotes", key_serializer="str", value_serializer="json")
+        self._producer_topic = Topic(
+            name=os.environ["OUTPUT"] or "equity-quotes",
+            key_serializer="str",
+            value_serializer="json"
+        )
 
     def map_fields(self, data: Dict[Any, Any]) -> dict:
         record = {}

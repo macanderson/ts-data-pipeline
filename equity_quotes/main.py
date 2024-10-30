@@ -5,10 +5,9 @@ from typing import Any, Dict
 
 from dotenv import load_dotenv
 from quixstreams import Application
-from quixstreams.models import TimestampType
 from quixstreams.models.topics import Topic
 
-from quixstreams.models.sources import Source
+from quixstreams.sources import Source
 import websockets.sync.client as ws
 
 

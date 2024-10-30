@@ -1,15 +1,18 @@
 """Utility functions."""
+from datetime import datetime
 import json
 import logging
 import os
 import time
-from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-import websockets
-from data_source import CustomSource
 from quixstreams.models import TimestampType
+from quixstreams.models import Topic
+import websockets
 from websockets.sync.client import connect
+
+from data_source import CustomSource
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -108,7 +111,6 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         return None
 
 
-from quixstreams.models import Topic
 
 
 class UnusualWhalesSource(CustomSource):
@@ -152,8 +154,8 @@ class UnusualWhalesSource(CustomSource):
                                         print(self._producer_topic.name)
                                         msg = self.serialize(key=record.get('osym'), value=record, headers=msg_headers, timestamp_ms=record.get('ts'))
                                         self.produce(
-                                            key=msg.key,
-                                            value=msg.value,
+                                            key=record.get('osym'),
+                                            value=json.dumps(record),
                                             poll_timeout=2.0,
                                             buffer_error_max_tries=3,
                                             timestamp=msg.timestamp,

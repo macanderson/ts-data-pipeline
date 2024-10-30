@@ -2,10 +2,12 @@ from datetime import datetime
 import json
 import os
 
-from data_queue import DataQueue
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
+
+from data_queue import DataQueue
+
 
 load_dotenv()
 
@@ -15,13 +17,13 @@ class DataConsumer():
         self.queue = queue
         self.data = []
         self.connection = ConnectionConfig(
-            broker_address=os.environ["KAFKA_BROKER_ADDRESS"],
+            bootstrap_servers=os.environ["KAFKA_BROKER_ADDRESS"],
             sasl_mechanism=os.environ["KAFKA_SASL_MECHANISM"],
             security_protocol=os.environ["KAFKA_SECURITY_PROTOCOL"],
             sasl_username=os.environ["KAFKA_KEY"],
             sasl_password=os.environ["KAFKA_SECRET"],
         )
-        
+
         self.app = Application(
             broker_address=self.connection,
             auto_offset_reset="earliest",

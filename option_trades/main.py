@@ -44,7 +44,7 @@ output_topic = app.topic(
 )
 
 source = UnusualWhalesSource(name=output_topic.name)
-sdf = app.dataframe(source=source, topic=output_topic)
+sdf = app.dataframe(source=source)
 sdf.print(pretty=False)
 sdf.to_topic(output_topic)
 

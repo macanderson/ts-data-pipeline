@@ -1,12 +1,13 @@
-import json
-import logging
 from abc import abstractmethod
 from datetime import datetime
+import json
+import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from quixstreams.models import TimestampType
 from quixstreams.models.topics import Topic
 from quixstreams.sources.base.source import BaseSource
+
 
 # from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 logger = logging.getLogger(__name__)
@@ -20,21 +21,20 @@ Headers = Dict | None
 
 class KafkaMessage:
 
-    def __init__(
-        self,
-        key: Optional[MessageKey],
-        value: Optional[MessageValue],
-        headers: dict,
-        timestamp_ms: int | None = None
-        ):
-        self.key = self.__process_value(key)
+    def __init__(self, key: Optional[MessageKey], value: Optional[MessageValue], headers: Headers, timestamp_ms: Optional[int]=None):
+        self.key = self._process_key(key)
         self.value = self._process_value(value)
         self.headers = headers
         self.timestamp_ms = timestamp_ms if timestamp_ms is not None else int(datetime.now().timestamp() * 1000)
 
-    def _process_value(
-        self,
-        value: Any) -> Any:
+    def _process_key(self, key: Optional[MessageKey]) -> Optional[bytes]:
+        if isinstance(key, str):
+            return key.encode("utf-8")
+        elif isinstance(key, dict):
+            return json.dumps(key).encode("utf-8")
+        return key
+
+    def _process_value(self, value: Optional[MessageValue]) -> Optional[bytes]:
         if isinstance(value, bytes):
             return value
         elif isinstance(value, dict):
@@ -146,9 +146,24 @@ class CustomSource(BaseSource):
         #     headers=headers,
         #     timestamp_ms=timestamp_ms
         # )
-        return self._producer_topic.serialize(
-            key=key, value=value, headers=headers, timestamp_ms=timestamp_ms
-        )
+        # if key isinstance str:
+        #     key = key.encode("utf-8")
+        # elif key isinstance bytes:
+        #     key = key
+        # if value isinstance dict:
+        #     value = json.dumps(value).encode("utf-8")
+        # elif value isinstance str:
+        #     value = value.encode("utf-8")
+        # elif value isinstance bytes:
+        #     value = value
+        # if timestamp_ms is None:
+        #     timestamp_ms = int(datetime.now().timestamp() * 1000)
+        # if headers is None:
+        #     headers = {}
+        return KafkaMessage(key=key, value=value, headers=headers, timestamp_ms=timestamp_ms)
+        # return self._producer_topic.serialize(
+        #     key=key, value=value, headers=headers, timestamp_ms=timestamp_ms
+        # )
 
     def produce(
         self,
@@ -212,3 +227,61 @@ class CustomSource(BaseSource):
 
     def __repr__(self):
         return self.name
+
+
+class UnusualWhalesSource(CustomSource):
+    """External Source for the UnusualWhales Options Websocket API"""
+    def __init__(self, name: str):
+        super().__init__(name=name)
+        print(f"UnusualWhalesToken: {os.environ['UNUSUALWHALES_TOKEN']}")
+
+        self.uri = f"wss://api.unusualwhales.com/socket?token={os.environ['UNUSUALWHALES_TOKEN']}"
+        self.name = name
+        self._producer_topic = Topic(name="option_trades", key_serializer='string', value_serializer='json')
+
+    def run(self):
+        logger.info("Processing WebSocket messages...")
+        while self.running:
+            logger.info("Connecting to WebSocket...")
+            try:
+                with connect(
+                    self.uri,
+                    logger=logger,
+                ) as ws:
+                    subscribe_message = json.dumps({
+                        "channel": "option_trades",
+                        "msg_type": "join"
+                    })
+                    ws.send(subscribe_message)
+                    logger.info("Successfully subscribed to the UnusualWhales API https://api.unusualwhales.com.")
+                    for message in ws:
+                        try:
+                            data = json.loads(message)
+                            for item in data[1:]:  # Skip the first position as it's never a valid option trade record
+                                if item.get('price'):
+                                    record = map_fields(item)
+                                    if record:
+                                        msg_headers = {
+                                            "data_provider": "UnusualWhales",
+                                            "integration_id": record.get('id')
+                                        }
+                                        msg = self.serialize(key=record.get('osym'), value=record, headers=msg_headers, timestamp_ms=record.get('ts'))
+                                        self.produce(
+                                            key=msg.key,
+                                            value=msg.value,
+                                            poll_timeout=2.0,
+                                            buffer_error_max_tries=3,
+                                            timestamp=msg.timestamp_ms,
+                                            headers=msg.headers
+                                        )
+                        except json.JSONDecodeError as e:
+                            print(f"Error decoding JSON message: {e}")
+                        except Exception as e:
+                            print(f"Error processing message: {e}")
+            except websockets.exceptions.ConnectionClosedError as e:
+                print(f"Connection closed with error: {e}. Reconnecting...")
+                time.sleep(5)  # Wait before reconnecting
+                continue
+            except Exception as e:
+                print(f"Unexpected error: {e}. Reconnecting...")
+                time.sleep(5)  # Wait before reconnecting

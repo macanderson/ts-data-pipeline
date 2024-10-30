@@ -121,10 +121,30 @@ deployments:
         inputType: Secret
         required: false
         secretKey: POLYGON_TOKEN_key
+      - name: SASL_PASSWORD
+        inputType: Secret
+        required: false
+        secretKey: SASL_PASSWORD_key
       - name: WEBSOCKET_ENDPOINT
         inputType: FreeText
         required: false
         value: wss://delayed.polygon.io/stocks
+      - name: BOOTSTRAP_SERVERS
+        inputType: FreeText
+        required: false
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
+      - name: SASL_MECHANISM
+        inputType: FreeText
+        required: false
+        value: SCRAM-SHA-256
+      - name: SECURITY_PROTOCOL
+        inputType: FreeText
+        required: false
+        value: SASL_SSL
+      - name: SASL_USERNAME
+        inputType: FreeText
+        required: false
+        value: admin
 
 # This section describes the Topics of the data pipeline
 topics:

@@ -85,9 +85,22 @@ topic = app.topic(topic_name)
 sdf = app.dataframe(source=PolygonSource(name=topic.name))
 sdf.print()
 
+from quixstreams.kafka.configuration import ConnectionConfig
+
 
 def main():
-    app = Application(consumer_group="equity-quotes", auto_create_topics=False)
+    connection = ConnectionConfig(
+        bootstrap_servers=os.environ["KAFKA_BROKER_ADDRESS"],
+        sasl_mechanism=os.environ["KAFKA_SASL_MECHANISM"],
+        security_protocol=os.environ["KAFKA_SECURITY_PROTOCOL"],
+        sasl_username=os.environ["KAFKA_KEY"],
+        sasl_password=os.environ["KAFKA_SECRET"],
+    )
+    app = Application(
+        broker_address=broker_address,
+        consumer_group="equity-quotes",
+        auto_create_topics=False
+    )
     topic_name = os.environ["OUTPUT"]
     topic = app.topic(topic_name)
     sdf = app.dataframe(source=PolygonSource(name=topic.name))

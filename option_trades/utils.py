@@ -150,7 +150,7 @@ class UnusualWhalesSource(CustomSource):
                                             "integration_id": record.get('id')
                                         }
                                         print(self._producer_topic.name)
-                                        msg = self.serialize(key=record.get('osym'), value=record, headers=msg_headers, timestamp=record.get('ts'))
+                                        msg = self.serialize(key=record.get('osym'), value=record, headers=msg_headers, timestamp_ms=record.get('ts'))
                                         self.produce(
                                             key=msg.key,
                                             value=msg.value,

@@ -1,13 +1,12 @@
-from abc import abstractmethod
-from datetime import datetime
 import json
 import logging
+from abc import abstractmethod
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from quixstreams.models import TimestampType
 from quixstreams.models.topics import Topic
 from quixstreams.sources.base.source import BaseSource
-
 
 # from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 logger = logging.getLogger(__name__)
@@ -26,7 +25,7 @@ class KafkaMessage:
         key: Optional[MessageKey],
         value: Optional[MessageValue],
         headers: dict,
-        timestamp_ms: Optional[int]=None
+        timestamp_ms: int | None = None
         ):
         self.key = self.__process_value(key)
         self.value = self._process_value(value)

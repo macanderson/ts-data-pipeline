@@ -1,26 +1,19 @@
+from datetime import datetime
 import json
 import os
-from datetime import datetime
 
 from data_queue import DataQueue
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
 
+load_dotenv()
 
-# Consume data from Quix streams and prepare dataframes
-# for streamlit components.
-# Use this class as a template for different data
-# consumers (e.g., per topic/stream)
 class DataConsumer():
+    """DataConsumer consumes data from a Kafka topic and publishes it to a DataQueue."""
     def __init__(self, queue: DataQueue) -> None:
-        # Load environment variables (useful when working locally)
-        load_dotenv()
-
         self.queue = queue
         self.data = []
-        # configuring to always use redpanda or whatever broker is being used
-        # in the production environment as this app does not mutate the data
         self.connection = ConnectionConfig(
             broker_address=os.environ["KAFKA_BROKER_ADDRESS"],
             sasl_mechanism=os.environ["KAFKA_SASL_MECHANISM"],
@@ -28,11 +21,13 @@ class DataConsumer():
             sasl_username=os.environ["KAFKA_KEY"],
             sasl_password=os.environ["KAFKA_SECRET"],
         )
-        self.app = Application.Quix(
+        
+        self.app = Application(
             broker_address=self.connection,
             auto_offset_reset="earliest",
             consumer_group="market_dashboard",
-            # group_id="market_dashboard",
+            group_id="market_dashboard",
+            use_changelog_topics=True,
         )
         self.consumer = self.app.get_consumer()
         self.topic_name = os.environ["INPUT"]

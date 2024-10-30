@@ -1,21 +1,32 @@
 """Utility functions."""
+from datetime import datetime
 import json
 import logging
 import os
 import time
-from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-import websockets
-from data_source import CustomSource
+from pandas.tests.groupby import aggregate
 from quixstreams.models import TimestampType
+import websockets
 from websockets.sync.client import connect
+
+from data_source import CustomSource
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 
 
+def add_field(key:str, value: Any, record: dict | None = None) -> dict:
+    """Add a field to a dictionary."""
+    if record is None:
+        record = {}
+    record[key] = value
+    return record
+
+    
 def extract_timestamp(
     value: Any,
     headers: Optional[List[Tuple[str, bytes]]],
@@ -34,6 +45,44 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         tags.extend(flags)
         side = "no_side"
         sentiment = "neutral"
+
+        pos_type = "none"
+        if "ask_side" in tags:
+            if data.get('option_type') == "call":
+                pos_type = "call_buy"
+            elif data.get('option_type') == "put":
+                pos_type = "put_buy"
+        elif "bid_side" in tags:
+            if data.get('option_type') == "call":
+                pos_type = "call_sell"
+            elif data.get('option_type') == "put":
+                pos_type = "put_sell"
+        elif "no_side" in tags:
+            if data.get('option_type') == "call":
+                pos_type = "call_nsd"
+            elif data.get('option_type') == "put":
+                pos_type = "put_nsd"
+
+        record = {}
+
+        for str s in ["buy", "sell", "nsd"]:
+            record = add_field(f"{pos_type} + _vol", data.get(f"{s}_vol", 0))
+            print(f"{pos_type} + _vol: {record}")
+            value = data.get(f"{pos_type} + _vol", 0)
+
+        aggregate = data.get(f"{pos_type} + _vol", value["price"] * value["qty"])
+
+        if (float(record.get("premium")) > 75000) and float(record.get("premium")) :  # noqa E501
+            tags.append("smart_money")
+        elif float(record.get("premium")) > 250000 and float(data.get("premium")) < 1000000:
+            tags.append("large_trade")
+        elif float(record.get("premium")) > 1000000:
+            tags.append("whale_trade")
+        
+
+        tags.append(pos_type)
+
+
         if "bid_side" in tags:
             side = "sell"
         elif "ask_side" in tags:

@@ -44,6 +44,30 @@ deployments:
         inputType: OutputTopic
         required: false
         value: option-trade-aggs
+      - name: KAFKA_PASSWORD
+        inputType: Secret
+        required: false
+        secretKey: KAFKA_PASSWORD_key
+      - name: KAFKA_KEY
+        inputType: FreeText
+        required: false
+        value: admin
+      - name: KAFKA_BROKER_ADDRESS
+        inputType: FreeText
+        required: false
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
+      - name: KAFKA_SASL_MECHANISM
+        inputType: FreeText
+        required: false
+        value: SCRAM-SHA-256
+      - name: KAFKA_SECURITY_PROTOCOL
+        inputType: FreeText
+        required: false
+        value: SASL_SSL
+      - name: KAFKA_USERNAME
+        inputType: FreeText
+        required: false
+        value: admin
   - name: market_dashboard
     application: market_dashboard
     version: latest

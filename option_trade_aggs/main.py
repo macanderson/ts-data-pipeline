@@ -18,11 +18,20 @@ print("File name:")
 print(__file__)
 
 connection = ConnectionConfig(
-    broker_address=os.environ["KAFKA_BROKER_ADDRESS"],
-    sasl_mechanism="PLAIN",
-    sasl_username=os.environ["KAFKA_KEY"],
-    sasl_password=os.environ["KAFKA_SECRET"],
+    bootstrap_servers=os.environ["KAFKA_BROKER_ADDRESS"],
+    sasl_mechanism=os.environ["KAFKA_SASL_MECHANISM"],
+    security_protocol=os.environ["KAFKA_SECURITY_PROTOCOL"],
+    sasl_username=os.environ["KAFKA_USERNAME"],
+    sasl_password=os.environ["KAFKA_PASSWORD"],
 )
+
+
+def on_message_processed(topic:str, partition: int, offset: int):
+    """
+    Callback function that is called when a message is processed.
+    """
+    print(f"Message processed: {topic}, {partition}, {offset}")
+
 
 app = Application(
     broker_address=connection,
@@ -31,7 +40,7 @@ app = Application(
     auto_offset_reset="earliest",
     consumer_group="option_trade_aggs",
     use_changelog_topics=True,
-
+    on_message_processed=on_message_processed,
 )
 
 
@@ -60,6 +69,8 @@ def reducer(aggregated: dict, value: dict) -> dict:
     It combines them into a new aggregated value and returns it.
     This aggregated value will be also returned as a result of the window.
     """
+    if aggregated is None:
+        aggregated = initializer(None)
     aggregated['count'] += 1
     if value['premium'] > 250000:
         if value['side'] == 'buy' and value['otype'] == 'put':
@@ -99,7 +110,7 @@ def reducer(aggregated: dict, value: dict) -> dict:
         else:
             aggregated['nsd_call_vol'] += value['qty']
             aggregated['nsd_call_prem'] += value['premium']
-
+    print(aggregated)
     return aggregated
 
 
@@ -107,9 +118,11 @@ def initializer(value: dict) -> dict:
     """
     Initialize the state for aggregation when a new window starts.
 
-    It will prime the aggregation when the first record arrives
+    It will prime the aggregation when the first record arrpythonives
     in the window.
     """
+    if value is None:
+        value = {}
     initialized_obj = {
         'count': 0,
         'whale_buy_put_vol': 0,
@@ -149,13 +162,14 @@ def main():
         print("Starting the application to aggregate option trade data.")
         sdf = app.dataframe(input_topic)
         print("Dataframe created.")
-        sdf = sdf.group_by("osym")
+        sdf["premium"] = sdf["price"] + sdf["qty"]
         print("Grouped by osym.")
         sdf = (
             sdf.tumbling_window(timedelta(minutes=1))
             .reduce(reducer=reducer, initializer=initializer)
             .current()
         )
+        sdf.print()
         print("Reduced.")
         sdf = sdf.to_topic(output_topic)
         print("Dataframe written to output topic.")

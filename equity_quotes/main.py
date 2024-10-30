@@ -7,7 +7,7 @@ import websockets.sync.client as ws
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.models.topics import Topic
-from quixstreams.sources.base.source import Source
+from quixstreams.sources import Source
 
 load_dotenv()
 

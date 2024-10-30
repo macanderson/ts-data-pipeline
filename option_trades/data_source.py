@@ -1,12 +1,13 @@
-import json
-import logging
 from abc import abstractmethod
 from datetime import datetime
+import json
+import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from quixstreams.models import TimestampType
 from quixstreams.models.topics import Topic
 from quixstreams.sources.base.source import BaseSource
+
 
 # from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 logger = logging.getLogger(__name__)
@@ -25,12 +26,12 @@ class KafkaMessage:
         key: Optional[MessageKey],
         value: Optional[MessageValue],
         headers: dict,
-        timestamp: Optional[int]=None
+        timestamp_ms: Optional[int]=None
         ):
         self.key = self.__process_value(key)
         self.value = self._process_value(value)
         self.headers = headers
-        self.timestamp = timestamp if timestamp is not None else int(datetime.now().timestamp() * 1000)
+        self.timestamp_ms = timestamp_ms if timestamp_ms is not None else int(datetime.now().timestamp() * 1000)
 
     def _process_value(
         self,
@@ -140,15 +141,15 @@ class CustomSource(BaseSource):
 
         :return: `quixstreams.models.messages.KafkaMessage`
         """
-        return KafkaMessage(
-            key=key,
-            value=value,
-            headers=headers,
-            timestamp=timestamp_ms
-        )
-        # return self._producer_topic.serialize(
-        #     key=key, value=value, headers=headers, timestamp_ms=timestamp_ms
+        # return KafkaMessage(
+        #     key=key,
+        #     value=value,
+        #     headers=headers,
+        #     timestamp_ms=timestamp_ms
         # )
+        return self._producer_topic.serialize(
+            key=key, value=value, headers=headers, timestamp_ms=timestamp_ms
+        )
 
     def produce(
         self,

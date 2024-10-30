@@ -28,17 +28,14 @@ logger.setLevel(logging.DEBUG)
 
 WHALE_PREMIUM_THRESHOLD = os.environ.get("WHALE_PREMIUM_THRESHOLD", 100000)
 
-# Initialize the application
 app = Application(
     broker_address=None,
     processing_guarantee="exactly-once",
     auto_create_topics=True,
-    auto_offset_reset="latest",
-    consumer_group="option-trades",
     loglevel=logging.DEBUG,
 )
 
-# Define the Kafka topics
+
 output_topic = app.topic(
     name=os.environ["OUTPUT"],
     key_serializer='str',

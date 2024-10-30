@@ -1,15 +1,17 @@
 """Utility functions."""
+from datetime import datetime
 import json
 import logging
 import os
 import time
-from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-import websockets
-from data_source import CustomSource
 from quixstreams.models import TimestampType
+import websockets
 from websockets.sync.client import connect
+
+from data_source import CustomSource
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -40,28 +42,26 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         tags = data.get('tags', [])
         flags = data.get('report_flags', [])
         tags.extend(flags)
-        side = "no_side"
-        sentiment = "neutral"
 
-        pos_type = "none"
+        position_type = "none"
         if "ask_side" in tags:
-            pos_type = "bought_"
+            position_type = "bought_"
         elif "bid_side" in tags:
-            pos_type = "sold_"
+            position_type = "sold_"
         elif "no_side" in tags:
-            pos_type = "other_"
-        pos_type += data.get('option_type')
-        # aggregate = data.get(f"{pos_type} + _vol", value["price"] * value["qty"])
+            position_type = "no_side_"
+        position_type += data.get('option_type')
 
-        if (float(record.get("premium")) > 75000) and float(record.get("premium")) :  # noqa E501
-            tags.append("smart_money")
-        elif float(record.get("premium")) > 250000 and float(data.get("premium")) < 1000000:
+        if (float(data.get("premium")) > 75000) and float(data.get("premium")):  # noqa E501
             tags.append("large_trade")
-        elif float(record.get("premium")) > 1000000:
-            tags.append("whale_trade")
+
+        if float(data.get("premium")) > 250000 and float(data.get("premium")) < 1000000:
+            tags.append("whale")
+        elif float(data.get("premium")) > 1000000:
+            tags.append("millionaire")
 
 
-        tags.append(pos_type)
+        tags.append(position_type)
 
 
 
@@ -70,10 +70,15 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         expiry = datetime.fromisoformat(data.get('expiry', '1800-01-01')).date()
         days_to_expiry = (expiry - todays_date).days
 
+        if days_to_expiry <= 0:
+            tags.append("expires_today")
+        elif days_to_expiry <= 7:
+            tags.append("expires_soon")
+
         result = {
             'id': data.get('id'),
             'ts': data.get('executed_at', 0),
-            'osym': data.get('option_symbol'),
+            'opra': data.get('option_symbol'),
             'usym': data.get('underlying_symbol'),
             'spot': float(data.get('underlying_price', '0') or '0'),
             'strike': float(data.get('strike', '0') or '0'),
@@ -87,7 +92,6 @@ def map_fields(data: Dict[Any, Any]) -> dict:
             'cond': data.get('trade_code', ''),
             'iv': float(data.get('implied_volatility', '0') or '0'),
             'oi': data.get('open_interest', 0),
-            'vol': data.get('volume', 0),
             'bid': float(data.get('nbbo_bid', '0') or '0'),
             'ask': float(data.get('nbbo_ask', '0') or '0'),
             'theo': float(data.get('theo', '0') or '0'),
@@ -102,6 +106,7 @@ def map_fields(data: Dict[Any, Any]) -> dict:
             'mid_vol': data.get('mid_vol', 0),
             'leg_vol': data.get('multi_vol', 0),
             'stock_vol': data.get('stock_multi_vol', 0),
+            'vol': data.get('volume', 0),
             'tags': tags
         }
         return result
@@ -111,7 +116,7 @@ def map_fields(data: Dict[Any, Any]) -> dict:
 
 
 
-class UnusualWhalesSource(CustomSource):
+class UnusualWhalesSource(CustomSource):""
     """External Source for the UnusualWhales Options Websocket API"""
     def __init__(self, name: str):  # noqa E501
         super().__init__(name=name)

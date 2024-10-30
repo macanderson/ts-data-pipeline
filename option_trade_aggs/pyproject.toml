@@ -1,0 +1,9 @@
+[project]
+name = "option_trade_aggs"
+version = "1.0.0"
+description = "Tradesignals data processing"
+readme = "README.md"
+requires-python = ">=3.12"
+packages = [
+    "option_trade_aggs",
+]

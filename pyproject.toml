@@ -1,6 +1,6 @@
 [project]
-name = "ts_streaming"
-version = "0.1.0"
+name = "ts-data-pipeline"
+version = "1.0.0"
 description = "Tradesignals data processing"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -11,12 +11,12 @@ dependencies = [
     "websockets>=13.1",
 ]
 
+
 [tool.uv.sources]
 
 [tool.uv.workspace]
 members = [
     "option_trades",
-    "option_trades_sink",
     "option_trade_aggs",
     "market_dashboard",
 ]

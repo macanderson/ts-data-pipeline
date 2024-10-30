@@ -151,14 +151,13 @@ class UnusualWhalesSource(CustomSource):
                                             "data_provider": "UnusualWhales",
                                             "integration_id": record.get('id')
                                         }
-                                        print(self._producer_topic.name)
                                         msg = self.serialize(key=record.get('osym'), value=record, headers=msg_headers, timestamp_ms=record.get('ts'))
                                         self.produce(
                                             key=record.get('osym'),
                                             value=json.dumps(record),
                                             poll_timeout=2.0,
                                             buffer_error_max_tries=3,
-                                            timestamp=msg.timestamp,
+                                            timestamp=msg.timestamp_ms,
                                             headers=msg.headers
                                         )
                         except json.JSONDecodeError as e:

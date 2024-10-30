@@ -1,17 +1,15 @@
 """Utility functions."""
-from datetime import datetime
 import json
 import logging
 import os
 import time
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from quixstreams.models import TimestampType
 import websockets
-from websockets.sync.client import connect
-
 from data_source import CustomSource
-
+from quixstreams.models import TimestampType
+from websockets.sync.client import connect
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -59,13 +57,7 @@ def map_fields(data: Dict[Any, Any]) -> dict:
             tags.append("whale")
         elif float(data.get("premium")) > 1000000:
             tags.append("millionaire")
-
-
         tags.append(position_type)
-
-
-
-
         todays_date = datetime.fromtimestamp(data.get('executed_at', 0) / 1000).date()
         expiry = datetime.fromisoformat(data.get('expiry', '1800-01-01')).date()
         days_to_expiry = (expiry - todays_date).days
@@ -78,13 +70,14 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         result = {
             'id': data.get('id'),
             'ts': data.get('executed_at', 0),
-            'opra': data.get('option_symbol'),
+            'osym': data.get('option_symbol'),
             'usym': data.get('underlying_symbol'),
             'spot': float(data.get('underlying_price', '0') or '0'),
             'strike': float(data.get('strike', '0') or '0'),
             'expiry': data.get('expiry'),
             'dtx': days_to_expiry,
             'otype': data.get('option_type'),
+            'ptype': position_type,
             'qty': data.get('size', 0),
             'price': float(data.get('price', '0') or '0'),
             'premium': float(data.get('premium', '0') or '0'),
@@ -115,8 +108,10 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         return None
 
 
+from quixstreams.models import Topic
 
-class UnusualWhalesSource(CustomSource):""
+
+class UnusualWhalesSource(CustomSource):
     """External Source for the UnusualWhales Options Websocket API"""
     def __init__(self, name: str):  # noqa E501
         super().__init__(name=name)
@@ -124,6 +119,7 @@ class UnusualWhalesSource(CustomSource):""
 
         self.uri = f"wss://api.unusualwhales.com/socket?token={os.environ['UNUSUALWHALES_TOKEN']}"  # noqa E501
         self.name = name
+        self._producer_topic = Topic(name="option_trades", key_serializer='string', value_serializer='json')
 
     def run(self):
         logger.info("Processing WebSocket messages...")
@@ -153,6 +149,7 @@ class UnusualWhalesSource(CustomSource):""
                                             "data_provider": "UnusualWhales",
                                             "integration_id": record.get('id')
                                         }
+                                        print(self._producer_topic.name)
                                         msg = self.serialize(key=record.get('osym'), value=record, headers=msg_headers, timestamp=record.get('ts'))
                                         self.produce(
                                             key=msg.key,

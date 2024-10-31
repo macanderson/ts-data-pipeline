@@ -13,23 +13,19 @@ variables:
     inputType: Secret
     defaultValue: KAFKA_PASSWORD_key
     required: false
-  - name: KAFKA_KEY
-    inputType: FreeText
-    defaultValue: admin
-    required: false
-  - name: KAFKA_BROKER_ADDRESS
+  - name: BOOTSTRAP_SERVERS
     inputType: FreeText
     defaultValue: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
     required: false
-  - name: KAFKA_SASL_MECHANISM
+  - name: SASL_MECHANISM
     inputType: FreeText
     defaultValue: SCRAM-SHA-256
     required: false
-  - name: KAFKA_SECURITY_PROTOCOL
+  - name: SECURITY_PROTOCOL
     inputType: FreeText
     defaultValue: SASL_SSL
     required: false
-  - name: KAFKA_USERNAME
+  - name: SASL_USERNAME
     inputType: FreeText
     defaultValue: admin
     required: false

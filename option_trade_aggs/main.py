@@ -16,11 +16,11 @@ print("File name:")
 print(__file__)
 
 connection = ConnectionConfig(
-    bootstrap_servers=os.environ["KAFKA_BROKER_ADDRESS"],
-    sasl_mechanism=os.environ["KAFKA_SASL_MECHANISM"],
-    security_protocol=os.environ["KAFKA_SECURITY_PROTOCOL"],
-    sasl_username=os.environ["KAFKA_USERNAME"],
-    sasl_password=os.environ["KAFKA_PASSWORD"],
+    bootstrap_servers=os.environ["BOOTSTRAP_SERVERS"],
+    sasl_mechanism=os.environ["SASL_MECHANISM"],
+    security_protocol=os.environ["SECURITY_PROTOCOL"],
+    sasl_username=os.environ["SASL_USERNAME"],
+    sasl_password=os.environ["SASL_PASSWORD"],
 )
 
 

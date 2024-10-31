@@ -9,9 +9,9 @@ variables:
     inputType: OutputTopic
     defaultValue: option-trade-aggs
     required: false
-  - name: KAFKA_PASSWORD
+  - name: SASL_PASSWORD
     inputType: Secret
-    defaultValue: KAFKA_PASSWORD_key
+    defaultValue: SASL_PASSWORD_key
     required: false
   - name: BOOTSTRAP_SERVERS
     inputType: FreeText

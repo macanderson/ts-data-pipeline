@@ -1,18 +1,15 @@
 """Utility functions."""
-from datetime import datetime
 import json
 import logging
 import os
 import time
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from quixstreams.models import TimestampType
-from quixstreams.models import Topic
 import websockets
-from websockets.sync.client import connect
-
 from data_source import CustomSource
-
+from quixstreams.models import TimestampType, Topic
+from websockets.sync.client import connect
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -44,7 +41,7 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         flags = data.get('report_flags', [])
         tags.extend(flags)
 
-        position_type = "none"
+        position_type = "no_side_"
         if "ask_side" in tags:
             position_type = "bought_"
         elif "bid_side" in tags:

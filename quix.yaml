@@ -44,10 +44,10 @@ deployments:
         inputType: OutputTopic
         required: false
         value: option-trade-aggs
-      - name: KAFKA_PASSWORD
+      - name: SASL_PASSWORD
         inputType: Secret
         required: false
-        secretKey: KAFKA_PASSWORD_key
+        secretKey: SASL_PASSWORD_key
       - name: BOOTSTRAP_SERVERS
         inputType: FreeText
         required: false

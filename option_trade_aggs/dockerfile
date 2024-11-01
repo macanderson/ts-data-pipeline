@@ -1,4 +1,4 @@
-FROM python:3.13.0-slim-bookworm
+FROM python:3.12.5-slim-bookworm
 
 # Set environment variables to non-interactive and unbuffered output
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -10,29 +10,14 @@ WORKDIR /app
 
 # Copy only the requirements file(s) to leverage Docker cache
 # Assuming all requirements files are in the root or subdirectories
-
 COPY ./requirements.txt ./
 
 # Install dependencies
 # Adding `--no-cache-dir` to avoid storing unnecessary files and potentially reduce image size
 RUN pip install --no-cache-dir -r requirements.txt
 
-# The installer requires curl (and certificates) to download the release archive
-RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
-
-# Download the latest installer
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
-
-# Run the installer then remove it
-RUN sh /uv-installer.sh && rm /uv-installer.sh
-
-# Ensure the installed binary is on the `PATH`
-ENV PATH="/root/.cargo/bin/:$PATH"
-
 # Copy the rest of the application
 COPY . .
-RUN uv sync --frozen
-
 
 # Set the command to run your application
 ENTRYPOINT ["python3", "main.py"]

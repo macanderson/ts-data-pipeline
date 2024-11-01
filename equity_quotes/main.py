@@ -3,13 +3,13 @@ import logging
 import os
 from typing import Any, Dict
 
-import websocket as ws
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
 from quixstreams.models.topics import Topic
 
-from common.websocket_source import BaseWebSocketSource
+from websocket_source import BaseWebSocketSource
+
 
 load_dotenv()
 

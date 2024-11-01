@@ -1,16 +1,17 @@
+from asyncio.log import logger
 import json
 import logging
 import sys
 import threading
 import time
-from asyncio.log import logger
 from typing import Callable, Optional
+
+from quixstreams.sources.base.source import BaseSource
 
 import websocket
 
-# from quixstreams.models import Row, RowProducer, Topic
-from quixstreams.sources.base.source import BaseSource
 
+# from quixstreams.models import Row, RowProducer, Topic
 logger = logging.getLogger(__name__)
 # Configure logger to pretty print
 handler = logging.StreamHandler(sys.stdout)

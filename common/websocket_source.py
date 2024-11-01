@@ -8,9 +8,6 @@ from typing import Callable, Optional
 
 from quixstreams.sources.base.source import BaseSource
 
-from quixstreams.sources.base.row import Row
-from quixstreams.sources.base.row_producer import RowProducer
-from quixstreams.sources.base.topic import Topic
 import websocket
 
 

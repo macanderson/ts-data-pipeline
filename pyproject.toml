@@ -1,22 +1,44 @@
 [project]
-name = "ts-data-pipeline"
+name = "tradesignals-pipeline"
 version = "1.0.0"
-description = "Tradesignals data processing"
+description = "Tradesignals streaming and batch data processing pipelines."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
+
 dependencies = [
     "pandas>=2.2.3",
     "python-dotenv>=1.0.1",
     "quixstreams>=3.1.0",
-    "websockets>=13.1",
+    "websocket-client>=1.8.0",
 ]
-
-
-[tool.uv.sources]
 
 [tool.uv.workspace]
 members = [
     "option_trades",
     "option_trade_aggs",
+    "equity_quotes",
     "market_dashboard",
+    "common"
+]
+
+[tool.uv]
+package = false
+link-mode = "copy"
+compile-bytecode = true
+python-downloads = "automatic"
+python-preference = "only-managed"
+resolution = "highest"
+upgrade = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "option_trades",
+    "option_trade_aggs",
+    "equity_quotes",
+    "market_dashboard",
+    "common"
 ]

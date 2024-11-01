@@ -3,91 +3,95 @@ import logging
 import os
 from typing import Any, Dict
 
-import websockets.sync.client as ws
+import websocket as ws
 from dotenv import load_dotenv
 from quixstreams import Application
+from quixstreams.kafka.configuration import ConnectionConfig
 from quixstreams.models.topics import Topic
-from quixstreams.sources import Source
+
+from common.websocket_source import BaseWebSocketSource
 
 load_dotenv()
 
+# Configure logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 
-
-class PolygonSource(Source):
-
+class PolygonSource(BaseWebSocketSource):
     def __init__(self, name: str):
         super().__init__(name=name)
         self.running = True
         self._producer_topic = Topic(
-            name=os.environ["OUTPUT"] or "equity-quotes",
+            name=os.environ.get("OUTPUT", "equity-quotes"),
             key_serializer="str",
             value_serializer="json"
         )
 
     def map_fields(self, data: Dict[Any, Any]) -> dict:
-        record = {}
-        record["sym"] = data.get("sym")
-        record["event"] = data.get("ev")
-        record["day_vol"] = data.get("av")
-        record["day_open"] = data.get("op")
-        record["vol"] = data.get("v")
-        record["open"] = data.get("o")
-        record["close"] = data.get("c")
-        record["high"] = data.get("h")
-        record["low"] = data.get("l")
-        record["avg_qty"] = data.get("z")
-        record["start_ts"] = data.get("s")
-        record["end_ts"] = data.get("e")
-        record["vwap"] = data.get("vw")
-        return record
+        """Transforms Polygon data into a structured format."""
+        return {
+            "sym": data.get("sym"),
+            "event": data.get("ev"),
+            "day_vol": data.get("av"),
+            "day_open": data.get("op"),
+            "vol": data.get("v"),
+            "open": data.get("o"),
+            "close": data.get("c"),
+            "high": data.get("h"),
+            "low": data.get("l"),
+            "avg_qty": data.get("z"),
+            "start_ts": data.get("s"),
+            "end_ts": data.get("e"),
+            "vwap": data.get("vw"),
+        }
 
     def run(self):
+        """Connects to the WebSocket, subscribes, and streams data to Kafka."""
         while self.running:
-            with ws.connect(os.environ.get('WEBSOCKET_ENDPOINT')) as websocket:
-                logger.info("Connecting to the Polygon Websockets API.")
-                auth_message = json.dumps({"action": "auth", "params": os.environ.get('POLYGON_API_KEY')})
-                websocket.send(auth_message)
-                logger.info("Successfully authenticated with the Polygon API.")
-                subscribe_message = json.dumps({"action": "subscribe", "params": "A.*"})
-                websocket.send(subscribe_message)
-                logger.info("Successfully subscribed to the aggregate p/second channel for all equities.")
-                for message in websocket:
-                    try:
-                        data = json.loads(message)
-                        if data.get("ev") is not None:
-                            data = self.map_fields(data)
-                            msg = self.serialize(
-                                key=data.get('sym'),
-                                value=data,
-                                timestamp_ms=data.get('t'),
-                                headers={"data_provider": "Polygon"}
-                            )
-                            self.produce(
-                                key=msg.key,
-                                value=msg.value,
-                                poll_timeout=1.0,
-                                timestamp=msg.timestamp_ms,
-                                headers=msg.headers
-                            )
-                    except json.JSONDecodeError as e:
-                        logger.error(f"Error decoding JSON message: {e}")
-                    except Exception as e:
-                        logger.error(f"Error processing message: {e}")
+            try:
+                with ws.connect(os.environ.get('WEBSOCKET_ENDPOINT')) as websocket:
+                    logger.info("Connecting to the Polygon Websockets API.")
+                    auth_message = json.dumps({
+                        "action": "auth",
+                        "params": os.environ.get('POLYGON_API_KEY')
+                    })
+                    websocket.send(auth_message)
+                    logger.info("Successfully authenticated with the Polygon API.")
 
+                    subscribe_message = json.dumps({
+                        "action": "subscribe",
+                        "params": "A.*"
+                    })
+                    websocket.send(subscribe_message)
+                    logger.info("Subscribed to aggregate p/second channel for all equities.")
 
-app = Application(consumer_group="equity-quotes", auto_create_topics=False)
+                    for message in websocket:
+                        try:
+                            data = json.loads(message)
+                            if data.get("ev") is not None:
+                                data = self.map_fields(data)
+                                msg = self.serialize(
+                                    key=data.get('sym'),
+                                    value=data,
+                                    timestamp_ms=data.get('start_ts'),
+                                    headers={"data_provider": "Polygon"}
+                                )
+                                self.produce(
+                                    key=msg.key,
+                                    value=msg.value,
+                                    poll_timeout=1.0,
+                                    timestamp=msg.timestamp_ms,
+                                    headers=msg.headers
+                                )
+                        except json.JSONDecodeError as e:
+                            logger.error(f"Error decoding JSON message: {e}")
+                        except Exception as e:
+                            logger.error(f"Error processing message: {e}")
+            except Exception as e:
+                logger.error(f"Connection error with WebSocket: {e}")
 
-topic_name = os.environ["OUTPUT"]
-topic = app.topic(topic_name)
-sdf = app.dataframe(source=PolygonSource(name=topic.name))
-sdf.print()
-
-from quixstreams.kafka.configuration import ConnectionConfig
-
-
+# Kafka Configuration
 def main():
     connection = ConnectionConfig(
         bootstrap_servers=os.environ["KAFKA_BROKER_ADDRESS"],
@@ -96,20 +100,20 @@ def main():
         sasl_username=os.environ["KAFKA_KEY"],
         sasl_password=os.environ["KAFKA_SECRET"],
     )
+
+    # Set up the application
     app = Application(
-        broker_address=broker_address,
-        consumer_group="equity-quotes",
-        auto_create_topics=False
+        broker_address=connection,
     )
+
     topic_name = os.environ["OUTPUT"]
     topic = app.topic(topic_name)
     sdf = app.dataframe(source=PolygonSource(name=topic.name))
     sdf.print()
     app.run()
 
-
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("Exiting.")
+        logger.info("Exiting application.")

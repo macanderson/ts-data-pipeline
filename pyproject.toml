@@ -3,7 +3,7 @@ name = "tradesignals-pipeline"
 version = "1.0.0"
 description = "Tradesignals streaming and batch data processing pipelines."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 
 dependencies = [
     "pandas>=2.2.3",

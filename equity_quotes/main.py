@@ -10,13 +10,13 @@ from quixstreams.models.topics import Topic
 
 from websocket_source import BaseWebSocketSource
 
-
 load_dotenv()
 
 # Configure logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
+
 
 class PolygonSource(BaseWebSocketSource):
     def __init__(self, name: str):

@@ -1,15 +1,13 @@
-from asyncio.log import logger
 import json
 import logging
 import sys
 import threading
 import time
+from asyncio.log import logger
 from typing import Callable, Optional
 
-from quixstreams.sources.base.source import BaseSource
-
 import websocket
-
+from quixstreams.sources.base.source import BaseSource
 
 logger = logging.getLogger(__name__)
 # Configure logger to pretty print
@@ -22,7 +20,7 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 
-class BaseWebSocketSource(BaseSource):
+class WebSocketSource(BaseSource):
     """
     A WebSocket-based implementation of the BaseSource class.
 

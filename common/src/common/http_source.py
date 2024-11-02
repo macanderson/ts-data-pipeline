@@ -57,7 +57,7 @@ logger.addHandler(logHandler)
 logger.setLevel(logging.INFO)
 
 
-class BaseHttpSource(Source):
+class HttpSource(Source):
     """Custom Http Source for Quixstreams cron-like scheduling."""
     def __init__(
         self,

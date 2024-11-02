@@ -4,14 +4,15 @@ This module is the entry point for the library.
 The library exposes helpers to create custom sources for
 tradesignals stream processing applications.
 """
-from .csv_source import BaseCsvSource
-from .http_source import BaseHttpSource
-from .quix import create_app
-from .websocket_source import BaseWebSocketSource
+from common.http_source import HttpSource
+from common.quix import create_app
+from common.websocket_source import WebSocketSource
+
+from .csv_source import CSVSource
 
 __all__ = [
     "create_app",
-    "BaseWebSocketSource",
-    "BaseHttpSource",
-    "BaseCsvSource",
+    "WebSocketSource",
+    "HttpSource",
+    "CSVSource",
 ]

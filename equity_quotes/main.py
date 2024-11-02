@@ -8,7 +8,7 @@ from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
 from quixstreams.models.topics import Topic
 
-from common.websocket_source import BaseWebSocketSource
+from common.websocket_source import WebSocketSource
 
 load_dotenv()
 
@@ -18,7 +18,7 @@ logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 
 
-class PolygonSource(BaseWebSocketSource):
+class PolygonSource(WebSocketSource):
     def __init__(self, name: str):
         super().__init__(name=name)
         self.running = True

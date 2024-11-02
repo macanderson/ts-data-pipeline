@@ -704,6 +704,7 @@ name = "tradesignals-pipeline"
 version = "1.0.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "common" },
     { name = "pandas" },
     { name = "python-dotenv" },
     { name = "quixstreams" },
@@ -712,6 +713,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "common", virtual = "common" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "quixstreams", specifier = ">=3.1.0" },

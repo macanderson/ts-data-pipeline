@@ -8,7 +8,7 @@ from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
 from quixstreams.models.topics import Topic
 
-from websocket_source import BaseWebSocketSource
+from common.websocket_source import BaseWebSocketSource
 
 load_dotenv()
 

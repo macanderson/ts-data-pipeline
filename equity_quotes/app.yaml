@@ -5,21 +5,21 @@ variables:
     inputType: OutputTopic
     defaultValue: equity-quotes
     required: false
-  - name: POLYGON_TOKEN
+  - name: GITHUB_PAT
     inputType: Secret
-    defaultValue: POLYGON_TOKEN_key
+    defaultValue: GITHUB_PAT_key
     required: false
   - name: SASL_PASSWORD
     inputType: Secret
     defaultValue: SASL_PASSWORD_key
     required: false
-  - name: WEBSOCKET_ENDPOINT
-    inputType: FreeText
-    defaultValue: wss://delayed.polygon.io/stocks
+  - name: POLYGON_TOKEN
+    inputType: Secret
+    defaultValue: POLYGON_TOKEN_key
     required: false
-  - name: BOOTSTRAP_SERVERS
+  - name: SASL_USERNAME
     inputType: FreeText
-    defaultValue: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
+    defaultValue: api-user
     required: false
   - name: SASL_MECHANISM
     inputType: FreeText
@@ -29,9 +29,9 @@ variables:
     inputType: FreeText
     defaultValue: SASL_SSL
     required: false
-  - name: SASL_USERNAME
+  - name: BOOTSTRAP_SERVERS
     inputType: FreeText
-    defaultValue: admin
+    defaultValue: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
     required: false
 dockerfile: dockerfile
 runEntryPoint: main.py

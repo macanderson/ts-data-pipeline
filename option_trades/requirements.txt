@@ -1,4 +1,4 @@
 quixstreams
 python-dotenv
 websockets
-git+https://macanderson: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@github.com/macanderson/ts-data-pipeline.git@main#subdirectory=common
+git+https://macanderson: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@github.com/macanderson/ts-data-pipeline.git@main#subdirectory=src/common

@@ -23,10 +23,30 @@ deployments:
         inputType: Secret
         required: false
         secretKey: UNUSUALWHALES_TOKEN_key
-      - name: WHALE_PREMIUM_THRESHOLD
+      - name: GITHUB_PAT
+        inputType: Secret
+        required: false
+        secretKey: GITHUB_PAT_key
+      - name: SASL_PASSWORD
+        inputType: Secret
+        required: false
+        secretKey: SASL_PASSWORD_key
+      - name: SASL_USERNAME
         inputType: FreeText
         required: false
-        value: 75000
+        value: api-user
+      - name: SASL_MECHANISM
+        inputType: FreeText
+        required: false
+        value: SCRAM-SHA-256
+      - name: SECURITY_PROTOCOL
+        inputType: FreeText
+        required: false
+        value: SASL_SSL
+      - name: BOOTSTRAP_SERVERS
+        inputType: FreeText
+        required: false
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
   - name: option_trade_aggs
     application: option_trade_aggs
     version: latest
@@ -44,14 +64,18 @@ deployments:
         inputType: OutputTopic
         required: false
         value: option-trade-aggs
+      - name: GITHUB_PAT
+        inputType: Secret
+        required: false
+        secretKey: GITHUB_PAT_key
       - name: SASL_PASSWORD
         inputType: Secret
         required: false
         secretKey: SASL_PASSWORD_key
-      - name: BOOTSTRAP_SERVERS
+      - name: SASL_USERNAME
         inputType: FreeText
         required: false
-        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
+        value: api-user
       - name: SASL_MECHANISM
         inputType: FreeText
         required: false
@@ -60,10 +84,10 @@ deployments:
         inputType: FreeText
         required: false
         value: SASL_SSL
-      - name: SASL_USERNAME
+      - name: BOOTSTRAP_SERVERS
         inputType: FreeText
         required: false
-        value: admin
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
   - name: market_dashboard
     application: market_dashboard
     version: latest
@@ -80,26 +104,30 @@ deployments:
         inputType: InputTopic
         required: false
         value: option-trades
-      - name: KAFKA_SECRET
+      - name: GITHUB_PAT
         inputType: Secret
         required: false
-        secretKey: KAFKA_SECRET_key
-      - name: KAFKA_KEY
+        secretKey: GITHUB_PAT_key
+      - name: SASL_PASSWORD
+        inputType: Secret
+        required: false
+        secretKey: SASL_PASSWORD_key
+      - name: SASL_USERNAME
         inputType: FreeText
         required: false
-        value: admin
-      - name: KAFKA_BROKER_ADDRESS
-        inputType: FreeText
-        required: false
-        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
-      - name: KAFKA_SASL_MECHANISM
+        value: api-user
+      - name: SASL_MECHANISM
         inputType: FreeText
         required: false
         value: SCRAM-SHA-256
-      - name: KAFKA_SECURITY_PROTOCOL
+      - name: SECURITY_PROTOCOL
         inputType: FreeText
         required: false
         value: SASL_SSL
+      - name: BOOTSTRAP_SERVERS
+        inputType: FreeText
+        required: false
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
   - name: equity_quotes
     application: equity_quotes
     version: latest
@@ -113,22 +141,22 @@ deployments:
         inputType: OutputTopic
         required: false
         value: equity-quotes
-      - name: POLYGON_TOKEN
+      - name: GITHUB_PAT
         inputType: Secret
         required: false
-        secretKey: POLYGON_TOKEN_key
+        secretKey: GITHUB_PAT_key
       - name: SASL_PASSWORD
         inputType: Secret
         required: false
         secretKey: SASL_PASSWORD_key
-      - name: WEBSOCKET_ENDPOINT
+      - name: POLYGON_TOKEN
+        inputType: Secret
+        required: false
+        secretKey: POLYGON_TOKEN_key
+      - name: SASL_USERNAME
         inputType: FreeText
         required: false
-        value: wss://delayed.polygon.io/stocks
-      - name: BOOTSTRAP_SERVERS
-        inputType: FreeText
-        required: false
-        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
+        value: api-user
       - name: SASL_MECHANISM
         inputType: FreeText
         required: false
@@ -137,10 +165,10 @@ deployments:
         inputType: FreeText
         required: false
         value: SASL_SSL
-      - name: SASL_USERNAME
+      - name: BOOTSTRAP_SERVERS
         inputType: FreeText
         required: false
-        value: admin
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
 
 # This section describes the Topics of the data pipeline
 topics:

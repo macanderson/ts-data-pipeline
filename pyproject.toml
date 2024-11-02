@@ -12,6 +12,9 @@ dependencies = [
     "websocket-client>=1.8.0",
 ]
 
+[tool.uv.sources]
+common = { workspace = true }
+
 [tool.uv.workspace]
 members = [
     "option_trades",

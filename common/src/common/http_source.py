@@ -35,16 +35,15 @@ and produces messages to a Kafka topic.
 import asyncio
 import json
 import logging
-from typing import Optional, Callable, Dict, Any, Union
-
-from quixstreams.models.topics import Topic
-from quixstreams.sources.base import Source
+from typing import Any, Callable, Dict, Optional, Union
 
 import aiohttp
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from jsonpath_ng import parse
 from pythonjsonlogger import jsonlogger
+from quixstreams.models.topics import Topic
+from quixstreams.sources.base import Source
 
 logger = logging.getLogger(__name__)
 # Configure logger to pretty print
@@ -57,7 +56,8 @@ logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 logger.setLevel(logging.INFO)
 
-class AIOHTTPSource(Source):
+
+class BaseHttpSource(Source):
     """Custom Http Source for Quixstreams cron-like scheduling."""
     def __init__(
         self,

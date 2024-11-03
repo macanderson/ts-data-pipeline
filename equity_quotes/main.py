@@ -2,7 +2,6 @@ import json
 import logging
 import os
 
-from confluent_kafka.avro import serializer
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig

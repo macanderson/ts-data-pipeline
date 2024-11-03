@@ -573,7 +573,7 @@ wheels = [
 
 [[package]]
 name = "quixplus"
-version = "0.1.3"
+version = "0.1.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -584,9 +584,9 @@ dependencies = [
     { name = "quixstreams" },
     { name = "websocket-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e4/81/a1207fe861299ee8d88ed0538d2b3f35d10e781791c8b2094fdfc6811dcc/quixplus-0.1.3.tar.gz", hash = "sha256:5a7bf89d37eca403c10df64ff820cebc9acb7f639ceceba5f9d9bd29b9a25953", size = 10615 }
+sdist = { url = "https://files.pythonhosted.org/packages/90/13/4e30005448e22bf5ade0f5dc61632b3002b15481986f682aa202984bce0e/quixplus-0.1.10.tar.gz", hash = "sha256:ab751122ac500b8c6a075769f6c327c47924b14f6c200fb26dd1e800c9badc7e", size = 11768 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/32/0a/dc0d652bb3258ac848b498f5df9c10c77ea3d01df29dca7c978a0c283495/quixplus-0.1.3-py3-none-any.whl", hash = "sha256:5490ddf93d85b42283e1a95e2fe4eb0f3acc8e1ee8e054c7950f9c38211f21d4", size = 10943 },
+    { url = "https://files.pythonhosted.org/packages/f7/ae/80a11c8074571eaca57283a92792feb9ef515e436d06eea7da4f4f8ef10b/quixplus-0.1.10-py3-none-any.whl", hash = "sha256:ffb3f30fd10a837bbb3fe561dc05f46da2815d2f87ea5a3529fbe558a695d214", size = 11211 },
 ]
 
 [[package]]

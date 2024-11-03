@@ -145,10 +145,6 @@ deployments:
         inputType: OutputTopic
         required: false
         value: equity-quotes
-      - name: GITHUB_PAT
-        inputType: Secret
-        required: false
-        secretKey: GITHUB_PAT_key
       - name: SASL_PASSWORD
         inputType: Secret
         required: false

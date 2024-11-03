@@ -72,7 +72,7 @@ def main():
         broker_address=connection,
         processing_guarantee="exactly-once",
         auto_create_topics=False,
-        auto_offset_reset="latest-offset",
+        auto_offset_reset="latest",
         consumer_group="equity_quotes",
     )
 

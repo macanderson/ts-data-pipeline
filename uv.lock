@@ -270,6 +270,15 @@ wheels = [
 ]
 
 [[package]]
+name = "kafka-python"
+version = "2.0.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/07/4c/2595fb5733c3ac01aef3dacce17ff07f7f3336d9f96548bcf723b9073e5c/kafka-python-2.0.2.tar.gz", hash = "sha256:04dfe7fea2b63726cd6f3e79a2d86e709d608d74406638c5da33a01d45a9d7e3", size = 265053 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/75/68/dcb0db055309f680ab2931a3eeb22d865604b638acf8c914bedf4c1a0c8c/kafka_python-2.0.2-py2.py3-none-any.whl", hash = "sha256:2d92418c7cb1c298fa6c7f0fb3519b520d0d7526ac6cb7ae2a4fc65a51a94b6e", size = 246508 },
+]
+
+[[package]]
 name = "kafka-python-ng"
 version = "2.2.3"
 source = { registry = "https://pypi.org/simple" }
@@ -582,7 +591,7 @@ wheels = [
 
 [[package]]
 name = "quixplus"
-version = "1.0.0"
+version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -594,9 +603,9 @@ dependencies = [
     { name = "quixstreams" },
     { name = "websocket-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d0/14/7acd216d73bbb66dad29403bc9f614537affe37d95690c8e2f2bb015b2cf/quixplus-1.0.0.tar.gz", hash = "sha256:a63ae9b39cd0b70d82a6f8ae75930535df7101e64bfa94418003873779661f04", size = 11865 }
+sdist = { url = "https://files.pythonhosted.org/packages/49/33/d36f3c83b0c6c7cbccaf9901ec21d46d0ee9a3bf17a95d1a371a2d77533b/quixplus-1.0.1.tar.gz", hash = "sha256:0a82882c557a02cca67ac996a188921aab71f13d15dfc04bf205151b068c7d13", size = 11863 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dd/29/2adf53f0c4067314984e204e842b64457babeaf36003eb8a7fbeb975358b/quixplus-1.0.0-py3-none-any.whl", hash = "sha256:619eeecad1b058bc292ed155f24008df2f53c00b15f9185086039febc00db3c5", size = 11320 },
+    { url = "https://files.pythonhosted.org/packages/49/2a/a3e9c5b5d8de302e9f68b4b0cd192c789ebe4e365d8e4aac2c5e1358df46/quixplus-1.0.1-py3-none-any.whl", hash = "sha256:3269a0edfff8ef8e8eca80dd2b37fd7709248dcd82f4526924600070714253de", size = 11311 },
 ]
 
 [[package]]
@@ -719,6 +728,7 @@ version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "common" },
+    { name = "kafka-python" },
     { name = "kafka-python-ng" },
     { name = "pandas" },
     { name = "python-dotenv" },
@@ -730,6 +740,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "common" },
+    { name = "kafka-python", specifier = ">=2.0.2" },
     { name = "kafka-python-ng", specifier = ">=2.2.3" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "python-dotenv", specifier = ">=1.0.1" },

@@ -3,9 +3,11 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from quixplus import WebsocketSource
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
+
+from quixplus import WebsocketSource
+
 
 load_dotenv()
 
@@ -37,7 +39,7 @@ def validate(data: dict) -> bool:
 
 
 topic_name = "equity-quotes"
-ws_url = "wss://socket.polygon.io"
+ws_url = "wss://delayed.polygon.io/stocks"
 auth_payload = {"action": "auth", "params": os.environ.get("POLYGON_TOKEN")}
 subscribe_payload = {"action": "subscribe", "params": "A.*"}
 
@@ -69,7 +71,7 @@ def main():
 
 
     app = Application(
-        broker_address=connection,
+        # broker_address=connection,
         processing_guarantee="exactly-once",
         auto_create_topics=False,
         auto_offset_reset="latest",

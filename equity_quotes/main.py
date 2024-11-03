@@ -34,7 +34,7 @@ def validate(data: dict) -> bool:
     """Validate the data to ensure it is in the expected format."""
     return data.get("sym") is not None
 
-topic_name = os.environ["OUTPUT"] or "equity-quotes"
+topic_name = "equity-quotes"
 ws_url = "wss://socket.polygon.io"
 auth_payload = {"action": "auth", "params": os.environ.get("POLYGON_TOKEN")}
 subscribe_payload = {"action": "subscribe", "params": "A.*"}

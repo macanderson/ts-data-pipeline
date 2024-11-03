@@ -71,7 +71,8 @@ def main():
     app = Application(
         broker_address=connection,
     )
-    app.add_source(source)
+    sdf = app.dataframe(source=source)
+    sdf.print()
     app.run()
 
 if __name__ == "__main__":

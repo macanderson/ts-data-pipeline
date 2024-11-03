@@ -27,8 +27,8 @@ connection = ConnectionConfig(
 app = Application(
     broker_address=connection,
     processing_guarantee="exactly-once",
-    auto_create_topics=True,
-    auto_offset_reset="earliest",
+    auto_create_topics=False,
+    auto_offset_reset="latest-offset",
     consumer_group="option_trade_aggs",
     use_changelog_topics=True,
 )

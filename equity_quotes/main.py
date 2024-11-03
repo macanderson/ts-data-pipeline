@@ -2,6 +2,7 @@ import json
 import logging
 import os
 
+from confluent_kafka.avro import serializer
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
@@ -19,7 +20,10 @@ logger.addHandler(logging.StreamHandler())
 
 def transform(data: dict) -> dict:
     """Transform the data to the expected format."""
+    print(f"Received Polygon Websocket Data: {data}")
+
     record = {}
+
     record["symbol"] = data.get("sym") or "none"
     record["event"] = data.get("ev") or "none"
     record["volume"] = data.get("v") or 0
@@ -35,6 +39,7 @@ def transform(data: dict) -> dict:
 
 def validate(data: dict) -> bool:
     """Validate the data to ensure it is in the expected format."""
+
     return data.get("sym") is not None
 
 
@@ -43,17 +48,23 @@ ws_url = "wss://delayed.polygon.io/stocks"
 auth_payload = {"action": "auth", "params": os.environ.get("POLYGON_TOKEN")}
 subscribe_payload = {"action": "subscribe", "params": "A.*"}
 
+def value_serializer(data: dict) -> bytes:
+    """Serialize the data to bytes."""
+    print(f"data in value serializer: {data}")
+    return json.dumps(data).encode("utf-8")
+
 
 source = WebsocketSource(
     topic_name=topic_name,
     ws_url=ws_url,
     key_serializer=str,
-    value_serializer=json.dumps,
+    value_serializer=value_serializer,
     reconnect_delay=5,
     transform=transform,
     validator=validate,
     auth_payload=auth_payload,
     subscribe_payload=subscribe_payload,
+    debug=True,
 )
 
 

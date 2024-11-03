@@ -9,12 +9,10 @@ dependencies = [
     "common",
     "pandas>=2.2.3",
     "python-dotenv>=1.0.1",
+    "quixplus>=0.1.3",
     "quixstreams>=3.1.0",
     "websocket-client>=1.8.0",
 ]
-
-[tool.uv.sources]
-common = { workspace = true }
 
 [tool.uv.workspace]
 members = [
@@ -24,6 +22,8 @@ members = [
     "market_dashboard",
     "common"
 ]
+
+
 
 [tool.uv]
 package = true

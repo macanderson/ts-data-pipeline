@@ -7,7 +7,6 @@ resolution-markers = [
 
 [manifest]
 members = [
-    "common",
     "equity-quotes",
     "market-dashboard",
     "option-trade-aggs",
@@ -164,28 +163,9 @@ wheels = [
 
 [[package]]
 name = "common"
-version = "1.0.0"
-source = { virtual = "common" }
-dependencies = [
-    { name = "aiohttp" },
-    { name = "apscheduler" },
-    { name = "jsonpath-ng" },
-    { name = "python-dotenv" },
-    { name = "python-json-logger" },
-    { name = "quixstreams" },
-    { name = "websocket-client" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "aiohttp", specifier = ">=3.10.10" },
-    { name = "apscheduler", specifier = ">=3.10.4" },
-    { name = "jsonpath-ng", specifier = ">=1.7.0" },
-    { name = "python-dotenv", specifier = ">=1.0.1" },
-    { name = "python-json-logger", specifier = ">=2.0.7" },
-    { name = "quixstreams", specifier = ">=3.1.1" },
-    { name = "websocket-client", specifier = ">=1.8.0" },
-]
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/eb/b2/c900168d36abd28b1b08a81387835eff8b574bc6c2e9fefb5c4a38135d94/common-0.1.2.tar.gz", hash = "sha256:3dfa982670abefc870043b239eaa0ecd860be7aa952b1931c1356b426ff8c76a", size = 3541 }
 
 [[package]]
 name = "confluent-kafka"
@@ -592,6 +572,24 @@ wheels = [
 ]
 
 [[package]]
+name = "quixplus"
+version = "0.1.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "aiohttp" },
+    { name = "apscheduler" },
+    { name = "jsonpath-ng" },
+    { name = "python-dotenv" },
+    { name = "python-json-logger" },
+    { name = "quixstreams" },
+    { name = "websocket-client" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e4/81/a1207fe861299ee8d88ed0538d2b3f35d10e781791c8b2094fdfc6811dcc/quixplus-0.1.3.tar.gz", hash = "sha256:5a7bf89d37eca403c10df64ff820cebc9acb7f639ceceba5f9d9bd29b9a25953", size = 10615 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/32/0a/dc0d652bb3258ac848b498f5df9c10c77ea3d01df29dca7c978a0c283495/quixplus-0.1.3-py3-none-any.whl", hash = "sha256:5490ddf93d85b42283e1a95e2fe4eb0f3acc8e1ee8e054c7950f9c38211f21d4", size = 10943 },
+]
+
+[[package]]
 name = "quixstreams"
 version = "3.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -707,15 +705,17 @@ dependencies = [
     { name = "common" },
     { name = "pandas" },
     { name = "python-dotenv" },
+    { name = "quixplus" },
     { name = "quixstreams" },
     { name = "websocket-client" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "common", virtual = "common" },
+    { name = "common" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
+    { name = "quixplus", specifier = ">=0.1.3" },
     { name = "quixstreams", specifier = ">=3.1.0" },
     { name = "websocket-client", specifier = ">=1.8.0" },
 ]

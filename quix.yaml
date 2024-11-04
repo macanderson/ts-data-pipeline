@@ -128,10 +128,6 @@ deployments:
         inputType: FreeText
         required: false
         value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
-      - name: POLYGON_TOKEN
-        inputType: FreeText
-        required: false
-        value: ''
   - name: equity_quotes
     application: equity_quotes
     version: latest

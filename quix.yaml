@@ -12,7 +12,7 @@ deployments:
     deploymentType: Service
     resources:
       cpu: 2000
-      memory: 1000
+      memory: 3000
       replicas: 3
     variables:
       - name: OUTPUT
@@ -96,6 +96,10 @@ deployments:
         inputType: InputTopic
         required: false
         value: option-trades
+      - name: GITHUB_PAT
+        inputType: Secret
+        required: false
+        secretKey: GITHUB_PAT_key
       - name: SASL_PASSWORD
         inputType: Secret
         required: false
@@ -116,10 +120,6 @@ deployments:
         inputType: FreeText
         required: false
         value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
-      - name: POLYGON_TOKEN
-        inputType: FreeText
-        required: false
-        value: ''
   - name: equity_quotes
     application: equity_quotes
     version: latest

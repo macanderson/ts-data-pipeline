@@ -5,10 +5,6 @@ variables:
     inputType: InputTopic
     defaultValue: option-trades
     required: false
-  - name: GITHUB_PAT
-    inputType: Secret
-    defaultValue: GITHUB_PAT_key
-    required: false
   - name: SASL_PASSWORD
     inputType: Secret
     defaultValue: SASL_PASSWORD_key

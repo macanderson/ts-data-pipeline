@@ -46,7 +46,6 @@ output_topic = app.topic(
 source = UnusualWhalesSource(name=output_topic.name)
 sdf = app.dataframe(source=source)
 sdf.print(pretty=True)
-sdf.to_topic(output_topic)
 
 def main():
     """Run the application"""

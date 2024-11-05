@@ -157,7 +157,7 @@ deployments:
         inputType: FreeText
         required: false
         value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
-  - name: streamlit
+  - name: react-dashboard
     application: dashboard
     version: latest
     deploymentType: Service
@@ -167,7 +167,7 @@ deployments:
       replicas: 1
     publicAccess:
       enabled: true
-      urlPrefix: streamlit
+      urlPrefix: react-dashboard
     variables:
       - name: input
         inputType: InputTopic

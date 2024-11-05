@@ -13,7 +13,7 @@ deployments:
     resources:
       cpu: 2000
       memory: 3000
-      replicas: 3
+      replicas: 1
     variables:
       - name: OUTPUT
         inputType: OutputTopic

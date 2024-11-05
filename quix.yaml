@@ -157,17 +157,17 @@ deployments:
         inputType: FreeText
         required: false
         value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
-  - name: react-dashboard
+  - name: dashboard
     application: dashboard
     version: latest
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 800
+      cpu: 500
+      memory: 3300
       replicas: 1
     publicAccess:
       enabled: true
-      urlPrefix: react-dashboard
+      urlPrefix: dashboard
     variables:
       - name: input
         inputType: InputTopic

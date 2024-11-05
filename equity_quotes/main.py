@@ -70,6 +70,7 @@ def main():
     """Main function to run the application."""
 
     connection = ConnectionConfig(
+        print(os.environ["BOOTSTRAP_SERVERS"])
         bootstrap_servers=os.environ["BOOTSTRAP_SERVERS"],
         sasl_mechanism=os.environ["SASL_MECHANISM"],
         security_protocol=os.environ["SECURITY_PROTOCOL"],

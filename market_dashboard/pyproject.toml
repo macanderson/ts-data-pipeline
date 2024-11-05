@@ -1,7 +1,0 @@
-[project]
-name = "market_dashboard"
-version = "1.0.0"
-description = "Tradesignals data processing"
-readme = "README.md"
-requires-python = ">=3.12"
-

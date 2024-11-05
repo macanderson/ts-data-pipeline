@@ -83,7 +83,7 @@ def main():
         processing_guarantee="exactly-once",
         auto_create_topics=False,
     )
-    app.add_source(source)
+    app.add_source(source("name"))
     app.run()
 
 if __name__ == "__main__":

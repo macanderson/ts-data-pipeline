@@ -6,6 +6,7 @@ option-trades{{ fa:fa-arrow-right-arrow-left option-trades &#8205}}:::topic --> 
 option_trade_aggs[fa:fa-rocket option_trade_aggs &#8205] --> option-trade-aggs{{ fa:fa-arrow-right-arrow-left option-trade-aggs &#8205}}:::topic;
 option-trades{{ fa:fa-arrow-right-arrow-left option-trades &#8205}}:::topic --> market_dashboard[fa:fa-rocket market_dashboard &#8205];
 equity_quotes[fa:fa-rocket equity_quotes &#8205] --> equity-quotes{{ fa:fa-arrow-right-arrow-left equity-quotes &#8205}}:::topic;
+option-trades{{ fa:fa-arrow-right-arrow-left option-trades &#8205}}:::topic --> dashboard[fa:fa-rocket dashboard &#8205];
 
 
 classDef default font-size:110%;

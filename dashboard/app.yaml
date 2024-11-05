@@ -1,0 +1,14 @@
+name: dashboard
+language: NodeJs
+variables:
+  - name: input
+    inputType: InputTopic
+    defaultValue: option-trades
+    required: false
+  - name: bearer_token
+    inputType: FreeText
+    defaultValue: pat-b71d094893494d6ea88c82f02f571331
+    required: false
+dockerfile: dockerfile
+defaultFile: src/services/quix.ts
+libraryItemId: dc712441-abf5-43b7-a7a2-ced9a3f9508b

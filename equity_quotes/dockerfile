@@ -8,9 +8,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # Set the working directory inside the container
 WORKDIR /app
 
-# Install git and add it to the path
-RUN apt update && apt install -y git && \
-    echo "export PATH=/usr/bin:$PATH" >> /etc/bashrc
 
 # Copy only the requirements file(s) to leverage Docker cache
 # Assuming all requirements files are in the root or subdirectories

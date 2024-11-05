@@ -157,6 +157,23 @@ deployments:
         inputType: FreeText
         required: false
         value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
+  - name: dashboard
+    application: dashboard
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 800
+      replicas: 1
+    variables:
+      - name: input
+        inputType: InputTopic
+        required: false
+        value: option-trades
+      - name: bearer_token
+        inputType: FreeText
+        required: false
+        value: pat-b71d094893494d6ea88c82f02f571331
 
 # This section describes the Topics of the data pipeline
 topics:

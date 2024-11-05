@@ -6,9 +6,6 @@ readme = "README.md"
 requires-python = ">=3.12"
 
 dependencies = [
-    "common",
-    "kafka-python>=2.0.2",
-    "kafka-python-ng>=2.2.3",
     "pandas>=2.2.3",
     "python-dotenv>=1.0.1",
     "quixplus>=0.1.3",
@@ -22,7 +19,6 @@ members = [
     "option_trade_aggs",
     "equity_quotes",
     "market_dashboard",
-    "common"
 ]
 
 
@@ -46,5 +42,4 @@ packages = [
     "option_trade_aggs",
     "equity_quotes",
     "market_dashboard",
-    "common"
 ]

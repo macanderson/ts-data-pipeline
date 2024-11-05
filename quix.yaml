@@ -80,46 +80,6 @@ deployments:
         inputType: FreeText
         required: false
         value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
-  - name: market_dashboard
-    application: market_dashboard
-    version: latest
-    deploymentType: Service
-    resources:
-      cpu: 200
-      memory: 800
-      replicas: 1
-    publicAccess:
-      enabled: true
-      urlPrefix: dashboard
-    variables:
-      - name: INPUT
-        inputType: InputTopic
-        required: false
-        value: option-trades
-      - name: GITHUB_PAT
-        inputType: Secret
-        required: false
-        secretKey: GITHUB_PAT_key
-      - name: SASL_PASSWORD
-        inputType: Secret
-        required: false
-        secretKey: SASL_PASSWORD_key
-      - name: SASL_USERNAME
-        inputType: FreeText
-        required: false
-        value: api-user
-      - name: SASL_MECHANISM
-        inputType: FreeText
-        required: false
-        value: SCRAM-SHA-256
-      - name: SECURITY_PROTOCOL
-        inputType: FreeText
-        required: false
-        value: SASL_SSL
-      - name: BOOTSTRAP_SERVERS
-        inputType: FreeText
-        required: false
-        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
   - name: equity_quotes
     application: equity_quotes
     version: latest

@@ -1,2 +1,2 @@
 quixstreams
-quixplus==3.1.0
+quixplus==3.3.2

@@ -8,7 +8,6 @@ resolution-markers = [
 [manifest]
 members = [
     "equity-quotes",
-    "market-dashboard",
     "option-trade-aggs",
     "option-trades",
     "tradesignals-pipeline",
@@ -162,12 +161,6 @@ wheels = [
 ]
 
 [[package]]
-name = "common"
-version = "0.1.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/eb/b2/c900168d36abd28b1b08a81387835eff8b574bc6c2e9fefb5c4a38135d94/common-0.1.2.tar.gz", hash = "sha256:3dfa982670abefc870043b239eaa0ecd860be7aa952b1931c1356b426ff8c76a", size = 3541 }
-
-[[package]]
 name = "confluent-kafka"
 version = "2.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -270,15 +263,6 @@ wheels = [
 ]
 
 [[package]]
-name = "kafka-python"
-version = "2.0.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/07/4c/2595fb5733c3ac01aef3dacce17ff07f7f3336d9f96548bcf723b9073e5c/kafka-python-2.0.2.tar.gz", hash = "sha256:04dfe7fea2b63726cd6f3e79a2d86e709d608d74406638c5da33a01d45a9d7e3", size = 265053 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/75/68/dcb0db055309f680ab2931a3eeb22d865604b638acf8c914bedf4c1a0c8c/kafka_python-2.0.2-py2.py3-none-any.whl", hash = "sha256:2d92418c7cb1c298fa6c7f0fb3519b520d0d7526ac6cb7ae2a4fc65a51a94b6e", size = 246508 },
-]
-
-[[package]]
 name = "kafka-python-ng"
 version = "2.2.3"
 source = { registry = "https://pypi.org/simple" }
@@ -286,11 +270,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/ce/04/1d65bdf3f0103a087
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0f/61/22e778f642465a157c449782300d8817ebbc106794a8a7ebe88cbb846b05/kafka_python_ng-2.2.3-py2.py3-none-any.whl", hash = "sha256:adc6e82147c441ca4ae1f22e291fc08efab0d10971cbd4aa1481d2ffa38e9480", size = 232824 },
 ]
-
-[[package]]
-name = "market-dashboard"
-version = "1.0.0"
-source = { virtual = "market_dashboard" }
 
 [[package]]
 name = "multidict"
@@ -591,7 +570,7 @@ wheels = [
 
 [[package]]
 name = "quixplus"
-version = "2.0.0"
+version = "3.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -603,9 +582,9 @@ dependencies = [
     { name = "quixstreams" },
     { name = "websocket-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b1/07/38f99f4f1ec65de612282ca165b0ad77a2071a35b728518859111f41975f/quixplus-2.0.0.tar.gz", hash = "sha256:cbaf2543f38c4faf12a374efe83b4ca2b2838d65aef7542847fda81c5feb9e0b", size = 11972 }
+sdist = { url = "https://files.pythonhosted.org/packages/8b/df/f864c4e225c75d123f3cac99cfe22c3cba48b31feef87fea5baa79b9bbf4/quixplus-3.0.2.tar.gz", hash = "sha256:dc835193f5a049bcae09ba26e96424ff0177cbbce4cfefc0b16732bdd678f78d", size = 12083 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d9/e4/7aefb04cf3fd620b6280c1740b257510f6078ebca209b8e4ff9bf10fd41a/quixplus-2.0.0-py3-none-any.whl", hash = "sha256:6721cb21f1999b79de9ec4ac4e489592c2c4b019a7ed57a837428bd088ed8bda", size = 11417 },
+    { url = "https://files.pythonhosted.org/packages/74/91/dbdc7ff695762e29cdd441ff8b9011d144403aa27552f74ec99b3bcde4d1/quixplus-3.0.2-py3-none-any.whl", hash = "sha256:11efcee0e2cccd8cec5e7328b79db8e544d7d55b14fd6ef362c1c2ab780a617b", size = 11668 },
 ]
 
 [[package]]
@@ -727,9 +706,6 @@ name = "tradesignals-pipeline"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "common" },
-    { name = "kafka-python" },
-    { name = "kafka-python-ng" },
     { name = "pandas" },
     { name = "python-dotenv" },
     { name = "quixplus" },
@@ -739,9 +715,6 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "common" },
-    { name = "kafka-python", specifier = ">=2.0.2" },
-    { name = "kafka-python-ng", specifier = ">=2.2.3" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "quixplus", specifier = ">=0.1.3" },

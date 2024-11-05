@@ -77,21 +77,13 @@ def main():
         sasl_password=os.environ["SASL_PASSWORD"],
     )
 
-
-    app = Application(
-        # broker_address=connection,
-        processing_guarantee="exactly-once",
-        auto_create_topics=False,
-        auto_offset_reset="latest",
-        consumer_group="equity_quotes",
-    )
-
     # Set up the application
     app = Application(
         broker_address=connection,
+        processing_guarantee="exactly-once",
+        auto_create_topics=False,
     )
-    sdf = app.dataframe(source=source)
-    sdf.print()
+    app.add_source(source)
     app.run()
 
 if __name__ == "__main__":

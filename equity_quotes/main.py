@@ -52,7 +52,7 @@ def value_serializer(data: dict) -> bytes:
 
 
 source = WebsocketSource(
-    topic_name=topic_name,
+    name=topic_name,
     ws_url=ws_url,
     key_serializer=str,
     value_serializer=value_serializer,

@@ -1,33 +1,38 @@
-from quixstreams import Application  # import the Quix Streams modules for interacting with Kafka
 import os
 
-app = Application()  # create an Application
+from dotenv import load_dotenv
+from quixstreams import Application
 
-# INPUT - InputTopic
-INPUT = app.topic(os.environ["INPUT"])
+load_dotenv()
 
-# news - OutputTopic
-news = app.topic(os.environ["news"])
 
+app = Application(
+    broker_address=None,
+    processing_guarantee="at-least-once",
+    auto_create_topics=False,
+)
+
+output = app.topic(
+    os.environ.get("OUTPUT", "news"),
+    key_serializer="str",
+    value_serializer="json"
+)
+
+
+source = app.source(
+    name="news",
+    key_deserializer="str",
+    value_deserializer="json"
+)
 
 def main():
-    """
-    Your code goes here.
-    See the Quix Streams documentation for more examples:
-    https://quix.io/docs/quix-streams/quickstart.html
-    """
 
-    # Process incoming data using Streaming DataFrame
-    # sdf = app.dataframe(INPUT)
 
-    # Print incoming data
-    # sdf.print()
+    app.add_source(source)
 
-    # Produce data to the output topic
-    # sdf = sdf.to_topic(news)
-
-    # Run the app
-    # app.run(sdf)
+    sdf = app.dataframe(source=source)
+    sdf.print(pretty=True)
+    app.run()
 
 if __name__ == "__main__":
     try:

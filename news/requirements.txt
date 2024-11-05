@@ -1,4 +1,2 @@
 quixstreams
-python-dotenv
-websockets
 quixplus==3.0.2

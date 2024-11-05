@@ -137,6 +137,27 @@ deployments:
         inputType: FreeText
         required: false
         value: pat-b71d094893494d6ea88c82f02f571331
+  - name: news
+    application: news
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 800
+      replicas: 1
+    variables:
+      - name: OUTPUT
+        inputType: OutputTopic
+        required: false
+        value: news
+      - name: NEWS_API_TOKEN
+        inputType: Secret
+        required: false
+        secretKey: NEWS_API_TOKEN_key
+      - name: NEWS_API_VENDOR
+        inputType: FreeText
+        required: false
+        value: https://newsapi.org/v2/everything
 
 # This section describes the Topics of the data pipeline
 topics:

@@ -1,0 +1,18 @@
+name: news
+language: python
+variables:
+  - name: OUTPUT
+    inputType: OutputTopic
+    defaultValue: news
+    required: false
+  - name: NEWS_API_TOKEN
+    inputType: Secret
+    defaultValue: NEWS_API_TOKEN_key
+    required: false
+  - name: NEWS_API_VENDOR
+    inputType: FreeText
+    defaultValue: https://newsapi.org/v2/everything
+    required: false
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py

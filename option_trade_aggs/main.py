@@ -1,31 +1,20 @@
+from datetime import timedelta
 import logging
 import os
-from datetime import timedelta
 
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
 from utils import extract_timestamp
 
+
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-print("File name:")
-print(__file__)
-
-connection = ConnectionConfig(
-    bootstrap_servers=os.environ["BOOTSTRAP_SERVERS"],
-    sasl_mechanism=os.environ["SASL_MECHANISM"],
-    security_protocol=os.environ["SECURITY_PROTOCOL"],
-    sasl_username=os.environ["SASL_USERNAME"],
-    sasl_password=os.environ["SASL_PASSWORD"],
-)
-
-
 app = Application(
-    broker_address=connection,
+    broker_address=None,
     processing_guarantee="exactly-once",
     auto_create_topics=False,
     auto_offset_reset="latest-offset",

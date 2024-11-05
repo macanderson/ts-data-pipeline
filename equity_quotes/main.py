@@ -45,6 +45,7 @@ ws_url = "wss://delayed.polygon.io/stocks"
 auth_payload = {"action": "auth", "params": os.environ.get("POLYGON_TOKEN")}
 subscribe_payload = {"action": "subscribe", "params": "A.*"}
 
+
 def value_serializer(data: dict) -> bytes:
     """Serialize the data to bytes."""
     print(f"data in value serializer: {data}")
@@ -68,18 +69,10 @@ source = WebsocketSource(
 # Kafka Configuration
 def main():
     """Main function to run the application."""
-    print(os.environ["BOOTSTRAP_SERVERS"])
-    connection = ConnectionConfig(
-        bootstrap_servers=os.environ["BOOTSTRAP_SERVERS"],
-        sasl_mechanism=os.environ["SASL_MECHANISM"],
-        security_protocol=os.environ["SECURITY_PROTOCOL"],
-        sasl_username=os.environ["SASL_USERNAME"],
-        sasl_password=os.environ["SASL_PASSWORD"],
-    )
 
     # Set up the application
     app = Application(
-        broker_address=connection,
+        broker_address=None,
         processing_guarantee="exactly-once",
         auto_create_topics=False,
     )

@@ -165,6 +165,9 @@ deployments:
       cpu: 200
       memory: 800
       replicas: 1
+    publicAccess:
+      enabled: true
+      urlPrefix: dashboard
     variables:
       - name: input
         inputType: InputTopic

@@ -51,6 +51,9 @@ deployments:
       cpu: 1000
       memory: 2000
       replicas: 1
+    state:
+      enabled: true
+      size: 10
     variables:
       - name: INPUT
         inputType: InputTopic

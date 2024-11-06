@@ -17,20 +17,17 @@ logger.addHandler(logging.StreamHandler())
 
 def transform(data: dict) -> dict:
     """Transform the data to the expected format."""
-    print(f"Received Polygon Websocket Data: {data}")
-
     record = {}
-
     record["symbol"] = data.get("sym") or "none"
     record["event"] = data.get("ev") or "none"
-    record["volume"] = data.get("v") or 0
     record["open"] = data.get("o") or 0
     record["high"] = data.get("h") or 0
     record["low"] = data.get("l") or 0
     record["close"] = data.get("c") or 0
     record["vwap"] = data.get("vw") or 0
-    record["trade_count"] = data.get("z") or 0
-    record["day_volume"] = data.get("av") or 0
+    record["volume"] = data.get("v") or 0
+    record["num_trades"] = data.get("z") or 0
+    record["cum_volume"] = data.get("av") or 0
     return record
 
 
@@ -76,7 +73,22 @@ def main():
         processing_guarantee="exactly-once",
         auto_create_topics=False,
     )
-    app.add_source(source)
+
+    output_topic = app.topic(
+        name=topic_name,
+        key_serializer=str,
+        value_serializer='json',
+    )
+
+    producer = app.get_producer()
+
+    source.configure(
+        topic=output_topic,
+        producer=producer,
+    )
+
+    sdf = app.dataframe(source=source, topic=output_topic)
+    sdf.print(pretty=True)
     app.run()
 
 if __name__ == "__main__":

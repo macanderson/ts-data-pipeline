@@ -66,10 +66,16 @@ source = WebsocketSource(
 # Kafka Configuration
 def main():
     """Main function to run the application."""
-
+    connection = ConnectionConfig(
+        bootstrap_servers=os.environ.get("BOOTSTRAP_SERVERS"),
+        security_protocol="SASL_SSL",
+        sasl_mechanism="SASL_MECHANISM",
+        sasl_plain_username=os.environ.get("SASL_USERNAME"),
+        sasl_plain_password=os.environ.get("SASL_PASSWORD"),
+    )
     # Set up the application
     app = Application(
-        broker_address=None,
+        broker_address=connection,
         processing_guarantee="exactly-once",
         auto_create_topics=False,
     )

@@ -1,15 +1,17 @@
 """Utility functions."""
+from datetime import datetime
 import json
 import logging
 import os
 import time
-from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 import websockets
+from websockets.sync.client import connect
+
 from data_source import CustomSource
 from quixstreams.models import TimestampType, Topic
-from websockets.sync.client import connect
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -43,11 +45,11 @@ def map_fields(data: Dict[Any, Any]) -> dict:
 
         position_type = "no_side_"
         if "ask_side" in tags:
-            position_type = "bought_"
+            position_type = "long_"
         elif "bid_side" in tags:
-            position_type = "sold_"
+            position_type = "short_"
         elif "no_side" in tags:
-            position_type = "no_side_"
+            position_type = "neutral_"
         position_type += data.get('option_type')
 
         if (float(data.get("premium")) > 75000) and float(data.get("premium")):  # noqa E501
@@ -77,7 +79,6 @@ def map_fields(data: Dict[Any, Any]) -> dict:
             'expiry': data.get('expiry'),
             'dtx': days_to_expiry,
             'otype': data.get('option_type'),
-            'ptype': position_type,
             'qty': data.get('size', 0),
             'price': float(data.get('price', '0') or '0'),
             'premium': float(data.get('premium', '0') or '0'),

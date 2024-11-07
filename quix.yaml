@@ -156,7 +156,7 @@ deployments:
       - name: NEWS_API_TOKEN
         inputType: Secret
         required: false
-        secretKey: NEWS_API_TOKEN_key
+        secretKey: OPTION_TRADES_TABLE_NAME
       - name: NEWS_API_VENDOR
         inputType: FreeText
         required: false

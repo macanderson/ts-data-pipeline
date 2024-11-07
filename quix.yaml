@@ -161,6 +161,23 @@ deployments:
         inputType: FreeText
         required: false
         value: https://newsapi.org/v2/everything
+  - name: darkpool_trades
+    application: darkpool_trades
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 800
+      replicas: 1
+    variables:
+      - name: OUTPUT
+        inputType: OutputTopic
+        required: false
+        value: darkpool-trades
+      - name: UNUSUALWHALES_TOKEN
+        inputType: Secret
+        required: false
+        secretKey: UNUSUALWHALES_TOKEN_key
 
 # This section describes the Topics of the data pipeline
 topics:

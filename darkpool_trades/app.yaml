@@ -1,0 +1,14 @@
+name: darkpool_trades
+language: python
+variables:
+  - name: OUTPUT
+    inputType: OutputTopic
+    defaultValue: darkpool-trades
+    required: false
+  - name: UNUSUALWHALES_TOKEN
+    inputType: Secret
+    defaultValue: UNUSUALWHALES_TOKEN_key
+    required: false
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py

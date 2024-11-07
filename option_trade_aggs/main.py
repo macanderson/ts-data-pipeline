@@ -17,7 +17,7 @@ app = Application(
     broker_address=None,
     processing_guarantee="exactly-once",
     auto_create_topics=False,
-    auto_offset_reset="latest-offset",
+    auto_offset_reset="latest",
     consumer_group="option_trade_aggs",
     use_changelog_topics=True,
 )

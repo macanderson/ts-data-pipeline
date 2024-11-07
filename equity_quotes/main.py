@@ -69,10 +69,11 @@ def main():
     connection = ConnectionConfig(
         bootstrap_servers=os.environ.get("BOOTSTRAP_SERVERS"),
         security_protocol="SASL_SSL",
-        sasl_mechanism="SASL_MECHANISM",
-        sasl_plain_username=os.environ.get("SASL_USERNAME"),
-        sasl_plain_password=os.environ.get("SASL_PASSWORD"),
+        sasl_mechanism=os.environ["SASL_MECHANISM"],
+        sasl_username=os.environ["SASL_USERNAME"],
+        sasl_password=os.environ["SASL_PASSWORD"],
     )
+
     # Set up the application
     app = Application(
         broker_address=connection,

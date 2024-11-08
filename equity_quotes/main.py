@@ -95,14 +95,16 @@ def main():
         processing_guarantee="exactly-once",
         auto_create_topics=False,
     )
-
-    app.add_source(source=source, topic=output_topic)
-
+    
     output_topic = app.topic(
         name=topic_name,
         key_serializer=str,
         value_serializer='json',
     )
+    
+    app.add_source(source=source, topic=output_topic)
+
+
 
     producer = app.get_producer()
 

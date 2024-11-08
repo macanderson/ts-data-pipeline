@@ -7,11 +7,6 @@ from quixplus import WebsocketSource
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
 
-<<<<<<< Updated upstream
-from .websocket_source import WebsocketSource
-
-=======
->>>>>>> Stashed changes
 load_dotenv()
 
 # Configure logging
@@ -49,6 +44,7 @@ def main():
     subscribe_payload = {"action": "subscribe", "params": "A.*"}
 
     source = WebsocketSource(
+        name="equity-quotes",
         ws_url=ws_url,
         auth_payload=auth_payload,
         subscribe_payload=subscribe_payload,

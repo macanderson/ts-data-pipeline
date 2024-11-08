@@ -88,8 +88,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 800
+      cpu: 600
+      memory: 2200
       replicas: 1
     variables:
       - name: OUTPUT

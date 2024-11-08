@@ -35,8 +35,8 @@ class WebsocketSource(Source):
         timestamp_field: Optional[str]=None,
         debug: bool=False
     ):
-        super(name).__init__()
         logger.info(f"Initializing WebsocketSource with ws_url: {ws_url}")
+        super(name).__init__()
         self.ws_url = ws_url
         self.auth_payload = auth_payload
         self.subscribe_payload = subscribe_payload

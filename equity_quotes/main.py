@@ -28,12 +28,13 @@ def transform(data: dict) -> dict:
     record["volume"] = data.get("v") or 0
     record["num_trades"] = data.get("z") or 0
     record["cum_volume"] = data.get("av") or 0
+    print(f"record in transform: {record}")
     return record
 
 
 def validate(data: dict) -> bool:
     """Validate the data to ensure it is in the expected format."""
-
+    print(f"data in validate: {data}")
     return data.get("sym") is not None
 
 
@@ -66,6 +67,20 @@ source = WebsocketSource(
 # Kafka Configuration
 def main():
     """Main function to run the application."""
+
+    source = WebsocketSource(
+        name=topic_name,
+        ws_url=ws_url,
+        key_serializer=str,
+        value_serializer=value_serializer,
+        reconnect_delay=5,
+        transform=transform,
+        validator=validate,
+        auth_payload=auth_payload,
+        subscribe_payload=subscribe_payload,
+        debug=True,
+    )
+
     connection = ConnectionConfig(
         bootstrap_servers=os.environ.get("BOOTSTRAP_SERVERS"),
         security_protocol="SASL_SSL",
@@ -80,6 +95,8 @@ def main():
         processing_guarantee="exactly-once",
         auto_create_topics=False,
     )
+
+    app.add_source(source=source, topic=output_topic)
 
     output_topic = app.topic(
         name=topic_name,
@@ -97,6 +114,7 @@ def main():
     sdf = app.dataframe(source=source, topic=output_topic)
     sdf.print(pretty=True)
     app.run()
+
 
 if __name__ == "__main__":
     try:

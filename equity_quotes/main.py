@@ -103,7 +103,7 @@ def main():
     )
     
     app.add_source(source=source, topic=output_topic)
-
+    logger.info("Adding source to the application.")
     sdf = app.dataframe(output_topic)
     sdf.print(pretty=True)
     app.run()

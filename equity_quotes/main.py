@@ -45,7 +45,6 @@ def main():
     subscribe_payload = {"action": "subscribe", "params": "A.*"}
 
     source = WebsocketSource(
-        "equity-quotes",
         ws_url=ws_url,
         auth_payload=auth_payload,
         subscribe_payload=subscribe_payload,

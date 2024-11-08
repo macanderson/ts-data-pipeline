@@ -3,11 +3,15 @@ import logging
 import os
 
 from dotenv import load_dotenv
+from quixplus import WebsocketSource
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
 
+<<<<<<< Updated upstream
 from .websocket_source import WebsocketSource
 
+=======
+>>>>>>> Stashed changes
 load_dotenv()
 
 # Configure logging

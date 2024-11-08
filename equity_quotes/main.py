@@ -91,17 +91,17 @@ def main():
 
     # Set up the application
     app = Application(
-        broker_address=connection,
+        broker_address=None,
         processing_guarantee="exactly-once",
         auto_create_topics=False,
     )
-    
+
     output_topic = app.topic(
         name=topic_name,
         key_serializer=str,
         value_serializer='json',
     )
-    
+
     app.add_source(source=source, topic=output_topic)
     logger.info("Adding source to the application.")
     sdf = app.dataframe(output_topic)

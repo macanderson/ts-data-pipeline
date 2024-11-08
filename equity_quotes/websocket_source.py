@@ -25,6 +25,7 @@ class WebsocketSource(Source):
 
     def __init__(
         self,
+        name: str,
         ws_url: str,
         auth_payload: Union[dict, None]=None,
         subscribe_payload: Union[dict, None]=None,
@@ -34,7 +35,7 @@ class WebsocketSource(Source):
         timestamp_field: Optional[str]=None,
         debug: bool=False
     ):
-        super().__init__()
+        super(name).__init__()
         logger.info(f"Initializing WebsocketSource with ws_url: {ws_url}")
         self.ws_url = ws_url
         self.auth_payload = auth_payload

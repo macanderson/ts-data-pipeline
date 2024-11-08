@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from quixstreams import Application
-
+from quixplus import HttpSource
 load_dotenv()
 
 

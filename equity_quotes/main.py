@@ -104,16 +104,7 @@ def main():
     
     app.add_source(source=source, topic=output_topic)
 
-
-
-    producer = app.get_producer()
-
-    source.configure(
-        topic=output_topic,
-        producer=producer,
-    )
-
-    sdf = app.dataframe(source=source, topic=output_topic)
+    sdf = app.dataframe(output_topic)
     sdf.print(pretty=True)
     app.run()
 

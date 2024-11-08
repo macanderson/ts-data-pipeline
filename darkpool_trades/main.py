@@ -1,9 +1,10 @@
 import os
 
+from quixplus import HttpSource
 from quixstreams import \
     Application  # import the Quix Streams modules for interacting with Kafka
 
-app = Application(auto_create_topics=False)  # create an Application
+app = Application(auto_create_topics=False, consumer_group="Tradesignals-Data-Pipeline")  # create an Application
 
 # OUTPUT - OutputTopic
 OUTPUT = app.topic(os.environ["OUTPUT"], key_serializer="str", value_serializer="json")
@@ -21,17 +22,36 @@ def main():
     https://quix.io/docs/quix-streams/quickstart.html
     """
 
-    # Process incoming data using Streaming DataFrame
-    # sdf = app.dataframe(input_topic)
+    source = HttpSource(
+        name="darkpool-trades",
+        url="https://api.unusualwhales.com/api/v1/option_trade",
+        headers={"Authorization": f"Bearer {UNUSUALWHALES_TOKEN}"},
+        poll_interval=1,
+        key_serializer="str",
+        value_serializer="json",
+        key_json_path="symbol"
+    )
 
-    # Print incoming data
-    # sdf.print()
+    app = Application(
+        broker_address=None,
+        auto_create_topics=False,
+        consumer_group="darkpool-trades",
+        processing_guarantee="exactly-once"
+    )
 
-    # Produce data to the output topic
-    # sdf = sdf.to_topic(OUTPUT)
+    output_topic = app.topic(
+        name="darkpool-trades",
+        key_serializer="str",
+        value_serializer="json"
+    )
 
-    # Run the app
-    # app.run(sdf)
+    app.add_source(source=source, topic=output_topic)
+
+    sdf = app.dataframe(output_topic)
+    sdf.print(pretty=True)
+
+    app.run()
+
 
 if __name__ == "__main__":
     try:

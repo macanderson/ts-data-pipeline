@@ -1,9 +1,8 @@
-import json
 import logging
 import os
 import sys
 import time
-from datetime import datetime
+from multiprocessing import Process
 
 from dotenv import load_dotenv
 from quixplus.sources import WebsocketSource
@@ -22,7 +21,6 @@ API_TOKEN = os.environ["POLYGON_TOKEN"]
 if not API_TOKEN:
     raise ValueError("POLYGON_TOKEN environment variable is not set.")
 
-
 # Set up the application
 app = Application(
     broker_address=None,
@@ -30,7 +28,6 @@ app = Application(
     auto_create_topics=False,
     loglevel=logging.INFO,
 )
-
 
 output_topic = Topic(
     name=os.environ.get("OUTPUT", "equity-quotes"),
@@ -43,22 +40,21 @@ AUTH_PAYLOAD = {"action": "auth", "params": API_TOKEN}
 SUBSCRIBE_PAYLOAD = {"action": "subscribe", "params": "A.*"}
 
 
-def key_func(self, msg):
+def key_func(msg):
     return {"id": msg.get("id")}
 
 
-def timestamp_func(self, msg):
+def timestamp_func(msg):
     return int(msg.get("timestamp", time.time() * 1000))
 
 
-def custom_headers_func(self, msg):
+def custom_headers_func(msg):
     return {
         "X-Data-Provider": "polygon",
         "X-System-Platform": sys.platform,
         "X-System-Python": sys.version,
         "X-System-Python-Version": sys.version_info,
     }
-
 
 def transform(data: dict) -> dict:
     """Transform the data to the expected format."""
@@ -78,6 +74,13 @@ def transform(data: dict) -> dict:
     print(f"record in transform: {record}")
     return record
 
+def validate_message(msg):
+    if isinstance(msg, dict):
+        return "sym" in msg
+    elif isinstance(msg, list):
+        return all(isinstance(item, dict) and "sym" in item for item in msg)
+    return False
+
 
 source = WebsocketSource(
     name=output_topic.name,
@@ -88,18 +91,24 @@ source = WebsocketSource(
     timestamp_func=timestamp_func,
     custom_headers_func=custom_headers_func,
     transform=transform,
-    validator=lambda msg: (isinstance(msg, dict) and "sym" in msg) or (isinstance(msg, list) and all(isinstance(item, dict) and "sym" in item for item in msg)),
+    validator=validate_message,
     debug=True,
 )
 
 
-def main():
+def run_app():
     logger.info(
-        f"Adding source '{source.name}' to application. Output topic: '{output_topic.name}'"  # noqa: E501
+        f"Adding source '{source.name}' to application. Output topic: '{output_topic.name}'"
     )
     app.add_source(source=source, topic=output_topic)
     logger.info("Running the application")
     app.run()
+
+
+def main():
+    process = Process(target=run_app)
+    process.start()
+    process.join()
 
 if __name__ == "__main__":
     try:

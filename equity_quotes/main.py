@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 import time
+from functools import partial
 from multiprocessing import Process
 
 from dotenv import load_dotenv
@@ -106,7 +107,9 @@ def run_app():
 
 
 def main():
-    process = Process(target=run_app)
+    # Use partial to avoid pickling issues with lambda functions
+    run_app_partial = partial(run_app)
+    process = Process(target=run_app_partial)
     process.start()
     process.join()
 

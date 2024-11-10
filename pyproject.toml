@@ -5,7 +5,9 @@ description = "Tradesignals streaming and batch data processing pipelines."
 readme = "README.md"
 requires-python = ">=3.12"
 
+
 dependencies = [
+    "cachetools>=5.5.0",
     "pandas>=2.2.3",
     "python-dotenv>=1.0.1",
     "quixplus>=0.1.3",
@@ -21,8 +23,6 @@ members = [
     "equity_quotes",
     "market_dashboard",
 ]
-
-
 
 [tool.uv]
 package = true

@@ -1,4 +1,4 @@
 quixstreams
 python-dotenv
 websockets
-quixplus
+quixplus==14.0.0

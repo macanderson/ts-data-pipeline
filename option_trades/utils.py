@@ -1,17 +1,15 @@
 """Utility functions."""
-from datetime import datetime
 import json
 import logging
 import os
 import time
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 import websockets
-from websockets.sync.client import connect
-
 from data_source import CustomSource
 from quixstreams.models import TimestampType, Topic
-
+from websockets.sync.client import connect
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

@@ -35,7 +35,6 @@ app = Application(
     loglevel=logging.DEBUG,
 )
 
-
 output_topic = app.topic(
     name=os.environ["OUTPUT"],
     key_serializer='str',

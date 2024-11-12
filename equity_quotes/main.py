@@ -51,20 +51,28 @@ def headers_func(data: dict) -> dict:
 
 def transform_func(data: dict) -> dict:
     """Transform the data to the expected format."""
-    pprint(data)
-    return {
-        "symbol": data.get("sym", "none"),
-        "event": data.get("ev", "none"),
-        "open": data.get("o", 0),
-        "high": data.get("h", 0),
-        "low": data.get("l", 0),
-        "close": data.get("c", 0),
-        "vwap": data.get("vw", 0),
-        "bar_volume": data.get("v", 0),
-        "num_of_trades": data.get("z", 0),
-        "session_volume": data.get("av", 0),
-        "timestamp": data.get("t", 0),
-    }
+    try:
+        # Example transformation logic
+        transformed_data = {
+            "symbol": data.get("sym", "none"),
+            "event": data.get("ev", "none"),
+            "open": data.get("o", 0),
+            "high": data.get("h", 0),
+            "low": data.get("l", 0),
+            "close": data.get("c", 0),
+            "vwap": data.get("vw", 0),
+            "bar_volume": data.get("v", 0),
+            "num_of_trades": data.get("z", 0),
+            "session_volume": data.get("av", 0),
+            "timestamp": data.get("t", 0),
+        }
+        return transformed_data
+    except KeyError as e:
+        logger.error(f"Missing key in data: {e}", exc_info=True)
+        return None
+    except Exception as e:
+        logger.error(f"Unexpected error during transformation: {e}", exc_info=True)
+        return None
 
 
 def validate_message(data: dict) -> bool:

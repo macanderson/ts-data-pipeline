@@ -11,7 +11,7 @@ from datetime import datetime
 
 from dotenv import load_dotenv
 from polygon import RESTClient
-from polygon.rest import ApiException
+from polygon.exceptions import AuthError, BadResponse
 from quixstreams import Application
 from quixstreams.models import Topic
 from quixstreams.sources.base.source import Source
@@ -87,8 +87,10 @@ class TickerNewsSource(Source):
                     timestamp=msg.timestamp_ms
                 )
                 logger.debug("Produced news article: %s", key)
-        except ApiException as e:
+        except BadResponse as e:
             logger.error("ApiException:Error fetching news: %s", e)
+        except AuthError as e:
+            logger.error("AuthError:Error fetching news: %s", e)
         except Exception as e:
             logger.error("Error fetching news: %s", e)
 

@@ -77,7 +77,9 @@ def reducer(aggregated: dict, value: dict) -> dict:
             if field not in value:
                 logger.warning(f"Missing required field: {field} in value")
                 return aggregated
-
+        except Exception as e:
+            logger.error(f"Error in reducer: {str(e)}")
+            return aggregated
         aggregated['count'] += 1
 
 

@@ -1,6 +1,3 @@
 quixstreams
 python-dotenv
-websocket-client
 quixplus==15.0.0
-pydantic
-cachetools

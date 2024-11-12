@@ -1,3 +1,2 @@
 quixstreams
 python-dotenv
-quixplus==14.0.0

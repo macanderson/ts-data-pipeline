@@ -3,18 +3,17 @@ This script reads option trade data from a Kafka topic, aggregates the data
 based on the trade premium value and trade volume, and writes the aggregated data to another
 Kafka topic.
 """
-from datetime import timedelta
-from functools import wraps
 import logging
 import os
 import sys
 import time
+from datetime import timedelta
+from functools import wraps
 from typing import Any, List, Optional, Tuple
 
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.models import TimestampType
-
 
 load_dotenv()
 
@@ -216,17 +215,12 @@ def main():
         sdf = app.dataframe(input_topic)
         logger.info("Dataframe created successfully")
 
-        # Add validation for the dataframe
-        if sdf.empty:
-            logger.warning("Empty dataframe received")
-            return
-
-        sdf["premium"] = sdf["price"] + sdf["qty"]
-
+        # Apply tumbling window and reduce
+        # emit the final result only once per window
         sdf = (
             sdf.tumbling_window(timedelta(minutes=1), grace_ms=1000)
             .reduce(reducer=reducer, initializer=initializer)
-            .current()
+            .final()
         )
 
         sdf.to_topic(output_topic)
@@ -253,5 +247,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        logger.error("Application failed to start", exc_info=True)
+        logger.error("Application failed to start %s", e, exc_info=True)
         sys.exit(1)

@@ -1,8 +1,8 @@
 import os
 
 from dotenv import load_dotenv
-from quixstreams import Application
 from quixplus import HttpSource
+from quixstreams import Application
 
 load_dotenv()
 
@@ -20,8 +20,8 @@ output = app.topic(
 )
 
 
-source = app.source(
-    name="news",
+source = HttpSource(
+    url="https://api.quix.com/v1/news",
     key_deserializer="str",
     value_deserializer="json"
 )

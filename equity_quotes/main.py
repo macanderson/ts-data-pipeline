@@ -7,7 +7,6 @@ import logging
 import os
 import sys
 import time
-from functools import partial
 from multiprocessing import Process
 from pprint import pprint
 
@@ -55,7 +54,7 @@ def timestamp_func(data: dict) -> int:
     return int(data.get("timestamp", time.time() * 1000))
 
 
-def custom_headers_func(data: dict) -> dict:
+def headers_func(data: dict) -> dict:
     return {
         "X-Data-Provider": "polygon",
         "X-System-Platform": sys.platform,
@@ -64,7 +63,7 @@ def custom_headers_func(data: dict) -> dict:
     }
 
 
-def transform(data: dict) -> dict:
+def transform_func(data: dict) -> dict:
     """Transform the data to the expected format."""
     pprint(data)
     return {
@@ -97,29 +96,21 @@ source = WebsocketSource(
     subscribe_payload=SUBSCRIBE_PAYLOAD,
     key_func=key_func,
     timestamp_func=timestamp_func,
-    headers_func=custom_headers_func,
-    transform=transform,
+    headers_func=headers_func,
+    transform=transform_func,
     validator=validate_message,
     debug=True,
 )
 
 
-def run_app():
-    logger.info(
-        f"Adding source '{source.name}' to application. Output topic: '{output_topic.name}'"
-    )
+def main():
+    """
+    Run the application.
+    """
+    logger.info("Adding source to application")
     app.add_source(source=source, topic=output_topic)
-
     logger.info("Running the application container...")
     app.run()
-
-
-def main():
-    # Use partial to avoid pickling issues with lambda functions
-    run_app_partial = partial(run_app)
-    process = Process(target=run_app_partial)
-    process.start()
-    process.join()
 
 
 if __name__ == "__main__":

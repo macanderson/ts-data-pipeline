@@ -27,20 +27,6 @@ API_TOKEN = os.getenv("POLYGON_TOKEN")
 if not API_TOKEN:
     raise ValueError("POLYGON_TOKEN environment variable is not set.")
 
-# Set up the application
-app = Application(
-    broker_address=None,
-    processing_guarantee="exactly-once",
-    auto_create_topics=False,
-    loglevel=logging.DEBUG,
-)
-
-output_topic = Topic(
-    name=os.getenv("OUTPUT", "equity-quotes"),
-    key_serializer=str,
-    value_serializer="json",
-)
-
 WS_URL = "wss://delayed.polygon.io/stocks"
 AUTH_PAYLOAD = {"action": "auth", "params": API_TOKEN}
 SUBSCRIBE_PAYLOAD = {"action": "subscribe", "params": "A.*"}
@@ -89,26 +75,44 @@ def validate_message(data: dict) -> bool:
     return False
 
 
-source = WebsocketSource(
-    name=output_topic.name,
-    url=WS_URL,
-    auth_payload=AUTH_PAYLOAD,
-    subscription_payloads=[SUBSCRIBE_PAYLOAD],
-    key_func=key_func,
-    timestamp_func=timestamp_func,
-    headers_func=headers_func,
-    transform=transform_func,
-    validator=validate_message,
-    debug=True,
-)
 
 
 def main():
     """
     Run the application.
     """
+
+    # Set up the application
+    app = Application(
+        broker_address=None,
+        processing_guarantee="exactly-once",
+        auto_create_topics=False,
+        loglevel=logging.DEBUG,
+    )
+
+    output_topic = Topic(
+        name=os.getenv("OUTPUT", "equity-quotes"),
+        key_serializer=str,
+        value_serializer="json",
+    )
+
+    source = WebsocketSource(
+        name=output_topic.name,
+        url=WS_URL,
+        auth_payload=AUTH_PAYLOAD,
+        subscription_payloads=[SUBSCRIBE_PAYLOAD],
+        key_func=key_func,
+        timestamp_func=timestamp_func,
+        headers_func=headers_func,
+        transform=transform_func,
+        validator=validate_message,
+        debug=True,
+    )
+
     logger.info("Adding source to application")
+
     app.add_source(source=source, topic=output_topic)
+    
     logger.info("Running the application container...")
     app.run()
 

@@ -4,6 +4,7 @@ import sys
 import time
 from functools import partial
 from multiprocessing import Process
+from pprint import pprint
 
 from dotenv import load_dotenv
 from quixplus.sources import WebsocketSource
@@ -41,17 +42,15 @@ AUTH_PAYLOAD = {"action": "auth", "params": API_TOKEN}
 SUBSCRIBE_PAYLOAD = {"action": "subscribe", "params": "A.*"}
 
 
-def key_func(ctx: WebsocketSource, msg):
-    return {"id": msg.get("id")}
+def key_func(data: dict) -> dict:
+    return {"id": data.get("id")}
 
 
-def timestamp_func(ctx: WebsocketSource, msg):
-    return int(msg.get("timestamp", time.time() * 1000))
+def timestamp_func(data: dict) -> int:
+    return int(data.get("timestamp", time.time() * 1000))
 
 
-def custom_headers_func(ctx: WebsocketSource, msg):
-    logger.info(f"ctx: {ctx}")
-    logger.info(f"msg: {msg}")
+def custom_headers_func(data: dict) -> dict:
     return {
         "X-Data-Provider": "polygon",
         "X-System-Platform": sys.platform,
@@ -62,7 +61,8 @@ def custom_headers_func(ctx: WebsocketSource, msg):
 
 def transform(ctx: WebsocketSource, data: dict) -> dict:
     """Transform the data to the expected format."""
-    record = {
+    pprint(data)
+    data = {
         "symbol": data.get("sym") or "none",
         "event": data.get("ev") or "none",
         "open": data.get("o") or 0,
@@ -70,13 +70,12 @@ def transform(ctx: WebsocketSource, data: dict) -> dict:
         "low": data.get("l") or 0,
         "close": data.get("c") or 0,
         "vwap": data.get("vw") or 0,
-        "volume": data.get("v") or 0,
-        "num_trades": data.get("z") or 0,
-        "cum_volume": data.get("av") or 0,
-        "ts": data.get("t") or 0,
+        "bar_volume": data.get("v") or 0,
+        "num_of_trades": data.get("z") or 0,
+        "session_volume": data.get("av") or 0,
+        "timestamp": data.get("t") or 0,
     }
-    logger.info(f"Transformed record: {record}")
-    return record
+    return data
 
 
 def validate_message(msg):

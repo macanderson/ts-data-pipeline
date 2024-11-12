@@ -11,7 +11,7 @@ from multiprocessing import Process
 from pprint import pprint
 
 from dotenv import load_dotenv
-from quixplus.sources.tornado_websocket import TornadoWebsocketSource as WebsocketSource
+from quixplus.sources import WebsocketSource
 from quixstreams import Application
 from quixstreams.models import Topic
 
@@ -99,21 +99,21 @@ def main():
 
     source = WebsocketSource(
         name=output_topic.name,
-        url=WS_URL,
+        ws_url=WS_URL,
         auth_payload=AUTH_PAYLOAD,
-        subscription_payloads=[SUBSCRIBE_PAYLOAD],
+        subscribe_payload=SUBSCRIBE_PAYLOAD,
         key_func=key_func,
         timestamp_func=timestamp_func,
         headers_func=headers_func,
-        value_func=transform_func,
-        validator_func=validate_message,
+        transform=transform_func,
+        validator=validate_message,
         debug=True,
     )
 
     logger.info("Adding source to application")
 
     app.add_source(source=source, topic=output_topic)
-    
+
     logger.info("Running the application container...")
     app.run()
 

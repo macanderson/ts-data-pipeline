@@ -1,3 +1,8 @@
+"""
+Equity quotes application.
+"""
+
+import json
 import logging
 import os
 import sys
@@ -18,7 +23,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 
-API_TOKEN = os.environ["POLYGON_TOKEN"]
+API_TOKEN = os.getenv("POLYGON_TOKEN")
 
 if not API_TOKEN:
     raise ValueError("POLYGON_TOKEN environment variable is not set.")
@@ -28,11 +33,11 @@ app = Application(
     broker_address=None,
     processing_guarantee="exactly-once",
     auto_create_topics=False,
-    loglevel=logging.INFO,
+    loglevel=logging.DEBUG,
 )
 
 output_topic = Topic(
-    name=os.environ.get("OUTPUT", "equity-quotes"),
+    name=os.getenv("OUTPUT", "equity-quotes"),
     key_serializer=str,
     value_serializer="json",
 )
@@ -59,30 +64,29 @@ def custom_headers_func(data: dict) -> dict:
     }
 
 
-def transform(ctx: WebsocketSource, data: dict) -> dict:
+def transform(data: dict) -> dict:
     """Transform the data to the expected format."""
     pprint(data)
-    data = {
-        "symbol": data.get("sym") or "none",
-        "event": data.get("ev") or "none",
-        "open": data.get("o") or 0,
-        "high": data.get("h") or 0,
-        "low": data.get("l") or 0,
-        "close": data.get("c") or 0,
-        "vwap": data.get("vw") or 0,
-        "bar_volume": data.get("v") or 0,
-        "num_of_trades": data.get("z") or 0,
-        "session_volume": data.get("av") or 0,
-        "timestamp": data.get("t") or 0,
+    return {
+        "symbol": data.get("sym", "none"),
+        "event": data.get("ev", "none"),
+        "open": data.get("o", 0),
+        "high": data.get("h", 0),
+        "low": data.get("l", 0),
+        "close": data.get("c", 0),
+        "vwap": data.get("vw", 0),
+        "bar_volume": data.get("v", 0),
+        "num_of_trades": data.get("z", 0),
+        "session_volume": data.get("av", 0),
+        "timestamp": data.get("t", 0),
     }
-    return data
 
 
-def validate_message(msg):
-    if isinstance(msg, dict):
-        return "sym" in msg
-    elif isinstance(msg, list):
-        return all(isinstance(item, dict) and "sym" in item for item in msg)
+def validate_message(data: dict) -> bool:
+    if isinstance(data, dict):
+        return "sym" in data
+    elif isinstance(data, list):
+        return all(isinstance(item, dict) and "sym" in item for item in data)
     return False
 
 
@@ -105,7 +109,8 @@ def run_app():
         f"Adding source '{source.name}' to application. Output topic: '{output_topic.name}'"
     )
     app.add_source(source=source, topic=output_topic)
-    logger.info("Running the application")
+
+    logger.info("Running the application container...")
     app.run()
 
 
@@ -115,6 +120,7 @@ def main():
     process = Process(target=run_app_partial)
     process.start()
     process.join()
+
 
 if __name__ == "__main__":
     try:

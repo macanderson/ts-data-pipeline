@@ -1,4 +1,4 @@
 quixstreams
 python-dotenv
-quixplus==23.0.2
+quixplus==24.0.0
 unusualwhales-python --pre

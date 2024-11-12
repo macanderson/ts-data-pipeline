@@ -1,4 +1,3 @@
 quixstreams
 python-dotenv
-numpy
-polars
+quixplus==24.0.0

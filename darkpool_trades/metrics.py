@@ -1,14 +1,13 @@
 import asyncio
+import logging
 from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-import logging
 from typing import Dict, List, Optional, Set, Union
 
 import pandas as pd
 from quixstreams.models import Topic
 from quixstreams.sources.base.source import Source
-
 
 logger = logging.getLogger(__name__)
 

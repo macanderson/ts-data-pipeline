@@ -64,7 +64,7 @@ class DarkpoolTradesSource(Source):
         # Fetch data from the darkpool
         logger.info("darkpool trades, running...")
         while self.running:
-            for trade in self.client.list_darkpool_trades().transactions:
+            for trade in self.client.darkpool.transactions.list():
                 print(trade)
 
 

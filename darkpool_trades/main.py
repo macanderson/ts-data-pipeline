@@ -1,3 +1,8 @@
+"""
+Darkpool trades application.
+"""
+
+import json
 import logging
 import os
 from datetime import datetime
@@ -59,7 +64,7 @@ class DarkpoolTradesSource(Source):
         # Fetch data from the darkpool
         logger.info("darkpool trades, running...")
         while self.running:
-            for trade in self.client.get_darkpool_trades():
+            for trade in self.client.list_darkpool_trades().transactions:
                 print(trade)
 
 

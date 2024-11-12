@@ -1,4 +1,3 @@
 quixstreams
 python-dotenv
-quixplus==23.0.0
-polars
+quixplus==23.0.1

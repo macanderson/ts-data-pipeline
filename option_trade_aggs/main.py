@@ -1,15 +1,33 @@
+"""
+This script reads option trade data from a Kafka topic, aggregates the data
+based on the trade premium value and trade volume, and writes the aggregated data to another
+Kafka topic.
+"""
 from datetime import timedelta
 from functools import wraps
 import logging
 import os
 import sys
 import time
-from typing import Optional
+from typing import Any, List, Optional, Tuple
 
 from dotenv import load_dotenv
 from quixstreams import Application
-from quixstreams.kafka.configuration import ConnectionConfig
-from utils import extract_timestamp
+from quixstreams.models import TimestampType
+
+
+load_dotenv()
+
+def extract_timestamp(
+    value: Any,
+    headers: Optional[List[Tuple[str, bytes]]],
+    timestamp: float,
+    timestamp_type: TimestampType,
+) -> int:
+    """
+    Specifying a custom timestamp extractor to use the timestamp in the message.
+    """
+    return value["ts"]
 
 
 # Configure logging
@@ -64,25 +82,6 @@ def initialize_app() -> Application:
         use_changelog_topics=True,
     )
 
-
-def reducer(aggregated: dict, value: dict) -> dict:
-    """Reducer function with error handling"""
-    try:
-        if aggregated is None:
-            aggregated = initializer(None)
-
-        # Validate required fields
-        required_fields = ['premium', 'qty', 'side', 'otype']
-        for field in required_fields:
-            if field not in value:
-                logger.warning(f"Missing required field: {field} in value")
-                return aggregated
-        except Exception as e:
-            logger.error(f"Error in reducer: {str(e)}")
-            return aggregated
-        aggregated['count'] += 1
-
-
 def reducer(aggregated: dict, value: dict) -> dict:
     """
     Calculate "min", "max", "total" and "average" over temperature values.
@@ -104,7 +103,7 @@ def reducer(aggregated: dict, value: dict) -> dict:
             elif value['side'] == 'sell' and value['otype'] == 'put':
                 aggregated['whale_sold_put_vol'] += value['qty']
                 aggregated['whale_sold_put_prem'] += value['premium']
-            elif value['side'] == 'buy' and value['otype'] == 'put':
+            elif value['otype'] == 'put':
                 aggregated['whale_no_side_put_vol'] += value['qty']
                 aggregated['whale_no_side_put_prem'] += value['premium']
             elif value['side'] == 'buy' and value['otype'] == 'call':
@@ -123,7 +122,7 @@ def reducer(aggregated: dict, value: dict) -> dict:
             elif value['side'] == 'sell' and value['otype'] == 'put':
                 aggregated['sold_put_vol'] += value['qty']
                 aggregated['sold_put_prem'] += value['premium']
-            elif value['side'] == 'buy' and value['otype'] == 'put':
+            elif value['otype'] == 'put':
                 aggregated['no_side_put_vol'] += value['qty']
                 aggregated['no_side_put_prem'] += value['premium']
             elif value['side'] == 'buy' and value['otype'] == 'call':
@@ -135,18 +134,21 @@ def reducer(aggregated: dict, value: dict) -> dict:
             else:
                 aggregated['no_side_call_vol'] += value['qty']
                 aggregated['no_side_call_prem'] += value['premium']
-            return aggregated
+        return aggregated
     except Exception as e:
         logger.error(f"Error in reducer: {str(e)}")
         return aggregated
 
 
-def initializer(value: dict) -> dict:
+def initializer(value: dict | None = None) -> dict:
     """
     Initialize the state for aggregation when a new window starts.
 
     It will prime the aggregation when the first record arrpythonives
     in the window.
+
+    Args:
+        value: The initial value to use for the aggregation.
     """
     if value is None:
         value = {}

@@ -16,8 +16,22 @@ logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 
 
-def add_field(key:str, value: Any, record: dict | None = None) -> dict:
-    """Add a field to a dictionary."""
+def add_field(key: str, value: Any, record: Optional[dict] = None) -> dict:
+    """Add a field to a dictionary.
+
+    Args:
+        key (str): The key to add.
+        value (Any): The value to add.
+        record (Optional[dict]): The dictionary to add the field to.
+
+    Returns:
+        dict: The updated dictionary.
+
+    Examples:
+        ```python
+        record = add_field("name", "John")
+        ```
+    """
     if record is None:
         record = {}
     record[key] = value
@@ -30,12 +44,39 @@ def extract_timestamp(
     timestamp: float,
     timestamp_type: TimestampType,
 ) -> int:
-    """Extract the timestamp from the message."""
+    """Extract the timestamp from the message.
+
+    Args:
+        value (Any): The value containing the timestamp.
+        headers (Optional[List[Tuple[str, bytes]]]): The headers of the message.
+        timestamp (float): The timestamp.
+        timestamp_type (TimestampType): The type of the timestamp.
+
+    Returns:
+        int: The extracted timestamp.
+
+    Examples:
+        ```python
+        ts = extract_timestamp(value, headers, timestamp, timestamp_type)
+        ```
+    """
     return value.get("ts") or 0
 
 
 def map_fields(data: Dict[Any, Any]) -> dict:
-    """Map option data to a dictionary."""
+    """Map option data to a dictionary.
+
+    Args:
+        data (Dict[Any, Any]): The data to map.
+
+    Returns:
+        dict: The mapped data.
+
+    Examples:
+        ```python
+        mapped_data = map_fields(data)
+        ```
+    """
     try:
         tags = data.get('tags', [])
         flags = data.get('report_flags', [])
@@ -50,10 +91,10 @@ def map_fields(data: Dict[Any, Any]) -> dict:
             position_type = "neutral_"
         position_type += data.get('option_type')
 
-        if (float(data.get("premium")) > 75000) and float(data.get("premium")):  # noqa E501
+        if (float(data.get("premium")) > 75000) and float(data.get("premium")):
             tags.append("large_trade")
 
-        if float(data.get("premium")) > 250000 and float(data.get("premium")) < 1000000:
+        if 250000 < float(data.get("premium")) < 1000000:
             tags.append("whale")
         elif float(data.get("premium")) > 1000000:
             tags.append("millionaire")
@@ -80,6 +121,7 @@ def map_fields(data: Dict[Any, Any]) -> dict:
             'qty': data.get('size', 0),
             'price': float(data.get('price', '0') or '0'),
             'premium': float(data.get('premium', '0') or '0'),
+            'side': 'buy' if 'ask_side' in data.get('tags') else 'sell' if 'bid_side' in data.get('tags') else 'no_side',
             'xchg': data.get('exchange', ''),
             'cond': data.get('trade_code', ''),
             'iv': float(data.get('implied_volatility', '0') or '0'),
@@ -107,47 +149,51 @@ def map_fields(data: Dict[Any, Any]) -> dict:
         return None
 
 
-
-
 class UnusualWhalesSource(CustomSource):
     """External Source for the UnusualWhales Options Websocket API"""
-    def __init__(self, name: str):  # noqa E501
-        super().__init__(name=name)
-        print(f"UnusualWhalesToken: {os.environ['UNUSUALWHALES_TOKEN']}")
 
-        self.uri = f"wss://api.unusualwhales.com/socket?token={os.environ['UNUSUALWHALES_TOKEN']}"  # noqa E501
+    def __init__(self, name: str) -> None:
+        """
+        Initialize the UnusualWhalesSource with a name.
+
+        Args:
+            name (str): The name of the source.
+        """
+        super().__init__(name=name)
+        self.uri = f"wss://api.unusualwhales.com/socket?token={os.environ['UNUSUALWHALES_TOKEN']}"
         self.name = name
         self._producer_topic = Topic(name="option_trades", key_serializer='string', value_serializer='json')
 
-    def run(self):
+    def run(self) -> None:
+        """Run the WebSocket connection and process messages."""
         logger.info("Processing WebSocket messages...")
         while self.running:
             logger.info("Connecting to WebSocket...")
             try:
-                with connect(
-                    self.uri,
-                    logger=logger,
-                ) as ws:
+                with connect(self.uri, logger=logger) as ws:
                     subscribe_message = json.dumps({
                         "channel": "option_trades",
                         "msg_type": "join"
                     })
                     ws.send(subscribe_message)
-                    logger.info("""
-                        Successfully subscribed to the UnusualWhales API https://api.unusualwhales.com.
-                    """)
+                    logger.info("Successfully subscribed to the UnusualWhales API https://api.unusualwhales.com.")
                     for message in ws:
                         try:
                             data = json.loads(message)
                             for item in data[1:]:  # Skip the first position as it's never a valid option trade record
-                                if item.get('price'):  # noqa E501
+                                if item.get('price'):
                                     record = map_fields(item)
                                     if record:
                                         msg_headers = {
                                             "data_provider": "UnusualWhales",
                                             "integration_id": record.get('id')
                                         }
-                                        msg = self.serialize(key=record.get('osym'), value=record, headers=msg_headers, timestamp_ms=record.get('ts'))
+                                        msg = self.serialize(
+                                            key=record.get('osym'),
+                                            value=record,
+                                            headers=msg_headers,
+                                            timestamp_ms=record.get('ts')
+                                        )
                                         self.produce(
                                             key=record.get('osym'),
                                             value=json.dumps(record),
@@ -157,14 +203,12 @@ class UnusualWhalesSource(CustomSource):
                                             headers=msg.headers
                                         )
                         except json.JSONDecodeError as e:
-                            print(f"Error decoding JSON message: {e}")
+                            logger.error("Error decoding JSON message: %s", e)
                         except Exception as e:
-                            print(f"Error processing message: {e}")
+                            logger.error("Error processing message: %s", e)
             except websockets.exceptions.ConnectionClosedError as e:
-                print(f"Connection closed with error: {e}. Reconnecting...")
+                logger.error("Connection closed with error: %s. Reconnecting...", e)
                 time.sleep(5)  # Wait before reconnecting
-                continue
             except Exception as e:
-                print(f"Unexpected error: {e}. Reconnecting...")
+                logger.error("Unexpected error: %s. Reconnecting...", e)
                 time.sleep(5)  # Wait before reconnecting
-

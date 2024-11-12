@@ -81,6 +81,7 @@ def initialize_app() -> Application:
         use_changelog_topics=True,
     )
 
+
 def reducer(aggregated: dict, value: dict) -> dict:
     """
     Calculate "min", "max", "total" and "average" over temperature values.

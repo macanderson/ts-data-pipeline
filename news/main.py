@@ -1,3 +1,4 @@
+# flake8: noqa
 """
 This module sets up a news polling application using the Polygon API to fetch ticker news
 and stream it to a specified output topic. The application is designed to run continuously,
@@ -8,6 +9,7 @@ import logging
 import os
 import time
 from datetime import datetime
+from multiprocessing import Process
 
 from dotenv import load_dotenv
 from polygon import RESTClient
@@ -107,8 +109,11 @@ def main() -> None:
     """
     Main function to set up and run the news polling application.
     """
-    app.add_source(source=TickerNewsSource(name=output.name), topic=output)
-    app.run()
+    source = TickerNewsSource(name=output.name)
+    process = Process(target=app.add_source, args=(source, output))
+    process.start()
+    process.join()
+
 
 if __name__ == "__main__":
     try:

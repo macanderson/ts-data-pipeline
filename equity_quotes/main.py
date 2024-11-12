@@ -68,6 +68,7 @@ def transform_func(data: dict) -> dict:
 
 
 def validate_message(data: dict) -> bool:
+    print(data)
     if isinstance(data, dict):
         return "sym" in data
     elif isinstance(data, list):

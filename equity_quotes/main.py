@@ -41,15 +41,17 @@ AUTH_PAYLOAD = {"action": "auth", "params": API_TOKEN}
 SUBSCRIBE_PAYLOAD = {"action": "subscribe", "params": "A.*"}
 
 
-def key_func(msg):
+def key_func(ctx: WebsocketSource, msg):
     return {"id": msg.get("id")}
 
 
-def timestamp_func(msg):
+def timestamp_func(ctx: WebsocketSource, msg):
     return int(msg.get("timestamp", time.time() * 1000))
 
 
-def custom_headers_func(msg):
+def custom_headers_func(ctx: WebsocketSource, msg):
+    logger.info(f"ctx: {ctx}")
+    logger.info(f"msg: {msg}")
     return {
         "X-Data-Provider": "polygon",
         "X-System-Platform": sys.platform,
@@ -57,7 +59,8 @@ def custom_headers_func(msg):
         "X-System-Python-Version": sys.version_info,
     }
 
-def transform(data: dict) -> dict:
+
+def transform(ctx: WebsocketSource, data: dict) -> dict:
     """Transform the data to the expected format."""
     record = {
         "symbol": data.get("sym") or "none",
@@ -72,7 +75,7 @@ def transform(data: dict) -> dict:
         "cum_volume": data.get("av") or 0,
         "ts": data.get("t") or 0,
     }
-    print(f"record in transform: {record}")
+    logger.info(f"Transformed record: {record}")
     return record
 
 

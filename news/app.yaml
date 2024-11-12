@@ -5,13 +5,9 @@ variables:
     inputType: OutputTopic
     defaultValue: news
     required: false
-  - name: NEWS_API_TOKEN
+  - name: POLYGON_API_KEY
     inputType: Secret
-    defaultValue: NEWS_API_TOKEN_key
-    required: false
-  - name: NEWS_API_VENDOR
-    inputType: FreeText
-    defaultValue: https://newsapi.org/v2/everything
+    defaultValue: POLYGON_API_KEY_key
     required: false
 dockerfile: dockerfile
 runEntryPoint: main.py

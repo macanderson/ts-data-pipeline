@@ -153,14 +153,10 @@ deployments:
         inputType: OutputTopic
         required: false
         value: news
-      - name: NEWS_API_TOKEN
+      - name: POLYGON_API_KEY
         inputType: Secret
         required: false
-        secretKey: NEWS_API_TOKEN_key
-      - name: NEWS_API_VENDOR
-        inputType: FreeText
-        required: false
-        value: https://newsapi.org/v2/everything
+        secretKey: POLYGON_API_KEY_key
   - name: darkpool_trades
     application: darkpool_trades
     version: latest

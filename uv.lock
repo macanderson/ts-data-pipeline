@@ -628,6 +628,20 @@ wheels = [
 ]
 
 [[package]]
+name = "polygon-api-client"
+version = "1.14.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "certifi" },
+    { name = "urllib3" },
+    { name = "websockets" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bf/41/2f59b0af0a3a8432c492e720a0f3c6b722b0b21e24c20990c092f08b3dd7/polygon_api_client-1.14.2.tar.gz", hash = "sha256:5b0091613e0fd265d2f98e33e6d83b439ee412b3652d4fb6b898136559d60bc9", size = 27954 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/63/c341cfc6ab3769e87759e2ff6cca4ff30b14831874200f523e1a790f3802/polygon_api_client-1.14.2-py3-none-any.whl", hash = "sha256:c5b577697e7cc8eb4d72bf5f93876022c671147aff83e3bef408f1cb9917d3f8", size = 40614 },
+]
+
+[[package]]
 name = "propcache"
 version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -780,7 +794,7 @@ wheels = [
 
 [[package]]
 name = "quixplus"
-version = "20.0.0"
+version = "21.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -797,9 +811,9 @@ dependencies = [
     { name = "tornado" },
     { name = "websocket-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ce/c7/a47eaacb469d7953e587a3700528461dadf906b79808623ddb6e5c74b141/quixplus-20.0.0.tar.gz", hash = "sha256:1633bcb965c79dfdab13c31d28758a2ef209d409ae4752a82177deb4ba3692d1", size = 14132 }
+sdist = { url = "https://files.pythonhosted.org/packages/80/e8/506ef03734e245fbd6d105efa49bc3026e4132492a9c62ca6673d4a8f229/quixplus-21.0.0.tar.gz", hash = "sha256:9b6826a191916221cb8021d1068ccf73bf59df04faa73db646a31ef168edc552", size = 14110 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e0/a7/1995db1cba5ea5aec6e232d53e3789c97d0288afca2fe218dfdc5e7c696d/quixplus-20.0.0-py3-none-any.whl", hash = "sha256:0fd6526b446594ef316099076b9744899cadc9bc821f253860a99cdee7f902d8", size = 13543 },
+    { url = "https://files.pythonhosted.org/packages/38/00/28e7de10f237013051bc7ea8fc6acdf3fc56b7db6ca44313b56df747136e/quixplus-21.0.0-py3-none-any.whl", hash = "sha256:939be81ebd87a5e55111454cc58be0692136d0f4350fc57cdb4525cb7188b105", size = 13519 },
 ]
 
 [[package]]
@@ -998,6 +1012,7 @@ source = { editable = "." }
 dependencies = [
     { name = "cachetools" },
     { name = "pandas" },
+    { name = "polygon-api-client" },
     { name = "python-dotenv" },
     { name = "quixplus" },
     { name = "quixstreams" },
@@ -1009,6 +1024,7 @@ dependencies = [
 requires-dist = [
     { name = "cachetools", specifier = ">=5.5.0" },
     { name = "pandas", specifier = ">=2.2.3" },
+    { name = "polygon-api-client", specifier = ">=1.14.2" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "quixplus", specifier = ">=0.1.3" },
     { name = "quixstreams", specifier = ">=3.1.0" },
@@ -1079,6 +1095,26 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/e6/30/fba0d96b4b5fbf5948ed3f4681f7da2f9f64512e1d303f94b4cc174c24a5/websocket_client-1.8.0.tar.gz", hash = "sha256:3239df9f44da632f96012472805d40a23281a991027ce11d2f45a6f24ac4c3da", size = 54648 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5a/84/44687a29792a70e111c5c477230a72c4b957d88d16141199bf9acb7537a3/websocket_client-1.8.0-py3-none-any.whl", hash = "sha256:17b44cc997f5c498e809b22cdf2d9c7a9e71c02c8cc2b6c56e7c2d1239bfa526", size = 58826 },
+]
+
+[[package]]
+name = "websockets"
+version = "12.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/2e/62/7a7874b7285413c954a4cca3c11fd851f11b2fe5b4ae2d9bee4f6d9bdb10/websockets-12.0.tar.gz", hash = "sha256:81df9cbcbb6c260de1e007e58c011bfebe2dafc8435107b0537f393dd38c8b1b", size = 104994 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a9/6d/23cc898647c8a614a0d9ca703695dd04322fb5135096a20c2684b7c852b6/websockets-12.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:0e6e2711d5a8e6e482cacb927a49a3d432345dfe7dea8ace7b5790df5932e4df", size = 124061 },
+    { url = "https://files.pythonhosted.org/packages/39/34/364f30fdf1a375e4002a26ee3061138d1571dfda6421126127d379d13930/websockets-12.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:dbcf72a37f0b3316e993e13ecf32f10c0e1259c28ffd0a85cee26e8549595fbc", size = 121296 },
+    { url = "https://files.pythonhosted.org/packages/2e/00/96ae1c9dcb3bc316ef683f2febd8c97dde9f254dc36c3afc65c7645f734c/websockets-12.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:12743ab88ab2af1d17dd4acb4645677cb7063ef4db93abffbf164218a5d54c6b", size = 121326 },
+    { url = "https://files.pythonhosted.org/packages/af/f1/bba1e64430685dd456c1a1fd6b0c791ae33104967b928aefeff261761e8d/websockets-12.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7b645f491f3c48d3f8a00d1fce07445fab7347fec54a3e65f0725d730d5b99cb", size = 131807 },
+    { url = "https://files.pythonhosted.org/packages/62/3b/98ee269712f37d892b93852ce07b3e6d7653160ca4c0d4f8c8663f8021f8/websockets-12.0-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:9893d1aa45a7f8b3bc4510f6ccf8db8c3b62120917af15e3de247f0780294b92", size = 130751 },
+    { url = "https://files.pythonhosted.org/packages/f1/00/d6f01ca2b191f8b0808e4132ccd2e7691f0453cbd7d0f72330eb97453c3a/websockets-12.0-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1f38a7b376117ef7aff996e737583172bdf535932c9ca021746573bce40165ed", size = 131176 },
+    { url = "https://files.pythonhosted.org/packages/af/9c/703ff3cd8109dcdee6152bae055d852ebaa7750117760ded697ab836cbcf/websockets-12.0-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:f764ba54e33daf20e167915edc443b6f88956f37fb606449b4a5b10ba42235a5", size = 136246 },
+    { url = "https://files.pythonhosted.org/packages/0b/a5/1a38fb85a456b9dc874ec984f3ff34f6550eafd17a3da28753cd3c1628e8/websockets-12.0-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:1e4b3f8ea6a9cfa8be8484c9221ec0257508e3a1ec43c36acdefb2a9c3b00aa2", size = 135466 },
+    { url = "https://files.pythonhosted.org/packages/3c/98/1261f289dff7e65a38d59d2f591de6ed0a2580b729aebddec033c4d10881/websockets-12.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:9fdf06fd06c32205a07e47328ab49c40fc1407cdec801d698a7c41167ea45113", size = 136083 },
+    { url = "https://files.pythonhosted.org/packages/a9/1c/f68769fba63ccb9c13fe0a25b616bd5aebeef1c7ddebc2ccc32462fb784d/websockets-12.0-cp312-cp312-win32.whl", hash = "sha256:baa386875b70cbd81798fa9f71be689c1bf484f65fd6fb08d051a0ee4e79924d", size = 124460 },
+    { url = "https://files.pythonhosted.org/packages/20/52/8915f51f9aaef4e4361c89dd6cf69f72a0159f14e0d25026c81b6ad22525/websockets-12.0-cp312-cp312-win_amd64.whl", hash = "sha256:ae0a5da8f35a5be197f328d4727dbcfafa53d1824fac3d96cdd3a642fe09394f", size = 124985 },
+    { url = "https://files.pythonhosted.org/packages/79/4d/9cc401e7b07e80532ebc8c8e993f42541534da9e9249c59ee0139dcb0352/websockets-12.0-py3-none-any.whl", hash = "sha256:dc284bbc8d7c78a6c69e0c7325ab46ee5e40bb4d50e494d8131a07ef47500e9e", size = 118370 },
 ]
 
 [[package]]

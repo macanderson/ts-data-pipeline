@@ -55,7 +55,7 @@ class TickerNewsSource(Source):
         """
         super().__init__(name, shutdown_timeout)
         self.client = RESTClient(os.environ["POLYGON_API_KEY"])
-        self.last_polled = datetime.now().date().timestamp()
+        self.last_polled = datetime.timestamp(datetime.now().date())
 
     def poll_news(self) -> None:
         """

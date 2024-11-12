@@ -1,3 +1,30 @@
+
+{
+  "option": {
+    "opra": "VXX190517P00016000",
+    "strike": 160.50,
+    "type": "put",
+    "usym": "VXX",
+    "expiration": "2019-05-17",
+  },
+  "description": "VXX May 17 2019 $16.00 Put",
+  "description": "VXX May 17 2019 $16.00 Put",
+  "exch": "Z",
+  "type": "option",
+  "underlying": "VXX",
+  "strike": 160.50,
+  "put_call": "put",
+  "root_symbol": "VXX",
+  "underlying_price": 32.32,
+
+  "change_percentage": 0.10342,
+  "average_volume": 1332.22,
+  "last_volume": 2321,
+  "trade_date": 1557171657000,
+  "prevclose": 32.32,
+  "week_52_high": 3223.32,
+  "week_52_low": 323.32,
+  "bidsize": 23,
 {
   "symbol": "VXX190517P00016000",
   "description": "VXX May 17 2019 $16.00 Put",

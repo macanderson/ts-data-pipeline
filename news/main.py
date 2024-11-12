@@ -9,7 +9,7 @@ import logging
 import os
 import time
 from datetime import datetime
-from multiprocessing import Process
+import json
 
 from dotenv import load_dotenv
 from polygon import RESTClient
@@ -53,21 +53,23 @@ class TickerNewsSource(Source):
             logger.info(f"Last polled: {self.last_polled}")
             self.last_polled = datetime.now().timestamp()
             article_counter = 0
-            for n in self.client.list_ticker_news(published_utc_gt=self.last_polled, order="desc"):
+            for n in self.client.list_ticker_news(published_utc_gt=self.last_polled, order="desc", raw=True):
                 article_counter += 1
-                key = n.id
-                value = n
-                timestamp = datetime.fromisoformat(n.published_utc).timestamp()
+                data = json.loads(n)
+                print(data)
+                key = data["id"]
+                value = data
+                timestamp = datetime.fromisoformat(data["published_utc"]).timestamp()
                 headers = {
-                    "publisher": n.publisher.name,
-                    "published_date": timestamp.date().strftime("%Y-%m-%d"),
-                    "tickers": [t for t in n.tickers]
+                    "publisher": data["publisher"]["name"],
+                    "published_date": datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d"),
+                    "tickers": [t for t in data["tickers"]]
                 }
                 msg = self.serialize(
                     key=key,
                     value=value,
                     headers=headers,
-                    timestamp_ms=timestamp
+                    timestamp_ms=int(timestamp * 1000)
                 )
                 self.produce(
                     key=msg.key,
@@ -88,10 +90,9 @@ class TickerNewsSource(Source):
         Continuously poll for news while the source is running.
         """
         while self.running:
-            print("Polling for news...")
+            logger.info("Polling for news...")
             self.poll_news()
             time.sleep(1)
-
 
 
 # Application:
@@ -127,6 +128,6 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("Exiting.")
+        logger.info("Exiting.")
 
 __all__ = ["TickerNewsSource"]

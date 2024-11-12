@@ -10,7 +10,8 @@ import time
 from datetime import datetime
 
 from dotenv import load_dotenv
-from polygon import ApiException, RESTClient
+from polygon import RESTClient
+from polygon.rest import ApiException
 from quixstreams import Application
 from quixstreams.models import Topic
 from quixstreams.sources.base.source import Source

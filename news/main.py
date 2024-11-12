@@ -40,6 +40,7 @@ class TickerNewsSource(Source):
             shutdown_timeout (float): The time to wait before shutting down the source.
         """
         super().__init__(name, shutdown_timeout)
+        logger.info(f"Initializing TickerNewsSource with name: {name}")
         self.client = RESTClient(os.environ["POLYGON_API_KEY"])
         self.last_polled = int(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0).timestamp() * 1000)
 
@@ -48,6 +49,8 @@ class TickerNewsSource(Source):
         Poll the Polygon API for the latest ticker news and produce messages to the output topic.
         """
         try:
+            logger.info("Polling for news...")
+            logger.info(f"Last polled: {self.last_polled}")
             self.last_polled = datetime.now().timestamp()
             article_counter = 0
             for n in self.client.list_ticker_news(published_utc_gt=self.last_polled, order="desc"):
@@ -85,8 +88,9 @@ class TickerNewsSource(Source):
         Continuously poll for news while the source is running.
         """
         while self.running:
+            print("Polling for news...")
             self.poll_news()
-            time.sleep(10)
+            time.sleep(1)
 
 
 

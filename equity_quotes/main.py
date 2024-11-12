@@ -11,7 +11,7 @@ from multiprocessing import Process
 from pprint import pprint
 
 from dotenv import load_dotenv
-from quixplus.sources import WebsocketSource
+from quixplus.sources.tornado_websocket import TornadoWebsocketSource as WebsocketSource
 from quixstreams import Application
 from quixstreams.models import Topic
 
@@ -91,9 +91,9 @@ def validate_message(data: dict) -> bool:
 
 source = WebsocketSource(
     name=output_topic.name,
-    ws_url=WS_URL,
+    url=WS_URL,
     auth_payload=AUTH_PAYLOAD,
-    subscribe_payload=SUBSCRIBE_PAYLOAD,
+    subscription_payloads=[SUBSCRIBE_PAYLOAD],
     key_func=key_func,
     timestamp_func=timestamp_func,
     headers_func=headers_func,

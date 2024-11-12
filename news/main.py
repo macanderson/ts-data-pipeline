@@ -22,22 +22,6 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-# Application:
-app = Application(
-    broker_address=None,
-    processing_guarantee="at-least-once",
-    auto_create_topics=False,
-    consumer_group="tsdp-news"
-)
-
-# Output topic:
-output = Topic(
-    name=os.environ["OUTPUT"],
-    key_serializer="str",
-    value_serializer="json"
-)
-
-
 class TickerNewsSource(Source):
     """
     A source for fetching and streaming ticker news from the Polygon API.
@@ -105,14 +89,34 @@ class TickerNewsSource(Source):
             time.sleep(10)
 
 
+
+# Application:
+app = Application(
+    broker_address=None,
+    processing_guarantee="at-least-once",
+    auto_create_topics=False,
+    consumer_group="tsdp-news"
+)
+
+# Output topic:
+output = Topic(
+    name=os.environ["OUTPUT"],
+    key_serializer="str",
+    value_serializer="json"
+)
+
+
+source = TickerNewsSource(name=output.name, shutdown_timeout=10)
+
+
 def main() -> None:
     """
     Main function to set up and run the news polling application.
     """
-    source = TickerNewsSource(name=output.name)
-    process = Process(target=app.add_source, args=(source, output))
-    process.start()
-    process.join()
+    logger.info("Adding source to application")
+    app.add_source(source=source, topic=output)
+    logger.info("Running the application...")
+    app.run()
 
 
 if __name__ == "__main__":

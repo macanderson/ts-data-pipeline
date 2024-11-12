@@ -1,2 +1,4 @@
 quixstreams
 python-dotenv
+numpy
+polars

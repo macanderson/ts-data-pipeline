@@ -75,6 +75,7 @@ def transform(data: dict) -> dict:
     print(f"record in transform: {record}")
     return record
 
+
 def validate_message(msg):
     if isinstance(msg, dict):
         return "sym" in msg

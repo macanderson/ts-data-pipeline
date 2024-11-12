@@ -105,7 +105,7 @@ def main():
         timestamp_func=timestamp_func,
         headers_func=headers_func,
         value_func=transform_func,
-        validator=validate_message,
+        validator_func=validate_message,
         debug=True,
     )
 

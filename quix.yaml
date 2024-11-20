@@ -30,11 +30,11 @@ deployments:
       - name: SASL_USERNAME
         inputType: FreeText
         required: false
-        value: api-user
+        value: CIEDOJHCZWROUBY3
       - name: SASL_MECHANISM
         inputType: FreeText
         required: false
-        value: SCRAM-SHA-256
+        value: PLAIN
       - name: SECURITY_PROTOCOL
         inputType: FreeText
         required: false
@@ -42,7 +42,7 @@ deployments:
       - name: BOOTSTRAP_SERVERS
         inputType: FreeText
         required: false
-        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
+        value: pkc-p11xm.us-east-1.aws.confluent.cloud:9092
   - name: option_trade_aggs
     application: option_trade_aggs
     version: latest

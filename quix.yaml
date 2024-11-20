@@ -213,3 +213,8 @@ topics:
       retentionInBytes: 10737418240
       cleanupPolicy: Delete
   - name: equity-quotes
+  - name: option_trades
+    configuration:
+      replicationFactor: 3
+      retentionInMinutes: 1440
+      retentionInBytes: 52428800

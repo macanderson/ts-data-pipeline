@@ -1,13 +1,13 @@
 name: option_trades
 language: Python
 variables:
-  - name: OUTPUT
+  - name: TOPIC_OUTPUT
     inputType: OutputTopic
     defaultValue: option-trades
     required: false
-  - name: UNUSUALWHALES_TOKEN
+  - name: UNUSUALWHALES_KEY
     inputType: Secret
-    defaultValue: UNUSUALWHALES_TOKEN_key
+    defaultValue: UNUSUALWHALES_KEY_key
     required: false
   - name: SASL_PASSWORD
     inputType: Secret
@@ -15,7 +15,7 @@ variables:
     required: false
   - name: SASL_USERNAME
     inputType: FreeText
-    defaultValue: api-user
+    defaultValue: default
     required: false
   - name: SASL_MECHANISM
     inputType: FreeText

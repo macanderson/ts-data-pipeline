@@ -26,13 +26,11 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-WHALE_PREMIUM_THRESHOLD = os.environ.get("WHALE_PREMIUM_THRESHOLD", 100000)
-
 app = Application(
     broker_address=None,
     processing_guarantee="exactly-once",
     auto_create_topics=True,
-    loglevel=logging.DEBUG,
+    loglevel=logging.DEBUG
 )
 
 output_topic = app.topic(

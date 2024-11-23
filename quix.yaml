@@ -15,14 +15,14 @@ deployments:
       memory: 3000
       replicas: 1
     variables:
-      - name: OUTPUT
+      - name: TOPIC_OUTPUT
         inputType: OutputTopic
         required: false
         value: option-trades
-      - name: UNUSUALWHALES_TOKEN
+      - name: UNUSUALWHALES_KEY
         inputType: Secret
         required: false
-        secretKey: UNUSUALWHALES_TOKEN_key
+        secretKey: UNUSUALWHALES_KEY_key
       - name: SASL_PASSWORD
         inputType: Secret
         required: false
@@ -30,11 +30,11 @@ deployments:
       - name: SASL_USERNAME
         inputType: FreeText
         required: false
-        value: CIEDOJHCZWROUBY3
+        value: default
       - name: SASL_MECHANISM
         inputType: FreeText
         required: false
-        value: PLAIN
+        value: SCRAM-SHA-256
       - name: SECURITY_PROTOCOL
         inputType: FreeText
         required: false
@@ -42,7 +42,7 @@ deployments:
       - name: BOOTSTRAP_SERVERS
         inputType: FreeText
         required: false
-        value: pkc-p11xm.us-east-1.aws.confluent.cloud:9092
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
   - name: option_trade_aggs
     application: option_trade_aggs
     version: latest
@@ -70,7 +70,7 @@ deployments:
       - name: SASL_USERNAME
         inputType: FreeText
         required: false
-        value: api-user
+        value: default
       - name: SASL_MECHANISM
         inputType: FreeText
         required: false
@@ -107,7 +107,7 @@ deployments:
       - name: SASL_USERNAME
         inputType: FreeText
         required: false
-        value: api-service
+        value: default
       - name: SASL_MECHANISM
         inputType: FreeText
         required: false
@@ -157,6 +157,26 @@ deployments:
         inputType: Secret
         required: false
         secretKey: POLYGON_API_KEY_key
+      - name: SASL_PASSWORD
+        inputType: Secret
+        required: false
+        secretKey: SASL_PASSWORD_key
+      - name: SASL_USERNAME
+        inputType: FreeText
+        required: false
+        value: default
+      - name: SASL_MECHANISM
+        inputType: FreeText
+        required: false
+        value: SCRAM-SHA-256
+      - name: SECURITY_PROTOCOL
+        inputType: FreeText
+        required: false
+        value: SASL_SSL
+      - name: BOOTSTRAP_SERVERS
+        inputType: FreeText
+        required: false
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
   - name: darkpool_trades
     application: darkpool_trades
     version: latest
@@ -174,6 +194,26 @@ deployments:
         inputType: Secret
         required: false
         secretKey: UNUSUALWHALES_TOKEN_key
+      - name: SASL_PASSWORD
+        inputType: Secret
+        required: false
+        secretKey: SASL_PASSWORD_key
+      - name: SASL_USERNAME
+        inputType: FreeText
+        required: false
+        value: default
+      - name: SASL_MECHANISM
+        inputType: FreeText
+        required: false
+        value: SCRAM-SHA-256
+      - name: SECURITY_PROTOCOL
+        inputType: FreeText
+        required: false
+        value: SASL_SSL
+      - name: BOOTSTRAP_SERVERS
+        inputType: FreeText
+        required: false
+        value: csdv607229g095ngiqrg.any.us-east-1.mpx.prd.cloud.redpanda.com:9092
 
 # This section describes the Topics of the data pipeline
 topics:

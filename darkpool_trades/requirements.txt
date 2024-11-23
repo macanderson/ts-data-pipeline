@@ -1,4 +1,6 @@
 quixstreams
 python-dotenv
-quixplus==24.0.0
-unusualwhales-python --pre
+quixplus
+numpy
+pandas
+tradesignals --pre

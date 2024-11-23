@@ -1,4 +1,5 @@
 quixstreams
 python-dotenv
-quixplus==25.0.1
+quixplus
 pandas
+numpy

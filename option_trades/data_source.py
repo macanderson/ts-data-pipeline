@@ -1,14 +1,13 @@
-from abc import abstractmethod
-from datetime import datetime
 import json
 import logging
+from abc import abstractmethod
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from quixstreams.checkpointing.exceptions import CheckpointProducerTimeout
 from quixstreams.models import TimestampType
 from quixstreams.models.topics import Topic
 from quixstreams.sources.base.source import BaseSource
-
 
 logger = logging.getLogger(__name__)
 

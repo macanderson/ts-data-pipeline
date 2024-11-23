@@ -15,7 +15,7 @@ variables:
     required: false
   - name: SASL_USERNAME
     inputType: FreeText
-    defaultValue: api-service
+    defaultValue: default
     required: false
   - name: SASL_MECHANISM
     inputType: FreeText
